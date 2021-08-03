@@ -8,7 +8,6 @@ router.post('/guardar', (req, res) => {
     const body =  req.body
     const pr = new Productos()
     let nuevo =  pr.add(body)
-    console.log(nuevo)
         res.json(
           nuevo
       )    
@@ -39,7 +38,7 @@ router.get('/listar/:id', (req, res)=>{
     const id = req.params.id
     const pr = new Productos()
     const producto = pr.showOne(id)
-    console.log('prod:', producto)
+
     if(producto.length>0){
       res.json(
         producto[0]
@@ -52,6 +51,32 @@ router.get('/listar/:id', (req, res)=>{
     }
   } catch (error) {
     console.log('GetById:', error)
+  }
+})
+router.put('/actualizar/:id', (req, res)=>{
+  try {
+    const id = req.params.id
+    const body = req.body
+    const pr = new Productos()
+    const producto = pr.edit(id, body)
+    res.json(
+      producto
+    )
+
+  } catch (error) {
+    console.log('Update:', error)
+  }
+})
+
+router.delete('/borrar/:id', (req, res)=>{
+  try {
+    const id = req.params.id
+    const pr = new Productos()
+    const producto = pr.delete(id)
+    res.json(producto)
+
+  } catch (error) {
+    console.log('Delete:', error)
   }
 })
 export default router

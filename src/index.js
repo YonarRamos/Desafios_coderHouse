@@ -1,5 +1,6 @@
 import express from 'express'
 import productos from '../routes/productos'
+import path from 'path';
 
 const app = express()
 
@@ -10,8 +11,12 @@ const server = app.listen(PORT, ()=>{
 })
 
 server.on('error', (error)=>{
-    console.log('Server error: ', Serror)
+    console.log('Server error: ', error)
 })
+
+const publicPath = path.resolve(__dirname, '../public');
+console.log(publicPath);
+app.use(express.static(publicPath));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

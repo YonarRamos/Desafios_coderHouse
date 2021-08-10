@@ -1,0 +1,9 @@
+<h1 style="text-align: center;color:white;">Agregar Producto Nuevo</h1>
+<div style="border:rgb(0, 204, 255) solid 1px;padding:10px;border-radius:10px;display:flex;align-items:center;justify-content: center;align-self:center;width: 650px;">
+    <form action="/api/productos/guardar" method="POST">
+        <input class="form-control" type="text" placeholder="Nombre"  name="title" aria-label="name-input" style="width: 600px;margin-bottom:15px;"/>
+        <input class="form-control" type="Precio" placeholder="Precio"  name="price" aria-label="price-input" style="width: 600px;margin-bottom:15px;"/>
+        <input class="form-control" type="text" placeholder="Foto URL"  name="thumbnail" aria-label="name-input" style="width: 600px;margin-bottom:15px;"/>
+        <button type="submit" class="btn btn-info" style="width: 600px;">Nuevo Producto</button>
+    </form>
+</div>

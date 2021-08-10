@@ -1,4 +1,16 @@
-let db = []
+let db = [
+    {
+        title:"Lapiz",
+        price: 35,
+        thumbnail:'https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/pencil-256.png'
+    },
+    {
+        title:"Calculadora",
+        price: 50,
+        thumbnail:'https://cdn3.iconfinder.com/data/icons/e-commerce-and-online-shopping/64/__Calculator-256.png'
+    },
+]
+
 class Productos {
     constructor(){
     }

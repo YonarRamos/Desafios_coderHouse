@@ -11,7 +11,7 @@ const server = app.listen(PORT, ()=>{
 })
 
 const viewsPath = path.resolve(__dirname, '../views');
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.set('views', viewsPath)
 
 server.on('error', (error)=>{

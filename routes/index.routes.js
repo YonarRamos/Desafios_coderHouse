@@ -9,26 +9,7 @@ router.get('/listar', productosController.listar);
 
 router.post('/guardar', productosController.guardar);
 
-/* router.get('/listar/:id', (req, res)=>{
-  try {
-    const id = req.params.id
-    const pr = new Productos()
-    const producto = pr.showOne(id)
-
-    if(producto.length>0){
-      res.json(
-        producto[0]
-      )
-    }
-    else {
-      res.json(
-        { error : 'producto no encontrado' }
-      )
-    }
-  } catch (error) {
-    console.log('GetById:', error)
-  }
-})
+/*
 router.put('/actualizar/:id', (req, res)=>{
   try {
     const id = req.params.id

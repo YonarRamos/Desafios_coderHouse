@@ -5,7 +5,7 @@ productosController.listar = (req, res) => {
       try {
         const pr = new Productos()
         const productos = pr.show()
-        res.render('lista', {productos})
+        res.render('index', {productos})
 
       } catch (error) {
         console.log('Listar Error:', error)
@@ -22,10 +22,14 @@ productosController.listar = (req, res) => {
 
 productosController.guardar = (req, res) => {
   try {
-    const body =  req.body
-    const pr = new Productos()
-    pr.add(body)
-    res.redirect('/api/productos/listar');
+    const socket = io.connect();
+      console.log('LLAMANDO A ADD MESSAGE');
+      const body =  req.body;
+      socket.emit('data-productos', mensaje);
+    alert(body)
+
+/*     const pr = new Productos()
+    pr.add(body) */
   } catch (error) {
     console.log('POST Error:', error)
   }

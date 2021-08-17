@@ -1,9 +1,10 @@
 import express from 'express'
-import router from '../routes/index.routes'
+import router from '../routes/index.routes.js'
 import path from 'path';
 import handlebars from 'express-handlebars';
 import * as http from 'http';
 import io from 'socket.io';
+import Productos from "../models/Productos"
 
 const app = express()
 
@@ -23,30 +24,32 @@ app.engine(
   );
 
 const publicPath = path.resolve(__dirname, '../public');
-console.log(publicPath);
 app.use(express.static(publicPath));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const myServer = http.Server(app);
 
 myServer.listen(puerto, () => console.log('Server up en puerto', puerto));
-
-myServer.on('error', (error)=>{
-  console.log('Server error: ', error)
-})
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use('/', router);
 
 const myWSServer = io(myServer);
 
 myWSServer.on('connection', (socket) => {
-  console.log('Un cliente se ha conectado');
+  try {
+    console.log('Un cliente se ha conectado');
 
-  socket.on('data-productos', (data)=> {
-    console.log(data)
-    socket.emit('messages', data);
-  });
+    socket.on('data-productos', (data)=> {
+      console.log(data)
+      const pr = new Productos()
+      pr.add(data)
+      socket.emit('response', pr.show());
 
+    });
+  }
+    catch (error) {
+      console.log('POST Error:', error)
+    }
 });

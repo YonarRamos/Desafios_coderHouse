@@ -20,16 +20,10 @@ productosController.listar = (req, res) => {
       }
     }
 
-productosController.guardar = (req, res) => {
+productosController.guardar = (data) => {
   try {
-    const socket = io.connect();
-      console.log('LLAMANDO A ADD MESSAGE');
-      const body =  req.body;
-      socket.emit('data-productos', mensaje);
-    alert(body)
-
-/*     const pr = new Productos()
-    pr.add(body) */
+    const pr = new Productos()
+    pr.add(data)
   } catch (error) {
     console.log('POST Error:', error)
   }

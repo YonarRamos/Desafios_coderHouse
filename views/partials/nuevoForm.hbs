@@ -1,8 +1,8 @@
 <div style="display:flex;align-items:center;justify-content: center;align-self:center;width: 650px;">
-    <form>
-        <input class="form-control" type="text" placeholder="Nombre"  name="title" aria-label="name-input" style="width: 650px;margin-bottom:15px;"/>
-        <input class="form-control" type="Precio" placeholder="Precio"  name="price" aria-label="price-input" style="width: 650px;margin-bottom:15px;"/>
-        <input class="form-control" type="text" placeholder="Foto URL"  name="thumbnail" aria-label="name-input" style="width: 650px;margin-bottom:15px;"/>
-        <button id="btn" onclick="addProduct()" class="btn btn-info" style="width: 650px;">Nuevo Producto</button>
+    <form onsubmit="addProduct()">
+        <input class="form-control" type="text" placeholder="Nombre" id="title"  name="title" aria-label="name-input" style="width: 650px;margin-bottom:15px;"/>
+        <input class="form-control" type="Precio" placeholder="Precio" id="price" name="price" aria-label="price-input" style="width: 650px;margin-bottom:15px;"/>
+        <input class="form-control" type="text" placeholder="Foto URL"  id="thumbnail" name="thumbnail" aria-label="name-input" style="width: 650px;margin-bottom:15px;"/>
+        <button type="submit" id="btn" class="btn btn-info" style="width: 650px;">Nuevo Producto</button>
     </form>
 </div>

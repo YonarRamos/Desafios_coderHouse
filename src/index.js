@@ -45,7 +45,7 @@ myWSServer.on('connection', (socket) => {
       console.log(data)
       const pr = new Productos()
       pr.add(data)
-      socket.emit('response', pr.show());
+      myWSServer.sockets.emit('response', pr.show());
 
     });
   }

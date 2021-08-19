@@ -3,7 +3,7 @@ import router from '../routes/index.routes.js'
 import path from 'path';
 import handlebars from 'express-handlebars';
 import * as http from 'http';
-import io from 'socket.io';
+import io from '../node_modules_old/socket.io/dist';
 import Productos from "../models/Productos"
 
 const app = express()

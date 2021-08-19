@@ -4,7 +4,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 var _express = _interopRequireDefault(require("express"));
 
-var _index = _interopRequireDefault(require("../routes/index.routes"));
+var _indexRoutes = _interopRequireDefault(require("../routes/index.routes.js"));
 
 var _path = _interopRequireDefault(require("path"));
 
@@ -13,6 +13,8 @@ var _expressHandlebars = _interopRequireDefault(require("express-handlebars"));
 var http = _interopRequireWildcard(require("http"));
 
 var _socket = _interopRequireDefault(require("socket.io"));
+
+var _Productos = _interopRequireDefault(require("../models/Productos"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -46,12 +48,18 @@ var myServer = http.Server(app);
 myServer.listen(puerto, function () {
   return console.log('Server up en puerto', puerto);
 });
-app.use('/', _index["default"]);
+app.use('/', _indexRoutes["default"]);
 var myWSServer = (0, _socket["default"])(myServer);
 myWSServer.on('connection', function (socket) {
-  console.log('Un cliente se ha conectado');
-  socket.on('data-productos', function (data) {
-    console.log(data);
-    socket.emit('newProducto', data);
-  });
+  try {
+    console.log('Un cliente se ha conectado');
+    socket.on('data-productos', function (data) {
+      console.log(data);
+      var pr = new _Productos["default"]();
+      pr.add(data);
+      myWSServer.sockets.emit('response', pr.show());
+    });
+  } catch (error) {
+    console.log('POST Error:', error);
+  }
 });

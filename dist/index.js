@@ -4,7 +4,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 var _express = _interopRequireDefault(require("express"));
 
-var _indexRoutes = _interopRequireDefault(require("../routes/index.routes.js"));
+var _indexRoutes = _interopRequireDefault(require("./routes/index.routes.js"));
 
 var _path = _interopRequireDefault(require("path"));
 
@@ -14,7 +14,7 @@ var http = _interopRequireWildcard(require("http"));
 
 var _socket = _interopRequireDefault(require("socket.io"));
 
-var _Productos = _interopRequireDefault(require("../models/Productos"));
+var _Productos = _interopRequireDefault(require("../src/models/Productos"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 

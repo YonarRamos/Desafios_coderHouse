@@ -5,6 +5,9 @@ import handlebars from 'express-handlebars';
 import * as http from 'http';
 import io from 'socket.io';
 import Productos from "../src/models/Productos"
+import moment from 'moment'
+
+import fs from 'fs'
 
 const app = express()
 
@@ -24,6 +27,7 @@ app.engine(
   );
 
 const publicPath = path.resolve(__dirname, '../public');
+const chatPath = path.resolve(__dirname, '../public/chat_file.json');
 app.use(express.static(publicPath));
 
 app.use(express.json());
@@ -46,7 +50,20 @@ myWSServer.on('connection', (socket) => {
       const pr = new Productos()
       pr.add(data)
       myWSServer.sockets.emit('response', pr.show());
+    });
 
+    socket.on('chat', (msg)=> {
+      msg.timeStamp = moment().format('DD/MM/YYYY HH:MM:SS')
+      let chatFile = fs.readFileSync(chatPath);
+      chatFile = JSON.parse(chatFile)
+      chatFile.push(msg)
+      if(msg.user == 'Chat-Bot'){
+        socket.emit('response-msg', chatFile);
+      }else{
+        myWSServer.sockets.emit('response-msg', chatFile);
+      }
+      
+      fs.writeFileSync(chatPath, JSON.stringify(chatFile));
     });
   }
     catch (error) {

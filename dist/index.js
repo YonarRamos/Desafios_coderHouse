@@ -16,6 +16,10 @@ var _socket = _interopRequireDefault(require("socket.io"));
 
 var _Productos = _interopRequireDefault(require("../src/models/Productos"));
 
+var _moment = _interopRequireDefault(require("moment"));
+
+var _fs = _interopRequireDefault(require("fs"));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -39,6 +43,8 @@ app.engine('hbs', (0, _expressHandlebars["default"])({
 
 var publicPath = _path["default"].resolve(__dirname, '../public');
 
+var chatPath = _path["default"].resolve(__dirname, '../public/chat_file.json');
+
 app.use(_express["default"]["static"](publicPath));
 app.use(_express["default"].json());
 app.use(_express["default"].urlencoded({
@@ -58,6 +64,22 @@ myWSServer.on('connection', function (socket) {
       var pr = new _Productos["default"]();
       pr.add(data);
       myWSServer.sockets.emit('response', pr.show());
+    });
+    socket.on('chat', function (msg) {
+      msg.timeStamp = (0, _moment["default"])().format('DD/MM/YYYY HH:MM:SS');
+
+      var chatFile = _fs["default"].readFileSync(chatPath);
+
+      chatFile = JSON.parse(chatFile);
+      chatFile.push(msg);
+
+      if (msg.user == 'Chat-Bot') {
+        socket.emit('response-msg', chatFile);
+      } else {
+        myWSServer.sockets.emit('response-msg', chatFile);
+      }
+
+      _fs["default"].writeFileSync(chatPath, JSON.stringify(chatFile));
     });
   } catch (error) {
     console.log('POST Error:', error);

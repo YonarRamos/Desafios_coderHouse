@@ -6,15 +6,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var db = [{
-  title: "Lapiz",
-  price: 35,
-  thumbnail: 'https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/pencil-256.png'
-}, {
-  title: "Calculadora",
-  price: 50,
-  thumbnail: 'https://cdn3.iconfinder.com/data/icons/e-commerce-and-online-shopping/64/__Calculator-256.png'
-}];
+var fs = require('fs');
+
+var path = require('path');
+
+var moment = require('moment');
+
+var dataBasePath = path.resolve(__dirname, '../../public/productos.json');
+var db = fs.readFileSync(dataBasePath);
+db = JSON.parse(db);
 
 var Productos = /*#__PURE__*/function () {
   function Productos() {
@@ -37,16 +37,23 @@ var Productos = /*#__PURE__*/function () {
   }, {
     key: "add",
     value: function add(_ref) {
-      var title = _ref.title,
+      var name = _ref.name,
           price = _ref.price,
-          thumbnail = _ref.thumbnail;
+          thumbnail = _ref.thumbnail,
+          stock = _ref.stock,
+          description = _ref.description;
       var newProducto = {
         id: db.length + 1,
-        title: title,
+        codigo: Date.now(),
+        timestamp: moment().format(),
+        name: name,
         price: price,
+        stock: stock,
+        description: description,
         thumbnail: thumbnail
       };
       db.push(newProducto);
+      fs.writeFileSync(dataBasePath, JSON.stringify(db));
       return newProducto;
     }
   }, {
@@ -56,6 +63,7 @@ var Productos = /*#__PURE__*/function () {
       db = db.filter(function (producto) {
         return producto.id != id;
       });
+      fs.writeFileSync(dataBasePath, JSON.stringify(db));
       return pr;
     }
   }, {
@@ -63,7 +71,8 @@ var Productos = /*#__PURE__*/function () {
     value: function edit(id, body) {
       db[id - 1] = body;
       var actProd = db[id - 1];
-      actProd.id = id;
+      actProd.timestamp = moment().format(), actProd.id = id;
+      fs.writeFileSync(dataBasePath, JSON.stringify(db));
       return actProd;
     }
   }]);

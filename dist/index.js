@@ -4,7 +4,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 var _express = _interopRequireDefault(require("express"));
 
-var _indexRoutes = _interopRequireDefault(require("./routes/index.routes.js"));
+var _index = _interopRequireDefault(require("./routes/index.js"));
 
 var _path = _interopRequireDefault(require("path"));
 
@@ -54,34 +54,35 @@ var myServer = http.Server(app);
 myServer.listen(puerto, function () {
   return console.log('Server up en puerto', puerto);
 });
-app.use('/', _indexRoutes["default"]);
-var myWSServer = (0, _socket["default"])(myServer);
-myWSServer.on('connection', function (socket) {
+app.use('/', _index["default"]);
+/* const myWSServer = io(myServer);
+
+myWSServer.on('connection', (socket) => {
   try {
     console.log('Un cliente se ha conectado');
-    socket.on('data-productos', function (data) {
-      console.log(data);
-      var pr = new _Productos["default"]();
-      pr.add(data);
+
+    socket.on('data-productos', (data)=> {
+      console.log(data)
+      const pr = new Productos()
+      pr.add(data)
       myWSServer.sockets.emit('response', pr.show());
     });
-    socket.on('chat', function (msg) {
-      msg.timeStamp = (0, _moment["default"])().format('DD/MM/YYYY HH:MM:SS');
 
-      var chatFile = _fs["default"].readFileSync(chatPath);
-
-      chatFile = JSON.parse(chatFile);
-      chatFile.push(msg);
-
-      if (msg.user == 'Chat-Bot') {
+    socket.on('chat', (msg)=> {
+      msg.timeStamp = moment().format('DD/MM/YYYY HH:MM:SS')
+      let chatFile = fs.readFileSync(chatPath);
+      chatFile = JSON.parse(chatFile)
+      chatFile.push(msg)
+      if(msg.user == 'Chat-Bot'){
         socket.emit('response-msg', chatFile);
-      } else {
+      }else{
         myWSServer.sockets.emit('response-msg', chatFile);
       }
-
-      _fs["default"].writeFileSync(chatPath, JSON.stringify(chatFile));
+      
+      fs.writeFileSync(chatPath, JSON.stringify(chatFile));
     });
-  } catch (error) {
-    console.log('POST Error:', error);
   }
-});
+    catch (error) {
+      console.log('POST Error:', error)
+    }
+}); */

@@ -1,15 +1,9 @@
-let db = [
-    {
-        title:"Lapiz",
-        price: 35,
-        thumbnail:'https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/pencil-256.png'
-    },
-    {
-        title:"Calculadora",
-        price: 50,
-        thumbnail:'https://cdn3.iconfinder.com/data/icons/e-commerce-and-online-shopping/64/__Calculator-256.png'
-    },
-]
+const fs = require('fs');
+const path = require('path');
+const moment = require('moment');
+const dataBasePath = path.resolve(__dirname, '../../public/productos.json');
+let db = fs.readFileSync(dataBasePath);
+db = JSON.parse(db);
 
 class Productos {
     constructor(){
@@ -21,25 +15,33 @@ class Productos {
         let producto = db.filter((producto)=> producto.id == id)
         return  producto
     }
-    add({title, price, thumbnail}){
+    add({name, price, thumbnail, stock, description}){
         const newProducto = {
             id: db.length + 1,
-            title,
+            codigo: Date.now(),
+            timestamp: moment().format(),
+            name,
             price,
+            stock,
+            description,
             thumbnail,
         }
         db.push(newProducto)
+        fs.writeFileSync(dataBasePath, JSON.stringify(db))
         return newProducto
     }
     delete(id){
         let pr = db[id-1]
         db = db.filter((producto)=> producto.id != id)
+        fs.writeFileSync(dataBasePath, JSON.stringify(db));
         return  pr
     }
     edit(id, body){
         db[id-1] = body
         let actProd = db[id-1]
+        actProd.timestamp = moment().format(),
         actProd.id = id
+        fs.writeFileSync(dataBasePath, JSON.stringify(db));
         return  actProd
     }
 }

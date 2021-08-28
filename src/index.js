@@ -1,5 +1,5 @@
 import express from 'express'
-import router from './routes/index.routes.js'
+import router from './routes/index.js'
 import path from 'path';
 import handlebars from 'express-handlebars';
 import * as http from 'http';
@@ -39,7 +39,7 @@ myServer.listen(puerto, () => console.log('Server up en puerto', puerto));
 
 app.use('/', router);
 
-const myWSServer = io(myServer);
+/* const myWSServer = io(myServer);
 
 myWSServer.on('connection', (socket) => {
   try {
@@ -69,4 +69,4 @@ myWSServer.on('connection', (socket) => {
     catch (error) {
       console.log('POST Error:', error)
     }
-});
+}); */

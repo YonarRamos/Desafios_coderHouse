@@ -11,7 +11,7 @@ import fs from 'fs'
 
 const app = express()
 
-const puerto = 8080
+const puerto = 8080;
 
 const layoutDirPath = path.resolve(__dirname, '../views/layouts');
 const partialsDirPath = path.join(__dirname, '../views/partials');
@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const myServer = http.Server(app);
 
-myServer.listen(puerto, () => console.log('Server up en puerto', puerto));
+myServer.listen(puerto, () => console.log('Server up en puerto', process.env.PORT || puerto));
 
 app.use('/', router);
 

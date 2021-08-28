@@ -52,7 +52,7 @@ app.use(_express["default"].urlencoded({
 }));
 var myServer = http.Server(app);
 myServer.listen(puerto, function () {
-  return console.log('Server up en puerto', puerto);
+  return console.log('Server up en puerto', process.env.PORT || puerto);
 });
 app.use('/', _index["default"]);
 /* const myWSServer = io(myServer);

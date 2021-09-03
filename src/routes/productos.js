@@ -1,18 +1,19 @@
-import express from 'express';
+import { Router } from 'express';
 import { checkAdmin } from "../middleware/admin";
-import productosController from '../controllers/productosController.js';
+import { productosController } from '../controllers/productosController.js';
 
-const router = express.Router();
+const router = Router();
+
 
 //router.get('/nuevo', productosController.nuevoForm);
 
 router.get('/listar', productosController.listar);
 
-router.get('/listar/:id', productosController.listarById);
+ router.get('/listar/:id', productosController.listarById);
 
-router.post('/agregar',checkAdmin , productosController.agregar);
+router.post('/agregar', productosController.agregar);
 
-router.put('/actualizar/:id',checkAdmin , productosController.actualizar);
+router.put('/actualizar/:id', productosController.actualizar);
 
 router.delete('/borrar/:id',checkAdmin , productosController.borrar);
 

@@ -1,101 +1,118 @@
-import Productos from "../models/Productos";
-const productosController = {};
+import { DBService } from '../services/db';
+const tableName = 'productos';
 
-productosController.listar = (req, res) => {
-  try {
-    const pr = new Productos()
-    const productos = pr.show()
-    res.json(
-      productos
-    )
-    //res.render('index', {productos})
-
-  } catch (error) {
-    console.log('Listar Error:', error)
+class Products {
+  async listar(req, res) {
+    try {
+      const items = await DBService.get(tableName);
+      if(items.length == 0){
+        return res.status(404).json({
+          msg: 'No hay productos cargados.'
+        })
+      }else{
+        res.json({
+          data: items,
+        });      
+      }
+    } catch (error) {
+      console.error('Listar Error:', error)
+    }
   }
-}
 
-productosController.listarById = (req, res) => {
-  try {
-    const id = req.params.id
-    const pr = new Productos()
-    const producto = pr.showOne(id)
-    res.json(
-      producto
-    )
-    // res.render('index', {productos})
+  async listarById(req, res) {
+    const { id } = req.params;
+    const item = await DBService.getById(tableName, id);
 
-  } catch (error) {
-    console.log('Listar Error:', error);
-
-    return res.status(404).json({
-      msg:`Producto no encontrado`
-    })
+    if (item.length == 0) {
+      return res.status(404).json({
+        msg: 'Producto no encontrado',
+      });      
+    }else{
+      res.json({
+        data: item,
+      });
+    }
   }
-}
 
-productosController.agregar = (req, res) => {
-  try {
-    const body = req.body
-    const pr = new Productos()
-    pr.add(body)
+  async agregar(req, res) {
+    const { codigo, name, description, stock, price, thumbnail } = req.body;
+
+    if ( !codigo ||  !name ||  !description || !stock || !price || !thumbnail )
+      return res.status(400).json({
+        msg: 'missing Body fields',
+      });
+
+    const data = {
+      codigo,
+      name,
+      description,
+      stock,
+      price,
+      thumbnail,
+    };
+
+    const newId = await DBService.create(tableName, data);
+
+    const newProduct = await DBService.getById(tableName, newId);
+
     res.json({
-      msg:"Producto agregado correctamente."
-    })
-  } catch (error) {
-    console.log('POST Error:', error);
-
-    return res.json({
-      msg:`Error al agregar producto:${error}`
-    })
+      msg:"Producto agregado",
+      data: newProduct,
+    });
   }
-}
 
+  async actualizar(req, res) {
+    const { id } = req.params;
+    const { codigo, name, description, stock, price, thumbnail } = req.body;
 
-productosController.actualizar = (req, res)=>{
-  try {
-    const id = req.params.id
-    const body = req.body
-    const pr = new Productos()
-    const producto = pr.edit(id, body)
+    if ( !codigo ||  !name ||  !description || !stock || !price || !thumbnail )
+      return res.status(400).json({
+        msg: 'missing Body fields',
+      });
+
+    let item = await DBService.getById(tableName, id);
+
+    if (!item.length)
+      return res.status(404).json({
+        msgs: 'Product not found!',
+      });
+
+      const data = {
+        codigo,
+        name,
+        description,
+        stock,
+        price,
+        thumbnail,
+      };
+
+    await DBService.update(tableName, id, data);
+
+    item = await DBService.getById(tableName, id);
+
     res.json({
-      msg:`Producto ${producto.id} actualizado correctamente.`
-    }) 
-
-  } catch (error) {
-    console.log('Update:', error);
-
-    return res.json({
-      msg:`Error al actualizar producto:${error}`
-    })
+      msg: 'Producto Actualizado',
+      item,
+    });
   }
-}
 
-productosController.borrar = (req, res)=>{
-  try {
-    const id = req.params.id
-    const pr = new Productos()
-    const producto = pr.delete(id)
-    res.json({
-      msg:`Producto ${producto.id} eliminado correctamente.`
-    }) 
+  async borrar(req, res) {
+    try {
+      const { id } = req.params;   
+      await DBService.delete(tableName, id);
+      res.json({ 
+      msg: 'Producto eliminado',
+    });
+    } catch (error) {
+      res.json({
+        msg: 'Error al eliminar producto',
+      });      
+    }
+    
 
-  } catch (error) {
-    console.log('Delete:', error);
 
-    return res.json({
-      msg:`Error al borrar producto:${error}`
-    })
+
   }
-}
 
-/*productosController.nuevoForm = (req, res) => {
-  try {
-    res.render('nuevoForm')
-  } catch (error) {
-    console.log('POST Error:', error)
-  }
 }
-
-*/
-module.exports = productosController;
+export const productosController = new Products();

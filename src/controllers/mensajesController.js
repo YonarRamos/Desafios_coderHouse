@@ -1,15 +1,15 @@
 import { DBService } from '../services/db';
-import productos from '../models/productos.js';
+import mensajes from '../models/mensajes';
 const tableName = 'productos';
 
-class Products {
+class Mensajes {
   async listar(req, res) {
     try {
-      const items = await productos.find();
+      const items = await mensajes.find();
       console.log(items);
       if(items.length == 0){
         return res.status(404).json({
-          msg: 'No hay productos cargados.'
+          msg: 'No hay mensajes.'
         })
       }else{
         res.json({
@@ -21,7 +21,7 @@ class Products {
     }
   }
 
-  async listarById(req, res) {
+/*   async listarById(req, res) {
     const { id } = req.params;
     const item = await productos.find({_id : id});
 
@@ -34,34 +34,30 @@ class Products {
         data: item,
       });
     }
-  }
+  } */
 
   async agregar(req, res) {
-    const { name, description, stock, price, thumbnail } = req.body;
+    const { user, msg } = req.body;
 
-    if ( !name ||  !description || !stock || !price || !thumbnail )
+    if ( !user ||  !msg )
       return res.status(400).json({
         msg: 'missing Body fields',
       });
 
     const data = {
-      name,
-      description,
-      stock,
-      price,
-      thumbnail,
+      user,
+      msg,
     };
 
-    await productos.insertMany([data]).then((producto)=>{
+    await mensajes.insertMany([data]).then((mensaje)=>{
       res.json({
-        msg:"Producto agregado",
-        data: producto,
+        data: mensaje,
       });      
     })
 
   }
 
-  async actualizar(req, res) {
+/*   async actualizar(req, res) {
     const { id } = req.params;
     const { name, description, stock, price, thumbnail } = req.body;
     
@@ -101,12 +97,12 @@ class Products {
       res.json({
         msg: 'Error al eliminar producto',
       });      
-    }
+    } 
     
 
 
 
-  }
+  }*/
 
 }
-export const productosController = new Products();
+export const mensajesController = new Mensajes();

@@ -1,49 +1,18 @@
-const fs = require('fs');
-const path = require('path');
+const Mongoose = require('mongoose');
 const moment = require('moment');
-const dataBasePath = path.resolve(__dirname, '../../public/productos.json');
-let db = fs.readFileSync(dataBasePath);
-db = JSON.parse(db);
 
-class Productos {
-    constructor(){
-    }
-    show(){
-        return db
-    }
-    showOne(id){
-        let producto = db.filter((producto)=> producto.id == id)
-        return  producto
-    }
-    add({name, price, thumbnail, stock, description}){
-        const newProducto = {
-            id: db.length + 1,
-            codigo: Date.now(),
-            timestamp: moment().format(),
-            name,
-            price,
-            stock,
-            description,
-            thumbnail,
-        }
-        db.push(newProducto)
-        fs.writeFileSync(dataBasePath, JSON.stringify(db))
-        return newProducto
-    }
-    delete(id){
-        let pr = db[id-1]
-        db = db.filter((producto)=> producto.id != id)
-        fs.writeFileSync(dataBasePath, JSON.stringify(db));
-        return  pr
-    }
-    edit(id, body){
-        db[id-1] = body
-        let actProd = db[id-1]
-        actProd.timestamp = moment().format(),
-        actProd.id = id
-        fs.writeFileSync(dataBasePath, JSON.stringify(db));
-        return  actProd
-    }
-}
+const productosCollection = 'productos';
 
-module.exports = Productos;
+const productosSchema = new Mongoose.Schema({
+    timestamp:{type:Date, default: moment().format() , required:true},
+    codigo: {type: String, default: Date.now() ,required: true},
+    name: {type: String, required: true},
+    price: {type: Number, required: true},
+    stock: {type: Number, required: true},
+    description: {type: String, required: true },
+    thumbnail: {type: String, required: true}
+});
+
+const productos = new Mongoose.model(productosCollection, productosSchema);
+
+module.exports = productos;

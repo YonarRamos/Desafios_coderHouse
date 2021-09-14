@@ -6,8 +6,8 @@ import { DBService } from './services/db';
 import { SqliteDB } from './services/db_sqlite';
 import * as http from 'http';
 import io from 'socket.io';
-import Productos from "../src/models/Productos"
 import moment from 'moment'
+import mongoConecction from "./services/db";
 
 import fs from 'fs'
 

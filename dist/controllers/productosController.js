@@ -17,6 +17,8 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _db = require("../services/db");
 
+var _productos = _interopRequireDefault(require("../models/productos.js"));
+
 var tableName = 'productos';
 
 var Products = /*#__PURE__*/function () {
@@ -35,13 +37,14 @@ var Products = /*#__PURE__*/function () {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return _db.DBService.get(tableName);
+                return _productos["default"].find();
 
               case 3:
                 items = _context.sent;
+                console.log(items);
 
                 if (!(items.length == 0)) {
-                  _context.next = 8;
+                  _context.next = 9;
                   break;
                 }
 
@@ -49,26 +52,26 @@ var Products = /*#__PURE__*/function () {
                   msg: 'No hay productos cargados.'
                 }));
 
-              case 8:
+              case 9:
                 res.json({
                   data: items
                 });
 
-              case 9:
-                _context.next = 14;
+              case 10:
+                _context.next = 15;
                 break;
 
-              case 11:
-                _context.prev = 11;
+              case 12:
+                _context.prev = 12;
                 _context.t0 = _context["catch"](0);
                 console.error('Listar Error:', _context.t0);
 
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 11]]);
+        }, _callee, null, [[0, 12]]);
       }));
 
       function listar(_x, _x2) {
@@ -88,7 +91,9 @@ var Products = /*#__PURE__*/function () {
               case 0:
                 id = req.params.id;
                 _context2.next = 3;
-                return _db.DBService.getById(tableName, id);
+                return _productos["default"].find({
+                  _id: id
+                });
 
               case 3:
                 item = _context2.sent;
@@ -125,15 +130,15 @@ var Products = /*#__PURE__*/function () {
     key: "agregar",
     value: function () {
       var _agregar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-        var _req$body, codigo, name, description, stock, price, thumbnail, data, newId, newProduct;
+        var _req$body, name, description, stock, price, thumbnail, data;
 
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _req$body = req.body, codigo = _req$body.codigo, name = _req$body.name, description = _req$body.description, stock = _req$body.stock, price = _req$body.price, thumbnail = _req$body.thumbnail;
+                _req$body = req.body, name = _req$body.name, description = _req$body.description, stock = _req$body.stock, price = _req$body.price, thumbnail = _req$body.thumbnail;
 
-                if (!(!codigo || !name || !description || !stock || !price || !thumbnail)) {
+                if (!(!name || !description || !stock || !price || !thumbnail)) {
                   _context3.next = 3;
                   break;
                 }
@@ -144,7 +149,6 @@ var Products = /*#__PURE__*/function () {
 
               case 3:
                 data = {
-                  codigo: codigo,
                   name: name,
                   description: description,
                   stock: stock,
@@ -152,21 +156,14 @@ var Products = /*#__PURE__*/function () {
                   thumbnail: thumbnail
                 };
                 _context3.next = 6;
-                return _db.DBService.create(tableName, data);
-
-              case 6:
-                newId = _context3.sent;
-                _context3.next = 9;
-                return _db.DBService.getById(tableName, newId);
-
-              case 9:
-                newProduct = _context3.sent;
-                res.json({
-                  msg: "Producto agregado",
-                  data: newProduct
+                return _productos["default"].insertMany([data]).then(function (producto) {
+                  res.json({
+                    msg: "Producto agregado",
+                    data: producto
+                  });
                 });
 
-              case 11:
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -184,16 +181,16 @@ var Products = /*#__PURE__*/function () {
     key: "actualizar",
     value: function () {
       var _actualizar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-        var id, _req$body2, codigo, name, description, stock, price, thumbnail, item, data;
+        var id, _req$body2, name, description, stock, price, thumbnail, data;
 
         return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 id = req.params.id;
-                _req$body2 = req.body, codigo = _req$body2.codigo, name = _req$body2.name, description = _req$body2.description, stock = _req$body2.stock, price = _req$body2.price, thumbnail = _req$body2.thumbnail;
+                _req$body2 = req.body, name = _req$body2.name, description = _req$body2.description, stock = _req$body2.stock, price = _req$body2.price, thumbnail = _req$body2.thumbnail;
 
-                if (!(!codigo || !name || !description || !stock || !price || !thumbnail)) {
+                if (!(!name || !description || !stock || !price || !thumbnail)) {
                   _context4.next = 4;
                   break;
                 }
@@ -203,45 +200,27 @@ var Products = /*#__PURE__*/function () {
                 }));
 
               case 4:
-                _context4.next = 6;
-                return _db.DBService.getById(tableName, id);
-
-              case 6:
-                item = _context4.sent;
-
-                if (item.length) {
-                  _context4.next = 9;
-                  break;
-                }
-
-                return _context4.abrupt("return", res.status(404).json({
-                  msgs: 'Product not found!'
-                }));
-
-              case 9:
                 data = {
-                  codigo: codigo,
                   name: name,
                   description: description,
                   stock: stock,
                   price: price,
                   thumbnail: thumbnail
                 };
-                _context4.next = 12;
-                return _db.DBService.update(tableName, id, data);
-
-              case 12:
-                _context4.next = 14;
-                return _db.DBService.getById(tableName, id);
-
-              case 14:
-                item = _context4.sent;
-                res.json({
-                  msg: 'Producto Actualizado',
-                  item: item
+                console.log('update', data);
+                _context4.next = 8;
+                return _productos["default"].findOneAndUpdate({
+                  _id: id
+                }, data, {
+                  "new": true
+                }).then(function (producto) {
+                  res.json({
+                    msg: 'Producto Actualizado',
+                    producto: producto
+                  });
                 });
 
-              case 16:
+              case 8:
               case "end":
                 return _context4.stop();
             }
@@ -267,28 +246,32 @@ var Products = /*#__PURE__*/function () {
                 _context5.prev = 0;
                 id = req.params.id;
                 _context5.next = 4;
-                return _db.DBService["delete"](tableName, id);
+                return _productos["default"].remove({
+                  _id: id
+                }).then(function (producto) {
+                  res.json({
+                    msg: 'Producto eliminado',
+                    data: producto
+                  });
+                });
 
               case 4:
-                res.json({
-                  msg: 'Producto eliminado'
-                });
-                _context5.next = 10;
+                _context5.next = 9;
                 break;
 
-              case 7:
-                _context5.prev = 7;
+              case 6:
+                _context5.prev = 6;
                 _context5.t0 = _context5["catch"](0);
                 res.json({
                   msg: 'Error al eliminar producto'
                 });
 
-              case 10:
+              case 9:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, null, [[0, 7]]);
+        }, _callee5, null, [[0, 6]]);
       }));
 
       function borrar(_x9, _x10) {

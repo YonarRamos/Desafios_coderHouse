@@ -12,15 +12,13 @@ var _path = _interopRequireDefault(require("path"));
 
 var _expressHandlebars = _interopRequireDefault(require("express-handlebars"));
 
-var _db = require("./services/db");
+var _db = _interopRequireWildcard(require("./services/db"));
 
 var _db_sqlite = require("./services/db_sqlite");
 
 var http = _interopRequireWildcard(require("http"));
 
 var _socket = _interopRequireDefault(require("socket.io"));
-
-var _Productos = _interopRequireDefault(require("../src/models/Productos"));
 
 var _moment = _interopRequireDefault(require("moment"));
 

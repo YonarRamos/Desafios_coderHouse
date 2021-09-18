@@ -1,8 +1,28 @@
-import { DBService } from '../services/db';
+import { fakeProducts } from '../services/dbServices';
+
 import productos from '../models/productos.js';
 const tableName = 'productos';
 
 class Products {
+  async fakerProducts(req, res) {
+    console.log(req.query)
+    const cant = Object.keys(req.query).length == 0 ? 10 : Number(req.query.cant) ;
+    try {
+      const items = fakeProducts.get(cant);
+      if(items.length == 0){
+        return res.status(404).json({
+          msg: 'No hay productos cargados.'
+        })
+      }else{
+        res.json({
+          data: items,
+        });      
+      }
+    } catch (error) {
+      console.error('Listar Error:', error)
+    }
+  }
+
   async listar(req, res) {
     try {
       const items = await productos.find();

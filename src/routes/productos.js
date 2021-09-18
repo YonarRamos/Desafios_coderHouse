@@ -9,7 +9,9 @@ const router = Router();
 
 router.get('/listar', productosController.listar);
 
- router.get('/listar/:id', productosController.listarById);
+router.get('/listar/:id', productosController.listarById);
+
+router.get('/vista-test/:cant?', productosController.fakerProducts);
 
 router.post('/agregar', productosController.agregar);
 

@@ -15,6 +15,7 @@ var router = (0, _express.Router)(); //router.get('/nuevo', productosController.
 
 router.get('/listar', _productosController.productosController.listar);
 router.get('/listar/:id', _productosController.productosController.listarById);
+router.get('/vista-test/:cant?', _productosController.productosController.fakerProducts);
 router.post('/agregar', _productosController.productosController.agregar);
 router.put('/actualizar/:id', _productosController.productosController.actualizar);
 router["delete"]('/borrar/:id', _admin.checkAdmin, _productosController.productosController.borrar);

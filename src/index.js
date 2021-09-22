@@ -13,7 +13,7 @@ import fs from 'fs'
 
 const app = express()
 
-const puerto = 8080;
+const puerto = process.env.PORT || 8080;
 //DBService.init();
 SqliteDB.init();
 const layoutDirPath = path.resolve(__dirname, '../views/layouts');
@@ -36,12 +36,21 @@ app.use(express.static(publicPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const myServer = http.Server(app);
-
-myServer.listen(puerto, () => console.log('Server up en puerto', process.env.PORT || puerto));
 
 app.use('/', router);
 
+const errorHandler = (err, req, res, next) => {
+  console.log(`HA OCURRIDO UN ERROR ${err}`);
+  res.status(500).json({
+    err : err.message,
+  });
+};
+
+app.use(errorHandler);
+
+const myServer = http.Server(app);
+
+myServer.listen(puerto, () => console.log('Server up en puerto', process.env.PORT || puerto));
 /* const myWSServer = io(myServer);
 
 myWSServer.on('connection', (socket) => {

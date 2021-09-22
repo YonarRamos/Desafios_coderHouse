@@ -1,9 +1,90 @@
 import { DBService } from '../services/db';
 import productos from '../models/productos.js';
+import { productsAPI } from '../../apis/productos';
+import { ProductQuery } from '../models/products/products.interface';
 const tableName = 'productos';
 
 class Products {
-  async listar(req, res) {
+
+  checkAddProducts(req, res, next) {
+    const { nombre, precio, stock, description, thumbnail } = req.body;
+
+    if (!nombre || !precio || typeof nombre !== 'string' || isNaN(precio) || !stock || isNaN(stock) || !description || typeof description !== 'string' || !thumbnail || typeof thumbnail !== 'string') {
+      return res.status(400).json({
+        msg: 'Campos del body invalidos',
+      });
+    }
+
+    next();
+  }
+
+  async checkProductExists(req, res, next) {
+    const id = req.params.id;
+    const producto = await productsAPI.getProducts(id);
+
+    if (!producto) {
+      return res.status(404).json({
+        msg: 'producto not found',
+      });
+    }
+    next();
+  }
+
+  async getProducts(req, res) {
+    const { id } = req.params;
+    const { nombre, precio } = req.query;
+    if (id) {
+      const result = await productsAPI.getProducts(id);
+      if (!result.length)
+        return res.status(404).json({
+          data: 'objeto no encontrado',
+        });
+
+      return res.json({
+        data: result,
+      });
+    }
+
+    const query = {};
+
+    if (nombre) query.nombre = nombre.toString();
+
+    if (precio) query.precio = Number(precio);
+
+    if (Object.keys(query).length) {
+      return res.json({
+        data: await productsAPI.query(query),
+      });
+    }
+
+    res.json({
+      data: await productsAPI.getProducts(),
+    });
+  }
+
+  async addProducts(req , res ) {
+    const newItem = await productsAPI.addProduct(req.body);
+
+    res.json({
+      msg: 'producto agregado con exito',
+      data: newItem,
+    });
+  }
+
+  async updateProduct(id, productData) {
+    const updatedProduct = await this.productos.update(id, productData);
+    return updatedProduct;
+  }
+
+  async deleteProduct(id) {
+    await this.productos.delete(id);
+  }
+
+  async query(options) {
+    return await this.productos.query(options);
+  }
+
+ /*  async listar(req, res) {
     try {
       const items = await productos.find();
       console.log(items);
@@ -106,7 +187,7 @@ class Products {
 
 
 
-  }
+  } */
 
 }
 export const productosController = new Products();

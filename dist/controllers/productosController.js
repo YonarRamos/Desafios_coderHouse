@@ -19,6 +19,10 @@ var _db = require("../services/db");
 
 var _productos = _interopRequireDefault(require("../models/productos.js"));
 
+var _productos2 = require("../../apis/productos");
+
+var _products = require("../models/products/products.interface");
+
 var tableName = 'productos';
 
 var Products = /*#__PURE__*/function () {
@@ -27,92 +31,138 @@ var Products = /*#__PURE__*/function () {
   }
 
   (0, _createClass2["default"])(Products, [{
-    key: "listar",
+    key: "checkAddProducts",
+    value: function checkAddProducts(req, res, next) {
+      var _req$body = req.body,
+          nombre = _req$body.nombre,
+          precio = _req$body.precio,
+          stock = _req$body.stock,
+          description = _req$body.description,
+          thumbnail = _req$body.thumbnail;
+
+      if (!nombre || !precio || typeof nombre !== 'string' || isNaN(precio) || !stock || isNaN(stock) || !description || typeof description !== 'string' || !thumbnail || typeof thumbnail !== 'string') {
+        return res.status(400).json({
+          msg: 'Campos del body invalidos'
+        });
+      }
+
+      next();
+    }
+  }, {
+    key: "checkProductExists",
     value: function () {
-      var _listar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-        var items;
+      var _checkProductExists = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
+        var id, producto;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
+                id = req.params.id;
                 _context.next = 3;
-                return _productos["default"].find();
+                return _productos2.productsAPI.getProducts(id);
 
               case 3:
-                items = _context.sent;
-                console.log(items);
+                producto = _context.sent;
 
-                if (!(items.length == 0)) {
-                  _context.next = 9;
+                if (producto) {
+                  _context.next = 6;
                   break;
                 }
 
                 return _context.abrupt("return", res.status(404).json({
-                  msg: 'No hay productos cargados.'
+                  msg: 'producto not found'
                 }));
 
-              case 9:
-                res.json({
-                  data: items
-                });
+              case 6:
+                next();
 
-              case 10:
-                _context.next = 15;
-                break;
-
-              case 12:
-                _context.prev = 12;
-                _context.t0 = _context["catch"](0);
-                console.error('Listar Error:', _context.t0);
-
-              case 15:
+              case 7:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 12]]);
+        }, _callee);
       }));
 
-      function listar(_x, _x2) {
-        return _listar.apply(this, arguments);
+      function checkProductExists(_x, _x2, _x3) {
+        return _checkProductExists.apply(this, arguments);
       }
 
-      return listar;
+      return checkProductExists;
     }()
   }, {
-    key: "listarById",
+    key: "getProducts",
     value: function () {
-      var _listarById = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-        var id, item;
+      var _getProducts = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
+        var id, _req$query, nombre, precio, result, query;
+
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 id = req.params.id;
-                _context2.next = 3;
-                return _productos["default"].find({
-                  _id: id
-                });
+                _req$query = req.query, nombre = _req$query.nombre, precio = _req$query.precio;
 
-              case 3:
-                item = _context2.sent;
+                if (!id) {
+                  _context2.next = 9;
+                  break;
+                }
 
-                if (!(item.length == 0)) {
+                _context2.next = 5;
+                return _productos2.productsAPI.getProducts(id);
+
+              case 5:
+                result = _context2.sent;
+
+                if (result.length) {
                   _context2.next = 8;
                   break;
                 }
 
                 return _context2.abrupt("return", res.status(404).json({
-                  msg: 'Producto no encontrado'
+                  data: 'objeto no encontrado'
                 }));
 
               case 8:
-                res.json({
-                  data: item
-                });
+                return _context2.abrupt("return", res.json({
+                  data: result
+                }));
 
               case 9:
+                query = {};
+                if (nombre) query.nombre = nombre.toString();
+                if (precio) query.precio = Number(precio);
+
+                if (!Object.keys(query).length) {
+                  _context2.next = 19;
+                  break;
+                }
+
+                _context2.t0 = res;
+                _context2.next = 16;
+                return _productos2.productsAPI.query(query);
+
+              case 16:
+                _context2.t1 = _context2.sent;
+                _context2.t2 = {
+                  data: _context2.t1
+                };
+                return _context2.abrupt("return", _context2.t0.json.call(_context2.t0, _context2.t2));
+
+              case 19:
+                _context2.t3 = res;
+                _context2.next = 22;
+                return _productos2.productsAPI.getProducts();
+
+              case 22:
+                _context2.t4 = _context2.sent;
+                _context2.t5 = {
+                  data: _context2.t4
+                };
+
+                _context2.t3.json.call(_context2.t3, _context2.t5);
+
+              case 25:
               case "end":
                 return _context2.stop();
             }
@@ -120,50 +170,32 @@ var Products = /*#__PURE__*/function () {
         }, _callee2);
       }));
 
-      function listarById(_x3, _x4) {
-        return _listarById.apply(this, arguments);
+      function getProducts(_x4, _x5) {
+        return _getProducts.apply(this, arguments);
       }
 
-      return listarById;
+      return getProducts;
     }()
   }, {
-    key: "agregar",
+    key: "addProducts",
     value: function () {
-      var _agregar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-        var _req$body, name, description, stock, price, thumbnail, data;
-
+      var _addProducts = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
+        var newItem;
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _req$body = req.body, name = _req$body.name, description = _req$body.description, stock = _req$body.stock, price = _req$body.price, thumbnail = _req$body.thumbnail;
+                _context3.next = 2;
+                return _productos2.productsAPI.addProduct(req.body);
 
-                if (!(!name || !description || !stock || !price || !thumbnail)) {
-                  _context3.next = 3;
-                  break;
-                }
-
-                return _context3.abrupt("return", res.status(400).json({
-                  msg: 'missing Body fields'
-                }));
-
-              case 3:
-                data = {
-                  name: name,
-                  description: description,
-                  stock: stock,
-                  price: price,
-                  thumbnail: thumbnail
-                };
-                _context3.next = 6;
-                return _productos["default"].insertMany([data]).then(function (producto) {
-                  res.json({
-                    msg: "Producto agregado",
-                    data: producto
-                  });
+              case 2:
+                newItem = _context3.sent;
+                res.json({
+                  msg: 'producto agregado con exito',
+                  data: newItem
                 });
 
-              case 6:
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -171,115 +203,200 @@ var Products = /*#__PURE__*/function () {
         }, _callee3);
       }));
 
-      function agregar(_x5, _x6) {
-        return _agregar.apply(this, arguments);
+      function addProducts(_x6, _x7) {
+        return _addProducts.apply(this, arguments);
       }
 
-      return agregar;
+      return addProducts;
     }()
   }, {
-    key: "actualizar",
+    key: "updateProduct",
     value: function () {
-      var _actualizar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-        var id, _req$body2, name, description, stock, price, thumbnail, data;
-
+      var _updateProduct = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(id, productData) {
+        var updatedProduct;
         return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                id = req.params.id;
-                _req$body2 = req.body, name = _req$body2.name, description = _req$body2.description, stock = _req$body2.stock, price = _req$body2.price, thumbnail = _req$body2.thumbnail;
+                _context4.next = 2;
+                return this.productos.update(id, productData);
 
-                if (!(!name || !description || !stock || !price || !thumbnail)) {
-                  _context4.next = 4;
-                  break;
-                }
-
-                return _context4.abrupt("return", res.status(400).json({
-                  msg: 'missing Body fields'
-                }));
+              case 2:
+                updatedProduct = _context4.sent;
+                return _context4.abrupt("return", updatedProduct);
 
               case 4:
-                data = {
-                  name: name,
-                  description: description,
-                  stock: stock,
-                  price: price,
-                  thumbnail: thumbnail
-                };
-                console.log('update', data);
-                _context4.next = 8;
-                return _productos["default"].findOneAndUpdate({
-                  _id: id
-                }, data, {
-                  "new": true
-                }).then(function (producto) {
-                  res.json({
-                    msg: 'Producto Actualizado',
-                    producto: producto
-                  });
-                });
-
-              case 8:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4);
+        }, _callee4, this);
       }));
 
-      function actualizar(_x7, _x8) {
-        return _actualizar.apply(this, arguments);
+      function updateProduct(_x8, _x9) {
+        return _updateProduct.apply(this, arguments);
       }
 
-      return actualizar;
+      return updateProduct;
     }()
   }, {
-    key: "borrar",
+    key: "deleteProduct",
     value: function () {
-      var _borrar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-        var id;
+      var _deleteProduct = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(id) {
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _context5.prev = 0;
-                id = req.params.id;
-                _context5.next = 4;
-                return _productos["default"].remove({
-                  _id: id
-                }).then(function (producto) {
-                  res.json({
-                    msg: 'Producto eliminado',
-                    data: producto
-                  });
-                });
+                _context5.next = 2;
+                return this.productos["delete"](id);
 
-              case 4:
-                _context5.next = 9;
-                break;
-
-              case 6:
-                _context5.prev = 6;
-                _context5.t0 = _context5["catch"](0);
-                res.json({
-                  msg: 'Error al eliminar producto'
-                });
-
-              case 9:
+              case 2:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, null, [[0, 6]]);
+        }, _callee5, this);
       }));
 
-      function borrar(_x9, _x10) {
-        return _borrar.apply(this, arguments);
+      function deleteProduct(_x10) {
+        return _deleteProduct.apply(this, arguments);
       }
 
-      return borrar;
+      return deleteProduct;
     }()
+  }, {
+    key: "query",
+    value: function () {
+      var _query = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(options) {
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return this.productos.query(options);
+
+              case 2:
+                return _context6.abrupt("return", _context6.sent);
+
+              case 3:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function query(_x11) {
+        return _query.apply(this, arguments);
+      }
+
+      return query;
+    }()
+    /*  async listar(req, res) {
+       try {
+         const items = await productos.find();
+         console.log(items);
+         if(items.length == 0){
+           return res.status(404).json({
+             msg: 'No hay productos cargados.'
+           })
+         }else{
+           res.json({
+             data: items,
+           });      
+         }
+       } catch (error) {
+         console.error('Listar Error:', error)
+       }
+     }
+    
+     async listarById(req, res) {
+       const { id } = req.params;
+       const item = await productos.find({_id : id});
+    
+       if (item.length == 0) {
+         return res.status(404).json({
+           msg: 'Producto no encontrado',
+         });      
+       }else{
+         res.json({
+           data: item,
+         });
+       }
+     }
+    
+     async agregar(req, res) {
+       const { name, description, stock, price, thumbnail } = req.body;
+    
+       if ( !name ||  !description || !stock || !price || !thumbnail )
+         return res.status(400).json({
+           msg: 'missing Body fields',
+         });
+    
+       const data = {
+         name,
+         description,
+         stock,
+         price,
+         thumbnail,
+       };
+    
+       await productos.insertMany([data]).then((producto)=>{
+         res.json({
+           msg:"Producto agregado",
+           data: producto,
+         });      
+       })
+    
+     }
+    
+     async actualizar(req, res) {
+       const { id } = req.params;
+       const { name, description, stock, price, thumbnail } = req.body;
+       
+       if ( !name ||  !description || !stock || !price || !thumbnail ){
+         return res.status(400).json({
+           msg: 'missing Body fields',
+         });     
+       }
+         const data = {
+           name,
+           description,
+           stock,
+           price,
+           thumbnail,
+         };
+         console.log('update', data)
+       await productos.findOneAndUpdate({_id : id}, data, { new: true }).then((producto) => {
+         res.json({
+           msg: 'Producto Actualizado',
+           producto,
+         });      
+       })
+     }
+    
+     async borrar(req, res) {
+       try {
+         const { id } = req.params;   
+         await productos.remove({_id : id}).then((producto)=>{
+             res.json({ 
+             msg: 'Producto eliminado',
+             data: producto
+           });
+         });
+    
+    
+       } catch (error) {
+         res.json({
+           msg: 'Error al eliminar producto',
+         });      
+       }
+       
+    
+    
+    
+     } */
+
   }]);
   return Products;
 }();

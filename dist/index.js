@@ -29,7 +29,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var app = (0, _express["default"])();
-var puerto = 8080; //DBService.init();
+var puerto = process.env.PORT || 8080; //DBService.init();
 
 _db_sqlite.SqliteDB.init();
 
@@ -54,11 +54,20 @@ app.use(_express["default"].json());
 app.use(_express["default"].urlencoded({
   extended: true
 }));
+app.use('/', _index["default"]);
+
+var errorHandler = function errorHandler(err, req, res, next) {
+  console.log("HA OCURRIDO UN ERROR ".concat(err));
+  res.status(500).json({
+    err: err.message
+  });
+};
+
+app.use(errorHandler);
 var myServer = http.Server(app);
 myServer.listen(puerto, function () {
   return console.log('Server up en puerto', process.env.PORT || puerto);
 });
-app.use('/', _index["default"]);
 /* const myWSServer = io(myServer);
 
 myWSServer.on('connection', (socket) => {

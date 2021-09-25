@@ -1,6 +1,6 @@
 const admin = true;
 
-export const checkAdmin = (req, res, next)=>{
+const checkAdmin = (req, res, next)=>{
     if(admin)
         next();
     else
@@ -8,3 +8,5 @@ export const checkAdmin = (req, res, next)=>{
             msg: 'No estas autorizado'
         })
 }
+
+module.exports = { checkAdmin }

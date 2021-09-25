@@ -2,38 +2,71 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var mongoose = require('mongoose');
+var knex = require('knex');
 
-(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-  var URL, rta;
-  return _regenerator["default"].wrap(function _callee$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.prev = 0;
-          URL = 'mongodb://localhost:27017/ecommerce';
-          _context.next = 4;
-          return mongoose.connect(URL);
+var dbConfig = require('../../knexfile');
 
-        case 4:
-          rta = _context.sent;
-          console.log("DB CONNECTED!!!");
-          _context.next = 11;
-          break;
+var DB = /*#__PURE__*/function () {
+  function DB() {
+    (0, _classCallCheck2["default"])(this, DB);
+    var environment = process.env.NODE_ENV || 'production';
+    var options = dbConfig[environment];
+    this.connection = knex(options);
+  }
 
-        case 8:
-          _context.prev = 8;
-          _context.t0 = _context["catch"](0);
-          console.log("Error", _context.t0);
+  (0, _createClass2["default"])(DB, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
 
-        case 11:
-        case "end":
-          return _context.stop();
-      }
+      this.connection.schema.hasTable('productos').then(function (exists) {
+        if (exists) return;
+        console.log('Creamos la tabla productos!');
+        return _this.connection.schema.createTable("productos", function (productosTable) {
+          productosTable.increments("id");
+          productosTable.string("codigo").notNullable();
+          productosTable.string("name").notNullable();
+          productosTable.string("description").notNullable();
+          productosTable.string("thumbnail").notNullable();
+          productosTable.decimal("price", 4, 2).notNullable();
+          productosTable.integer("stock");
+          productosTable.timestamp("timestamp").defaultTo(knex.fn.now());
+        });
+      });
     }
-  }, _callee, null, [[0, 8]]);
-}))();
+  }, {
+    key: "get",
+    value: function get(tableName) {
+      return this.connection(tableName);
+    }
+  }, {
+    key: "getById",
+    value: function getById(tableName, id) {
+      if (id) return this.connection(tableName).where('id', id);
+      return this.connection(tableName);
+    }
+  }, {
+    key: "create",
+    value: function create(tableName, data) {
+      return this.connection(tableName).insert(data);
+    }
+  }, {
+    key: "update",
+    value: function update(tableName, id, data) {
+      return this.connection(tableName).where('id', id).update(data);
+    }
+  }, {
+    key: "delete",
+    value: function _delete(tableName, id) {
+      return this.connection(tableName).where('id', id).del();
+    }
+  }]);
+  return DB;
+}();
+
+var DBService = new DB();
+module.exports = DBService;

@@ -2,12 +2,12 @@ import express from 'express'
 import router from './routes/index.js'
 import path from 'path';
 import handlebars from 'express-handlebars';
-import { DBService } from './services/db';
+//import { DBService } from './services/db';
 import { SqliteDB } from './services/db_sqlite';
 import * as http from 'http';
 import io from 'socket.io';
 import moment from 'moment'
-import mongoConecction from "./services/db";
+//import mongoConecction from "./services/db";
 
 import fs from 'fs'
 
@@ -15,7 +15,7 @@ const app = express()
 
 const puerto = process.env.PORT || 8080;
 //DBService.init();
-SqliteDB.init();
+//SqliteDB.init();
 const layoutDirPath = path.resolve(__dirname, '../views/layouts');
 const partialsDirPath = path.join(__dirname, '../views/partials');
 app.set('view engine', 'hbs');

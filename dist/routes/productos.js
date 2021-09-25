@@ -1,26 +1,21 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _require = require('express'),
+    Router = _require.Router;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
+var _require2 = require("../middleware/admin"),
+    checkAdmin = _require2.checkAdmin;
 
-var _express = require("express");
+var _require3 = require('../controllers/productosController.js'),
+    productosController = _require3.productosController;
 
-var _admin = require("../middleware/admin");
+var asyncHandler = require('express-async-handler');
 
-var _productosController = require("../controllers/productosController.js");
+var router = Router(); //router.get('/nuevo', productosController.nuevoForm);
 
-var _expressAsyncHandler = _interopRequireDefault(require("express-async-handler"));
-
-var router = (0, _express.Router)(); //router.get('/nuevo', productosController.nuevoForm);
-
-router.get('/listar', _productosController.productosController.checkProductExists, (0, _expressAsyncHandler["default"])(_productosController.productosController.getProducts));
-router.get('/listar/:id', _productosController.productosController.checkProductExists, (0, _expressAsyncHandler["default"])(_productosController.productosController.listarById));
-router.post('/agregar', (0, _expressAsyncHandler["default"])(_productosController.productosController.agregar));
-router.put('/actualizar/:id', _productosController.productosController.checkProductExists, (0, _expressAsyncHandler["default"])(_productosController.productosController.actualizar));
-router["delete"]('/borrar/:id', _admin.checkAdmin, _productosController.productosController.checkProductExists, _productosController.productosController.borrar);
-var _default = router;
-exports["default"] = _default;
+router.get('/listar', productosController.checkProductExists, asyncHandler(productosController.getProducts));
+router.get('/listar/:id', productosController.checkProductExists, asyncHandler(productosController.getProducts));
+router.post('/agregar', productosController.checkAddProducts, asyncHandler(productosController.addProducts));
+router.put('/actualizar/:id', productosController.checkProductExists, asyncHandler(productosController.updateProduct));
+router["delete"]('/borrar/:id', checkAdmin, productosController.checkProductExists, productosController.deleteProducts);
+module.exports = router;

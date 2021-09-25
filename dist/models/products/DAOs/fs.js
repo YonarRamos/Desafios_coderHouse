@@ -17,13 +17,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var fs = require('fs');
-/* import {
-  newProductI,
-  ProductI,
-  ProductBaseClass,
-  ProductQuery,
-} from '../products.interface'; */
-
 
 var ProductosFSDAO = /*#__PURE__*/function () {
   function ProductosFSDAO(fileName) {
@@ -323,22 +316,10 @@ var ProductosFSDAO = /*#__PURE__*/function () {
 
       return _delete;
     }()
-    /*   async query(options){
-        await this.leer(this.nombreArchivo);
-        const Conditions = (aProduct) => boolean;
-        const query: Conditions[] = [];
-    
-        if (options.nombre)
-          query.push((aProduct: ProductI) => aProduct.nombre == options.nombre);
-    
-        if (options.precio)
-          query.push((aProduct: ProductI) => aProduct.precio == options.precio);
-    
-        return this.productos.filter((aProduct) => query.every((x) => x(aProduct)));
-      } */
-
   }]);
   return ProductosFSDAO;
 }();
 
-module.exports = ProductosFSDAO;
+module.exports = {
+  ProductosFSDAO: ProductosFSDAO
+};

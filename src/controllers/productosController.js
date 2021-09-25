@@ -1,15 +1,15 @@
-import { DBService } from '../services/db';
-import productos from '../models/productos.js';
-import { productsAPI } from '../../apis/productos';
-import { ProductQuery } from '../models/products/products.interface';
+const { DBService } = require('../services/db');
+const productos = require('../models/productos.js');
+const { productsAPI } = require('../../apis/productos');
+const { ProductQuery } = require('../models/products/products.interface');
 const tableName = 'productos';
 
 class Products {
 
   checkAddProducts(req, res, next) {
-    const { nombre, precio, stock, description, thumbnail } = req.body;
+    const { name, price, stock, description, thumbnail } = req.body;
 
-    if (!nombre || !precio || typeof nombre !== 'string' || isNaN(precio) || !stock || isNaN(stock) || !description || typeof description !== 'string' || !thumbnail || typeof thumbnail !== 'string') {
+    if (!name || !price || typeof name !== 'string' || isNaN(price) || !stock || isNaN(stock) || !description || typeof description !== 'string' || !thumbnail || typeof thumbnail !== 'string') {
       return res.status(400).json({
         msg: 'Campos del body invalidos',
       });
@@ -32,7 +32,7 @@ class Products {
 
   async getProducts(req, res) {
     const { id } = req.params;
-    const { nombre, precio } = req.query;
+    const { name, price } = req.query;
     if (id) {
       const result = await productsAPI.getProducts(id);
       if (!result.length)
@@ -47,9 +47,9 @@ class Products {
 
     const query = {};
 
-    if (nombre) query.nombre = nombre.toString();
+    if (name) query.name = name.toString();
 
-    if (precio) query.precio = Number(precio);
+    if (price) query.price = Number(price);
 
     if (Object.keys(query).length) {
       return res.json({
@@ -71,20 +71,30 @@ class Products {
     });
   }
 
-  async updateProduct(id, productData) {
-    const updatedProduct = await this.productos.update(id, productData);
-    return updatedProduct;
+  async updateProduct(req , res) {
+    const id = req.params.id;
+
+    const updatedItem = await productsAPI.updateProduct(id, req.body);
+
+    res.json({
+      msg: 'producto actualizado',
+      data: updatedItem,
+    });
   }
 
-  async deleteProduct(id) {
-    await this.productos.delete(id);
+  async deleteProducts(req, res) {
+    const id = req.params.id;
+    await productsAPI.deleteProduct(id);
+    res.json({
+      msg: 'producto borrado',
+    });
   }
 
-  async query(options) {
-    return await this.productos.query(options);
+  /*  async query(options) {
+    return await productsAPI.query(options);
   }
 
- /*  async listar(req, res) {
+ async listar(req, res) {
     try {
       const items = await productos.find();
       console.log(items);
@@ -190,4 +200,5 @@ class Products {
   } */
 
 }
-export const productosController = new Products();
+const productosController = new Products();
+module.exports = { productosController }

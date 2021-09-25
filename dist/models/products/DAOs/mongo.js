@@ -13,13 +13,6 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 var Mongoose = require('mongoose');
 
 var moment = require('moment');
-/* import {
-  newProductI,
-  ProductI,
-  ProductBaseClass,
-  ProductQuery,
-} from '../products.interface'; */
-
 
 var Config = require('../../../config');
 
@@ -57,12 +50,20 @@ var productsSchema = new Mongoose.Schema({
 });
 
 var ProductosAtlasDAO = /*#__PURE__*/function () {
-  function ProductosAtlasDAO() {
-    var local = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  function ProductosAtlasDAO(local) {
     (0, _classCallCheck2["default"])(this, ProductosAtlasDAO);
-    if (local) this.srv = "mongodb://localhost:27017/".concat(Config.MONGO_LOCAL_DBNAME);else this.srv = "mongodb+srv://".concat(Config.MONGO_ATLAS_USER, ":").concat(Config.MONGO_ATLAS_PASSWORD, "@").concat(Config.MONGO_ATLAS_CLUSTER, "/").concat(Config.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority");
-    mongoose.connect(this.srv);
-    this.productos = mongoose.model('producto', productsSchema);
+
+    if (local) {
+      this.srv = "mongodb://localhost:27017/".concat(Config.MONGO_LOCAL_DBNAME);
+      Mongoose.connect(this.srv);
+      this.productos = Mongoose.model('productos', productsSchema);
+      console.log('MONGO LOCAL CONNECTED');
+    } else {
+      this.srv = "mongodb+srv://".concat(Config.MONGO_ATLAS_USER, ":").concat(Config.MONGO_ATLAS_PASSWORD, "@").concat(Config.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(Config.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority");
+      Mongoose.connect(this.srv);
+      this.productos = Mongoose.model('productos', productsSchema);
+      console.log('MONGO ATLAS CONNECTED');
+    }
   }
 
   (0, _createClass2["default"])(ProductosAtlasDAO, [{
@@ -104,7 +105,7 @@ var ProductosAtlasDAO = /*#__PURE__*/function () {
               case 15:
                 _context.prev = 15;
                 _context.t0 = _context["catch"](1);
-                return _context.abrupt("return", output);
+                return _context.abrupt("return", _context.t0);
 
               case 18:
               case "end":
@@ -129,7 +130,7 @@ var ProductosAtlasDAO = /*#__PURE__*/function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!(!data.nombre || !data.precio)) {
+                if (!(!data.name || !data.price || !data.stock || !data.description || !data.thumbnail)) {
                   _context2.next = 2;
                   break;
                 }
@@ -207,36 +208,10 @@ var ProductosAtlasDAO = /*#__PURE__*/function () {
 
       return _delete;
     }()
-  }, {
-    key: "query",
-    value: function () {
-      var _query = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(options) {
-        var query;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                query = {};
-                if (options.nombre) query.nombre = options.nombre;
-                if (options.precio) query.precio = options.precio;
-                return _context5.abrupt("return", this.productos.find(query));
-
-              case 4:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function query(_x6) {
-        return _query.apply(this, arguments);
-      }
-
-      return query;
-    }()
   }]);
   return ProductosAtlasDAO;
 }();
 
-module.exports = ProductosAtlasDAO;
+module.exports = {
+  ProductosAtlasDAO: ProductosAtlasDAO
+};

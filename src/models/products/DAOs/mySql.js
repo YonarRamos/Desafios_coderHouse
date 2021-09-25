@@ -1,11 +1,12 @@
-import knex from 'knex';
-import dbConfig from '../../knexfile';
+const knex =  require('knex');
+const dbConfig = require('../../../../knexfile');
 
-class DB {
-  constructor() {
+class MysqlDB {
+  constructor(tableName) {
     const environment = process.env.NODE_ENV || 'production';
     const options = dbConfig[environment];
     this.connection = knex(options);
+    this.tableName = tableName;
   }
 
   init() {
@@ -26,29 +27,23 @@ class DB {
     });
   }
 
-  
+  get(id) {
+    if (id) return this.connection(this.tableName).where('id', id);
 
-  get(tableName) {
-    return this.connection(tableName);
+    return this.connection(this.tableName);
   }
 
-  getById(tableName, id) {
-    if (id) return this.connection(tableName).where('id', id);
-
-    return this.connection(tableName);
+  add(data) {
+    return this.connection(this.tableName).insert(data);
   }
 
-  create(tableName, data) {
-    return this.connection(tableName).insert(data);
+  update(id, data) {
+    return this.connection(this.tableName).where('id', id).update(data);
   }
 
-  update(tableName, id, data) {
-    return this.connection(tableName).where('id', id).update(data);
-  }
-
-  delete(tableName, id) {
-    return this.connection(tableName).where('id', id).del();
+  delete(id) {
+    return this.connection(this.tableName).where('id', id).del();
   }
 }
 
-export const DBService = new DB();
+module.exports =  MysqlDB ;

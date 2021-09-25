@@ -1,4 +1,4 @@
-const Mongoose = require('mongoose');
+/* const Mongoose = require('mongoose');
 const moment = require('moment');
 
 const productosCollection = 'productos';
@@ -15,4 +15,5 @@ const productosSchema = new Mongoose.Schema({
 
 const productos = new Mongoose.model(productosCollection, productosSchema);
 
-module.exports = productos;
+module.exports = { productos };
+ */

@@ -16,47 +16,43 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-/* import {
-  newProductI,
-  ProductI,
-  ProductBaseClass,
-  ProductQuery,
-} f rom '../products.interface';*/
-var ProductosMemDAO = /*#__PURE__*/function () {
-  function ProductosMemDAO() {
-    var _this = this;
+var moment = require('moment');
 
-    (0, _classCallCheck2["default"])(this, ProductosMemDAO);
-    var mockData = [{
-      _id: '1',
-      nombre: 'lapiz',
-      precio: 200
+var ProductsMemDAO = /*#__PURE__*/function () {
+  function ProductsMemDAO() {
+    (0, _classCallCheck2["default"])(this, ProductsMemDAO);
+    this.productos = [{
+      "id": "1",
+      "timestamp": "2021-08-28T15:54:54-03:00",
+      "codigo": "1630176186406",
+      "name": "Lapiz",
+      "description": "lorem ipsum",
+      "price": 35,
+      "thumbnail": "https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/pencil-256.png",
+      "stock": 45
     }, {
-      _id: '2',
-      nombre: 'cartuchera',
-      precio: 250
-    }, {
-      _id: '3',
-      nombre: 'boligoma',
-      precio: 260
+      "name": "Calculadora",
+      "description": "lorem ipsum dolor",
+      "price": 125,
+      "thumbnail": "https://cdn2.iconfinder.com/data/icons/draw-and-design/512/esquadra-2-256.png",
+      "stock": 60,
+      "timestamp": "2021-08-28T16:08:28-03:00",
+      "id": "2"
     }];
-    mockData.forEach(function (aMock) {
-      return _this.productos.push(aMock);
-    });
   }
 
-  (0, _createClass2["default"])(ProductosMemDAO, [{
+  (0, _createClass2["default"])(ProductsMemDAO, [{
     key: "findIndex",
     value: function findIndex(id) {
       return this.productos.findIndex(function (aProduct) {
-        return aProduct._id == id;
+        return aProduct.id == id;
       });
     }
   }, {
     key: "find",
     value: function find(id) {
       return this.productos.find(function (aProduct) {
-        return aProduct._id === id;
+        return aProduct.id === id;
       });
     }
   }, {
@@ -73,7 +69,7 @@ var ProductosMemDAO = /*#__PURE__*/function () {
                 }
 
                 return _context.abrupt("return", this.productos.filter(function (aProduct) {
-                  return aProduct._id === id;
+                  return aProduct.id === id;
                 }));
 
               case 2:
@@ -102,23 +98,20 @@ var ProductosMemDAO = /*#__PURE__*/function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!(!data.nombre || !data.precio)) {
-                  _context2.next = 2;
-                  break;
-                }
-
-                throw new Error('invalid data');
-
-              case 2:
                 newItem = {
-                  _id: (this.productos.length + 1).toString(),
-                  nombre: data.nombre,
-                  precio: data.precio
+                  id: (this.productos.length + 1).toString(),
+                  timestamp: moment().format(),
+                  codigo: Date.now(),
+                  name: data.name,
+                  description: data.description,
+                  price: data.price,
+                  thumbnail: data.thumbnail,
+                  stock: 45
                 };
                 this.productos.push(newItem);
                 return _context2.abrupt("return", newItem);
 
-              case 5:
+              case 3:
               case "end":
                 return _context2.stop();
             }
@@ -142,12 +135,18 @@ var ProductosMemDAO = /*#__PURE__*/function () {
             switch (_context3.prev = _context3.next) {
               case 0:
                 index = this.findIndex(id);
+                console.log('indice', index);
                 oldProduct = this.productos[index];
-                updatedProduct = _objectSpread(_objectSpread({}, oldProduct), newProductData);
-                this.productos.splice(index, 1, updatedProduct);
+                this.productos[index] = _objectSpread({
+                  id: oldProduct.id,
+                  timestamp: oldProduct.timestamp,
+                  codigo: oldProduct.codigo
+                }, newProductData);
+                updatedProduct = this.productos[index];
+                console.log('new', updatedProduct);
                 return _context3.abrupt("return", updatedProduct);
 
-              case 5:
+              case 7:
               case "end":
                 return _context3.stop();
             }
@@ -201,7 +200,10 @@ var ProductosMemDAO = /*#__PURE__*/function () {
       } */
 
   }]);
-  return ProductosMemDAO;
+  return ProductsMemDAO;
 }();
 
-module.exports = ProductosMemDAO;
+var ProductosMemDAO = new ProductsMemDAO();
+module.exports = {
+  ProductosMemDAO: ProductosMemDAO
+};

@@ -1,12 +1,11 @@
-const { newProductI, ProductI } = require('../src/models/products/products.factory');
 const { NoticiasFactoryDAO } = require('../src/models/products/products.factory');
 const { TipoPersistencia } = require('../src/models/products/products.factory');
-//const { ProductQuery } = require('../src/models/products/products.interface');
+
 
 /**
  Con esta variable elegimos el tipo de persistencia
  */
-const tipo = TipoPersistencia.Memoria;
+const tipo = TipoPersistencia.Firebase;
 
 class prodAPI {
 
@@ -25,8 +24,8 @@ class prodAPI {
   }
 
   async updateProduct(id, productData) {
-    const updatedProduct = await this.productos.update(id, productData);
-    return updatedProduct;
+    await this.productos.update(id, productData);
+    return productData;
   }
 
   async deleteProduct(id) {
@@ -39,5 +38,5 @@ class prodAPI {
 }
 
 const productsAPI = new prodAPI();
-
-module.exports = productsAPI;
+ 
+module.exports = { productsAPI };

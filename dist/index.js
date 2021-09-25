@@ -12,8 +12,6 @@ var _path = _interopRequireDefault(require("path"));
 
 var _expressHandlebars = _interopRequireDefault(require("express-handlebars"));
 
-var _db = _interopRequireWildcard(require("./services/db"));
-
 var _db_sqlite = require("./services/db_sqlite");
 
 var http = _interopRequireWildcard(require("http"));
@@ -28,10 +26,11 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+//import { DBService } from './services/db';
+//import mongoConecction from "./services/db";
 var app = (0, _express["default"])();
 var puerto = process.env.PORT || 8080; //DBService.init();
-
-_db_sqlite.SqliteDB.init();
+//SqliteDB.init();
 
 var layoutDirPath = _path["default"].resolve(__dirname, '../views/layouts');
 

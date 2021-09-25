@@ -1,11 +1,5 @@
 const Mongoose = require('mongoose');
 const moment = require('moment');
-/* import {
-  newProductI,
-  ProductI,
-  ProductBaseClass,
-  ProductQuery,
-} from '../products.interface'; */
 const Config = require('../../../config');
 
 const productsSchema = new Mongoose.Schema({
@@ -19,16 +13,22 @@ const productsSchema = new Mongoose.Schema({
 });
 
 class ProductosAtlasDAO {
-  constructor(local = false) {
-    if (local)
+  constructor(local) {
+    if (local){
       this.srv = `mongodb://localhost:27017/${Config.MONGO_LOCAL_DBNAME}`;
-    else
-      this.srv = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`;
-    mongoose.connect(this.srv);
-    this.productos = mongoose.model('producto', productsSchema);
+      Mongoose.connect(this.srv);
+      this.productos = Mongoose.model('productos', productsSchema);
+      console.log('MONGO LOCAL CONNECTED');
+    }
+    else{
+      this.srv = `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${Config.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`;
+      Mongoose.connect(this.srv);
+      this.productos = Mongoose.model('productos', productsSchema);
+      console.log('MONGO ATLAS CONNECTED');
+    }
   }
 
-  async get(id){
+  async get(id) {
     let output = [];
     try {
       if (id) {
@@ -40,12 +40,12 @@ class ProductosAtlasDAO {
 
       return output;
     } catch (err) {
-      return output;
+      return err;
     }
   }
 
   async add(data){
-    if (!data.nombre || !data.precio) throw new Error('invalid data');
+    if (!data.name || !data.price || !data.stock || !data.description || !data.thumbnail) throw new Error('invalid data');
 
     const newProduct = new this.productos(data);
     await newProduct.save();
@@ -60,16 +60,6 @@ class ProductosAtlasDAO {
   async delete(id) {
     await this.productos.findByIdAndDelete(id);
   }
+} 
 
-  async query(options) {
-    let query = {};
-
-    if (options.nombre) query.nombre = options.nombre;
-
-    if (options.precio) query.precio = options.precio;
-
-    return this.productos.find(query);
-  }
-}
-
-module.exports = ProductosAtlasDAO;
+module.exports = { ProductosAtlasDAO };

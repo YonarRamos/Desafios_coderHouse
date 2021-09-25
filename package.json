@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-handlebars": "^5.3.3",
+    "firebase-admin": "^9.11.1",
     "handlebars": "^4.5.0",
     "knex": "^0.95.10",
     "moment": "^2.29.1",

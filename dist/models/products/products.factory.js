@@ -15,8 +15,13 @@ var _require2 = require('../products/DAOs/fs'),
 var _require3 = require('./DAOs/mongo'),
     ProductosAtlasDAO = _require3.ProductosAtlasDAO;
 
-var _require4 = require('path'),
-    path = _require4.path;
+var ProductosMysqlDAO = require('../products/DAOs/mySql');
+
+var ProductosSqlitelDAO = require('../products/DAOs/sqlite3');
+
+var ProductosFirebaseDAO = require('../products/DAOs/firebase');
+
+var path = require('path');
 
 var TipoPersistencia = {
   Memoria: 'MEM',
@@ -39,7 +44,7 @@ var NoticiasFactoryDAO = /*#__PURE__*/function () {
       switch (tipo) {
         case TipoPersistencia.FileSystem:
           console.log('RETORNANDO INSTANCIA CLASE FS');
-          var filePath = path.resolve(__dirname, './DAOs/products.json');
+          var filePath = path.resolve(__dirname, '../../../public/productos.json');
           console.log(filePath);
           return new ProductosFSDAO(filePath);
 
@@ -51,9 +56,21 @@ var NoticiasFactoryDAO = /*#__PURE__*/function () {
           console.log('RETORNANDO INSTANCIA CLASE MONGO LOCAL');
           return new ProductosAtlasDAO(true);
 
+        case TipoPersistencia.SQLITE3:
+          console.log('RETORNANDO INSTANCIA CLASE SQLITE3');
+          return new ProductosSqlitelDAO('productos');
+
+        case TipoPersistencia.MYSQL:
+          console.log('RETORNANDO INSTANCIA CLASE MYSQL');
+          return new ProductosMysqlDAO('productos');
+
+        case TipoPersistencia.Firebase:
+          console.log('RETORNANDO INSTANCIA CLASE FIREBASE');
+          return new ProductosFirebaseDAO();
+
         default:
           console.log('RETORNANDO INSTANCIA CLASE MEMORIA');
-          return new ProductosMemDAO();
+          return ProductosMemDAO;
       }
     }
   }]);

@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useState } from "react";
 import Chat from "./components/Chat";
+import Login from "./components/Login";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 
 function App() {
@@ -15,20 +17,27 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {  
-        !registrado &&    
-        <form onSubmit = {registrar}>
-          <label htmlFor="">Introduzca su usuario:</label>
-          <input value={nombre} onChange={ e => setNombre(e.target.value)} />
-          <button>Unirse al chat</button>
-        </form>
-      }
-      {
-        registrado &&
-        <Chat nombre = { nombre }/>
-      }
-    </div>
+    <Router>
+      <div className="App">
+{/*         {  
+          !registrado &&    
+          <form onSubmit = {registrar}>
+            <label htmlFor="">Introduzca su usuario:</label>
+            <input value={nombre} onChange={ e => setNombre(e.target.value)} />
+            <button>Unirse al chat</button>
+          </form>
+        }
+        {
+          registrado &&
+          <Chat nombre = { nombre }/>
+        } */}
+        <Switch>
+          <Route exact path='/' component={Chat}></Route>
+          <Route exact path='/login' component={Login}></Route>        
+        </Switch>
+      </div>      
+    </Router>
+
   );
 }
 

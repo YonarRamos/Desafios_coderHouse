@@ -1,0 +1,40 @@
+.tarjeta{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgb(203, 226, 255);
+}
+
+.img{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+}
+
+.btn__login{
+    margin-top: 15px;
+    width: 100%;
+}
+
+.user__field{
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.pwd__field{
+    width: 100%;
+}
+
+.title_card_login{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+}
+
+.msg__server{
+    color: red;
+    margin-right: auto;
+    margin-left: auto;
+}

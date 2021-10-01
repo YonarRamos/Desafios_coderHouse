@@ -1,0 +1,34 @@
+<div style="border:rgb(0, 204, 255) solid 1px;padding:10px;border-radius:10px;display:flex;align-items:center;justify-content: center;align-self:center;width: 650px;"></center> 
+    <table class="table table-dark table-striped" style="margin-bottom:0px;">
+        <thead>
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Precio
+                </th>
+                <th style="text-align: center;">
+                    Foto
+                </th>          
+            </tr>
+        </thead>
+        <tbody id="productos">
+                {{#each productos}}
+                <tr>
+                    <td>{{this.title}}</td>
+                    <td>${{this.price}}</td>
+                    <td style="text-align: center;">
+                        <img width="40px" src="{{this.thumbnail}}" alt="product_img">
+                    </td>
+                </tr>
+            {{else}} 
+                <tr>
+                    <td colspan="3" style="text-align: center;">
+                        <b>NO SE ENCONTRARON PRODUCTOS</b>
+                    </td>
+                </tr>    
+            {{/each}}  
+        </tbody>
+    </table>
+</div>

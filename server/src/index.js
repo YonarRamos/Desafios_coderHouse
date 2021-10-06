@@ -1,11 +1,16 @@
 import express from 'express';
 const cors = require('cors');
+require('dotenv').config()
 import router from './routes/index.js';
 import session from "express-session";
 import path from 'path';
 import * as http from 'http';
 import ws from "./services/ws";
 import dbService from "./services/db";
+import MongoStore from 'connect-mongo';
+const mongoUrl = `mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`;
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+import passport from './middleware/auth';
 
 const app = express();
 const myServer = http.Server(app);
@@ -13,18 +18,30 @@ const puerto = 8080;
 const publicPath = path.resolve(__dirname, '../public');
 
 app.use(cors());
-app.use(
-    session({
-      secret: 'mySecretkey', // clave para firmar la cookie
-      cookie: { maxAge: 60000 }, // Tiempo en el que expira
-      saveUninitialized: true, // Que guarde la cookie asi este vacia
-      resave: true, // Que la guarde asi el endpoint no la use
-    })
-  );
+dbService.init();
+
+const StoreOptions = {
+  store: MongoStore.create({
+    mongoUrl: mongoUrl,
+    mongoOptions: advancedOptions,
+  }),
+  secret: 'mySecretKey',
+  resave: false,
+  saveUninitialized: false ,
+  rolling: true,
+  expires: 60000,
+  cookie: {
+      maxAge: 60000
+  },
+};
+
+app.use(session(StoreOptions));
+//Inicializamos passport
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(publicPath));
-dbService.init();
 
 //inicializamos socket
 const socket = new ws(myServer);

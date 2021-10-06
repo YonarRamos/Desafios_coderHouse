@@ -36,9 +36,9 @@ class UsuariosClass {
     }
     
     async add(req, res){
-        const { email, pwd, nombre, apellido, edad, alias, avatar } = req.body;
-        if( email && pwd && nombre && apellido && edad && alias && avatar ){
-            const user = { email, pwd, nombre, apellido, edad, alias, avatar}
+        const { email, password, nombre, apellido, edad, alias, avatar } = req.body;
+        if( email && password && nombre && apellido && edad && alias && avatar ){
+            const user = { email, password, nombre, apellido, edad, alias, avatar}
             const newUser = new Usuario(user);
             newUser.save(function (error) {
                 if (error) {
@@ -65,13 +65,13 @@ class UsuariosClass {
     }
 
     async login(req, res) {
-        const { email, pwd } = req.body;
+        const { email, password } = req.body;
 
         try {
-          if ( email && pwd ) {
+          if ( email && password ) {
             const user = await Usuario.findOne({email : email});
             if(user){
-                if (user.pwd == pwd){
+                if (user.password == password){
                     req.session.loggedIn = true
                     res.status(200).json({
                         user: user,

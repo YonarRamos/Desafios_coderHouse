@@ -109,22 +109,22 @@ var UsuariosClass = /*#__PURE__*/function () {
     key: "add",
     value: function () {
       var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-        var _req$body, email, pwd, nombre, apellido, edad, alias, avatar, user, newUser;
+        var _req$body, email, password, nombre, apellido, edad, alias, avatar, user, newUser;
 
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _req$body = req.body, email = _req$body.email, pwd = _req$body.pwd, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar;
+                _req$body = req.body, email = _req$body.email, password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar;
 
-                if (!(email && pwd && nombre && apellido && edad && alias && avatar)) {
+                if (!(email && password && nombre && apellido && edad && alias && avatar)) {
                   _context2.next = 7;
                   break;
                 }
 
                 user = {
                   email: email,
-                  pwd: pwd,
+                  password: password,
                   nombre: nombre,
                   apellido: apellido,
                   edad: edad,
@@ -224,16 +224,16 @@ var UsuariosClass = /*#__PURE__*/function () {
     key: "login",
     value: function () {
       var _login = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-        var _req$body2, email, pwd, user;
+        var _req$body2, email, password, user;
 
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _req$body2 = req.body, email = _req$body2.email, pwd = _req$body2.pwd;
+                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
                 _context5.prev = 1;
 
-                if (!(email && pwd)) {
+                if (!(email && password)) {
                   _context5.next = 18;
                   break;
                 }
@@ -251,7 +251,7 @@ var UsuariosClass = /*#__PURE__*/function () {
                   break;
                 }
 
-                if (!(user.pwd == pwd)) {
+                if (!(user.password == password)) {
                   _context5.next = 12;
                   break;
                 }

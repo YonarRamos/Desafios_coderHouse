@@ -10,25 +10,25 @@ var Mongoose = require('mongoose');
 
 var db = 'ecommerce';
 
+require('dotenv').config();
+
 var DbServiceClass = /*#__PURE__*/function () {
   function DbServiceClass() {
     (0, _classCallCheck2["default"])(this, DbServiceClass);
 
-    if (true) {
+    if (false) {
       this.srv = "mongodb://localhost:27017/".concat(db);
     } else {
-      this.srv = "mongodb+srv://".concat(process.env.MONGO_ATLAS_USER, ":").concat(process.env.MONGO_ATLAS_PASSWORD, "@").concat(process.env.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(process.env.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority");
-      Mongoose.connect(this.srv);
-      this.mensaje = Mongoose.model('mensajes', mensajesSchema);
-      console.log('MONGO ATLAS CONNECTED');
+      this.srv = "mongodb://".concat(process.env.MONGO_ATLAS_USER, ":").concat(process.env.MONGO_ATLAS_PASSWORD, "@").concat(process.env.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(process.env.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority");
+      console.log('MONGO ATLAS', "".concat(process.env.MONGO_ATLAS_USER, ":").concat(process.env.MONGO_ATLAS_PASSWORD, "@").concat(process.env.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(process.env.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority"));
     }
   }
 
   (0, _createClass2["default"])(DbServiceClass, [{
     key: "init",
     value: function init() {
-      Mongoose.connect(this.srv);
-      console.log('MONGO LOCAL CONNECTED');
+      Mongoose.connect("mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority");
+      console.log('MONGO CONNECTED');
     }
   }]);
   return DbServiceClass;

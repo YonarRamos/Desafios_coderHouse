@@ -1,22 +1,21 @@
 const Mongoose = require('mongoose');
 const db = 'ecommerce';
+require('dotenv').config()
 
 class DbServiceClass {
   constructor() {
-    if (true){
+    if (false){
       this.srv = `mongodb://localhost:27017/${db}`;
     }
     else{
-      this.srv = `mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASSWORD}@${process.env.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${process.env.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`;
-      Mongoose.connect(this.srv);
-      this.mensaje = Mongoose.model('mensajes', mensajesSchema);
-      console.log('MONGO ATLAS CONNECTED');
+      this.srv = `mongodb://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASSWORD}@${process.env.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${process.env.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`;
+      console.log('MONGO ATLAS', `${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASSWORD}@${process.env.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${process.env.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`);
     }
   }
 
   init(){
-    Mongoose.connect(this.srv);
-    console.log('MONGO LOCAL CONNECTED');
+    Mongoose.connect(`mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`);
+    console.log('MONGO CONNECTED');
   }
 } 
 

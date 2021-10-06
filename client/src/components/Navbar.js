@@ -12,7 +12,7 @@ const Navbar = ()=>{
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-            <a className="navbar-brand" href="#">Ecommerce</a>
+            <p className="navbar-brand">Ecommerce</p>
             <button className="btn btn-outline-primary" type="button" onClick={ Logout }>Logout</button>
         </div>
         </nav>

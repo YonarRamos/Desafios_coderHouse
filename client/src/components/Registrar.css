@@ -3,5 +3,7 @@
 }
 .agregar__usuario{
     text-align: center;
-
+}
+.msg__server{
+    color: red;
 }

@@ -38,7 +38,7 @@ class UsuariosClass {
     async add(req, res){
         const { email, password, nombre, apellido, edad, alias, avatar } = req.body;
         if( email && password && nombre && apellido && edad && alias && avatar ){
-            const user = { email, password, nombre, apellido, edad, alias, avatar}
+            const user = { email, password, nombre, apellido, edad, alias, avatar }
             const newUser = new Usuario(user);
             newUser.save(function (error) {
                 if (error) {

@@ -37,7 +37,7 @@ function App() {
             <Nav/>
             <ProtectedRoute exact path='/'>
               <div className="container">
-                <Home usuario = { 'usuario' } />
+                <Home/>
                 <FormularioProductos/>
               </div>
             </ProtectedRoute>

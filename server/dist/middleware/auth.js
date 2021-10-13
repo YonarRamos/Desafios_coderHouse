@@ -9,67 +9,50 @@ exports["default"] = exports.isLoggedIn = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _passport = _interopRequireDefault(require("passport"));
 
-var _passportLocal = _interopRequireDefault(require("passport-local"));
-
 var _usuarios = require("../models/usuarios");
 
-var LocalStrategy = _passportLocal["default"].Strategy;
+var _passportFacebook = require("passport-facebook");
+
+var FACEBOOK_APP_ID = '431388045021088';
+var FACEBOOK_APP_SECRET = '59edba20e61d518200b614d3ad28fbf3';
 var strategyOptions = {
-  usernameField: 'email',
-  passwordField: 'password',
-  passReqToCallback: true
+  clientID: FACEBOOK_APP_ID,
+  clientSecret: FACEBOOK_APP_SECRET,
+  callbackURL: 'http://localhost:8080/usuarios/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'emails']
 };
 
 var loginFunc = /*#__PURE__*/function () {
-  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, email, password, done) {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(accessToken, refreshToken, profile, done) {
     var user;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
-            return _usuarios.Usuario.findOne({
-              email: email
-            });
-
-          case 2:
-            user = _context.sent;
-
-            if (user) {
-              _context.next = 5;
-              break;
-            }
-
-            return _context.abrupt("return", done(null, false, {
-              message: 'User does not exist'
-            }));
-
-          case 5:
-            if (user.isValidPassword(password)) {
-              _context.next = 7;
-              break;
-            }
-
-            return _context.abrupt("return", done(null, false, {
-              message: 'Password is not valid.'
-            }));
-
-          case 7:
+            _context.prev = 0;
             console.log('SALIO TODO BIEN');
+            /*   console.log(accessToken);
+              console.log(refreshToken); */
+
+            user = profile; //console.log(user);
+
             return _context.abrupt("return", done(null, user));
+
+          case 6:
+            _context.prev = 6;
+            _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
 
           case 9:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[0, 6]]);
   }));
 
   return function loginFunc(_x, _x2, _x3, _x4) {
@@ -77,100 +60,18 @@ var loginFunc = /*#__PURE__*/function () {
   };
 }();
 
-var signUpFunc = /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, email, password, done) {
-    var _req$body, _email, _password, nombre, apellido, edad, alias, avatar, query, user, _userData, userData, newUser;
+_passport["default"].use(new _passportFacebook.Strategy(strategyOptions, loginFunc));
 
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.prev = 0;
-            _req$body = req.body, _email = _req$body.email, _password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar;
-            console.log(req.body);
-
-            if (!(!_email || !_password || !nombre || !apellido || edad || alias || avatar)) {
-              _context2.next = 6;
-              break;
-            }
-
-            console.log('Invalid body fields');
-            return _context2.abrupt("return", done(null, false));
-
-          case 6:
-            query = {
-              $or: [{
-                email: _email
-              }, {
-                email: _email
-              }]
-            };
-            console.log(query);
-            _context2.next = 10;
-            return _usuarios.Usuario.findOne(query);
-
-          case 10:
-            user = _context2.sent;
-
-            if (!user) {
-              _context2.next = 17;
-              break;
-            }
-
-            console.log('User already exists');
-            console.log(user);
-            return _context2.abrupt("return", done(null, false, 'User already exists'));
-
-          case 17:
-            userData = (_userData = {
-              email: _email,
-              password: _password
-            }, (0, _defineProperty2["default"])(_userData, "email", _email), (0, _defineProperty2["default"])(_userData, "firstName", firstName), (0, _defineProperty2["default"])(_userData, "lastName", lastName), _userData);
-            newUser = new _usuarios.Usuario(userData);
-            _context2.next = 21;
-            return newUser.save();
-
-          case 21:
-            return _context2.abrupt("return", done(null, newUser));
-
-          case 22:
-            _context2.next = 27;
-            break;
-
-          case 24:
-            _context2.prev = 24;
-            _context2.t0 = _context2["catch"](0);
-            done(_context2.t0);
-
-          case 27:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, null, [[0, 24]]);
-  }));
-
-  return function signUpFunc(_x5, _x6, _x7, _x8) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-_passport["default"].use('login', new LocalStrategy(strategyOptions, loginFunc));
-
-_passport["default"].use('signup', new LocalStrategy(strategyOptions, signUpFunc));
-
-_passport["default"].serializeUser(function (user, done) {
-  done(null, user._id);
+_passport["default"].serializeUser(function (user, cb) {
+  cb(null, user);
 });
 
-_passport["default"].deserializeUser(function (userId, done) {
-  _usuarios.Usuario.findById(userId, function (err, user) {
-    done(err, user);
-  });
+_passport["default"].deserializeUser(function (obj, cb) {
+  cb(null, obj);
 });
 
 var isLoggedIn = function isLoggedIn(req, res, done) {
-  if (!req.user) return res.status(401).json({
+  if (!req.isAuthenticated()) return res.status(401).json({
     msg: 'Unathorized'
   });
   done();

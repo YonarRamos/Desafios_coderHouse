@@ -1,30 +1,33 @@
 import React, { Fragment, useState } from "react";
 import { Redirect, useHistory } from 'react-router';
 import { Link } from "react-router-dom"
+import Home from "./Home";
 import Cookies from 'js-cookie';
-import './login.css'
-import axios from '../utils/axios'
+import './login.css';
+import axios from '../utils/axios';
+import moment from 'moment'
 
-const Login = ( props )=>{
+const Login = ( props ) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [msgServer, setMsgServer] = useState('');
     const history = useHistory();
 
-    const signIn = (props)=>{
+    const signIn = ()=>{
         axios.post('usuarios/login',{
             email,
             password
         })
         .then((res)=>{
             console.log('its working', res);
-            Cookies.set('loggedIn', res.data.session.loggedIn, { expires: 6000 } );
+            Cookies.set('connect.sid', res.data.sessionData.sessionID );
             history.push('/');
-            props.getLoggedUser(res);
         })
         .catch((error)=>{
             if(error.response){
-                console.error('LOGIN ERRROR', error.response.data.msg);                
+                console.error('LOGIN ERRROR', error.response.data.msg, {
+                    expires: moment(Date.now).add('1', "minute")
+                });                
                 setMsgServer(error.response.data.msg);
                 setTimeout(()=>{
                     setMsgServer('');
@@ -33,21 +36,42 @@ const Login = ( props )=>{
         });
     }
 
+    const signInFacebook= ()=>{
+        axios.get('usuarios/auth/facebook')
+        .then((res)=>{
+            console.log('its working face', res);
+            //Cookies.set('connect.sid', res.data.sessionData.sessionID );
+            history.push('/');
+        })
+        .catch((error)=>{
+            if(error.response){
+                console.error('LOGIN ERRROR', error.response.data.msg, {
+                    expires: moment(Date.now).add('1', "minute")
+                });                
+                                           
+            };
+            alert(error);   
+        });
+    }
+
+
+
     return (
         <Fragment>
             <div className="card tarjeta" style={{width: '18rem'}}>
-            <h3 className="title_card_login">Welcome</h3>
+            <h3 className="title_card_login">Bienvenido</h3>
             <img src="https://cdn4.iconfinder.com/data/icons/web-ui-color/128/Account-256.png" className="card-img-top img" alt="logo"/>
                 <div className="card-body">
-                    <form>
+                    {/* LOGIN CON FACEBOOK */}
+                    <button type="button" onClick={signInFacebook} className="btn btn-block btn__login__facebook"><i className="fab fa-facebook-square facebook__icon" ></i> Inicia sesión con Facebook</button>     
+                    {/* LOGIN CON CORREO ELECTRONICO */}
+                    {/* <form>
                         <input placeholder="Email" className="user__field" type="text" onChange={e => setEmail(e.target.value)} />
                         <input placeholder="Password" className="pwd__field" type="password" onChange={e => setPassword(e.target.value)} />   
-                    </form>     
-                    <span className="msg__server" >{msgServer}</span>       
-                    <button type="button" onClick={signIn} className="btn btn-primary btn-block btn__login">Ingresar</button>
-                    {/* <Link to="/registrar">Registrate aqui</Link> */}
+                    </form> */} 
+                    <button type="button" disabled onClick={signIn} className="btn btn-block text-center btn__login"><i className="fas fa-envelope-square mail__icon"></i>Incia sesión con tu Email</button> 
                 </div>
-                <Link to="/registrar">Registrate aqui</Link>
+               <div className="div__registrar">¿No tienes cuenta?<Link to="/registrar" className="registrar">Registrate aqui</Link></div> 
             </div>
         </Fragment>
     )

@@ -13,11 +13,13 @@ const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 import passport from './middleware/auth';
 
 const app = express();
+app.use(cors());
+
 const myServer = http.Server(app);
 const puerto = 8080;
 const publicPath = path.resolve(__dirname, '../public');
 
-app.use(cors());
+
 dbService.init();
 
 const StoreOptions = {

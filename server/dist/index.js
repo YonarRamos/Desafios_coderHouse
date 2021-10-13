@@ -36,12 +36,14 @@ var advancedOptions = {
   useUnifiedTopology: true
 };
 var app = (0, _express["default"])();
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 var myServer = http.Server(app);
 var puerto = 8080;
 
 var publicPath = _path["default"].resolve(__dirname, '../public');
-
-app.use(cors());
 
 _db["default"].init();
 

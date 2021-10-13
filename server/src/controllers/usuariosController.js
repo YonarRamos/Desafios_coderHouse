@@ -1,5 +1,6 @@
 import session from "express-session";
 import { Usuario } from '../models/usuarios';
+import passport from '../middleware/auth';
 
 class UsuariosClass {
     async get(req, res ) {
@@ -65,34 +66,24 @@ class UsuariosClass {
     }
 
     async login(req, res) {
-        const { email, password } = req.body;
-
+        //console.log('it works', req)
         try {
-          if ( email && password ) {
-            const user = await Usuario.findOne({email : email});
-            if(user){
-                if (user.password == password){
-                    req.session.loggedIn = true
-                    res.status(200).json({
-                        user: user,
-                        session: req.session,
-                    });
-                } else {
-                    return res.status(400).json({
-                        msg: 'Contraseña incorrecta'
-                    });
+            if(req.user){
+                res.json({ 
+                    msg: 'Welcome!', 
+                    user: {
+                        name: req.user.displayName,
+                        email: req.user.emails[0].value,
+                        photo: req.user.photos[0].value
+                    }, 
+                    session: req.session
                 }
+            );
             } else {
-                return res.status(404).json({
-                    msg: 'Usuario no registrado'
-                });
+                res.json({
+                    msg: 'Algo salió mal'
+                })
             }
-          } else {
-            return res.status(400).json({
-                msg: 'Todos los campos son obligatorios'
-            });
-          }
-
         } catch (error) {
             console.error('LOGIN CONTROLLER ERROR:', error)
             return error;

@@ -1,85 +1,47 @@
 import passport from 'passport';
-import passportLocal from 'passport-local';
-import  { Usuario } from '../models/usuarios';
-
-const LocalStrategy = passportLocal.Strategy;
+import  { UserModel  } from '../models/usuarios';
+const FACEBOOK_APP_ID = '431388045021088';
+const FACEBOOK_APP_SECRET = '59edba20e61d518200b614d3ad28fbf3';
+import { Strategy as FaceBookStrategy } from 'passport-facebook';
 
 const strategyOptions = {
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true,
+  clientID: FACEBOOK_APP_ID,
+  clientSecret: FACEBOOK_APP_SECRET,
+  callbackURL: 'http://localhost:8080/usuarios/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'emails'],
 };
 
-const loginFunc = async (req, email, password, done) => {
-  const user = await Usuario.findOne({ email });
-
-  if (!user) {
-    return done(null, false, { message: 'User does not exist' });
-  }
-  if (!user.isValidPassword(password)) {
-    return done(null, false, { message: 'Password is not valid.' });
-  }
-  console.log('SALIO TODO BIEN');
-  return done(null, user);
-};
-
-const signUpFunc = async (req, email, password, done) => {
+const loginFunc = async (
+  accessToken,
+  refreshToken,
+  profile,
+  done
+) => {
   try {
-      
-    const { email, password, nombre, apellido, edad, alias, avatar } = req.body;
-    console.log(req.body);
-
-    if (!email || !password || !nombre || !apellido || edad || alias || avatar ) {
-      console.log('Invalid body fields');
-      return done(null, false);
-    }
-
-    const query = {
-      $or: [{ email: email }, { email: email }],
-    };
-
-    console.log(query);
-    const user = await Usuario.findOne(query);
-
-    if (user) {
-      console.log('User already exists');
-      console.log(user);
-      return done(null, false, 'User already exists');
-    } else {
-      const userData = {
-        email,
-        password,
-        email,
-        firstName,
-        lastName,
-      };
-
-      const newUser = new Usuario(userData);
-
-      await newUser.save();
-
-      return done(null, newUser);
-    }
+    console.log('SALIO TODO BIEN');
+    /*   console.log(accessToken);
+      console.log(refreshToken); */
+      const user = profile;
+      //console.log(user);
+      return done(null, user);
   } catch (error) {
-    done(error);
+    console.log(error)
   }
 };
 
-passport.use('login', new LocalStrategy(strategyOptions, loginFunc));
-passport.use('signup', new LocalStrategy(strategyOptions, signUpFunc));
+passport.use(new FaceBookStrategy(strategyOptions, loginFunc));
 
-passport.serializeUser((user, done) => {
-  done(null, user._id);
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
 });
 
-passport.deserializeUser((userId, done) => {
-  Usuario.findById(userId, function (err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function (obj, cb) {
+  cb(null, obj);
 });
 
 export const isLoggedIn = (req, res, done) => {
-  if (!req.user) return res.status(401).json({ msg: 'Unathorized' });
+  if (!req.isAuthenticated())
+    return res.status(401).json({ msg: 'Unathorized' });
 
   done();
 };

@@ -20,11 +20,22 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 var router = (0, _express.Router)();
 router.post('/registrar', _usuariosController.usuariosController.add);
 router.get('/listar', _auth.isLoggedIn, _usuariosController.usuariosController.get);
-router.post('/login', _auth["default"].authenticate('login'), function (req, res) {
-  res.json({
-    msg: 'Welcome!',
-    user: req.user
+router.get('/loggedIn', _usuariosController.usuariosController.login); //router.post('/login', passport.authenticate('login') , usuariosController.login);
+
+router.get('/auth/facebook', _auth["default"].authenticate('facebook', {
+  scope: ['email']
+}));
+router.get('/auth/facebook/callback', _auth["default"].authenticate('facebook', {
+  failureRedirect: '/fail'
+}), _usuariosController.usuariosController.login);
+router.get('/fail', function (req, res) {
+  res.json('login-error', {
+    msg: 'Error de autenticación'
   });
+});
+router.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/api/login');
 });
 var _default = router;
 exports["default"] = _default;

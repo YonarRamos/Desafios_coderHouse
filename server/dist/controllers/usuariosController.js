@@ -19,6 +19,8 @@ var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _usuarios = require("../models/usuarios");
 
+var _auth = _interopRequireDefault(require("../middleware/auth"));
+
 var UsuariosClass = /*#__PURE__*/function () {
   function UsuariosClass() {
     (0, _classCallCheck2["default"])(this, UsuariosClass);
@@ -224,85 +226,43 @@ var UsuariosClass = /*#__PURE__*/function () {
     key: "login",
     value: function () {
       var _login = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-        var _req$body2, email, password, user;
-
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
-                _context5.prev = 1;
+                _context5.prev = 0;
 
-                if (!(email && password)) {
-                  _context5.next = 18;
-                  break;
+                if (req.user) {
+                  res.json({
+                    msg: 'Welcome!',
+                    user: {
+                      name: req.user.displayName,
+                      email: req.user.emails[0].value,
+                      photo: req.user.photos[0].value
+                    },
+                    session: req.session
+                  });
+                } else {
+                  res.json({
+                    msg: 'Algo salió mal'
+                  });
                 }
 
-                _context5.next = 5;
-                return _usuarios.Usuario.findOne({
-                  email: email
-                });
-
-              case 5:
-                user = _context5.sent;
-
-                if (!user) {
-                  _context5.next = 15;
-                  break;
-                }
-
-                if (!(user.password == password)) {
-                  _context5.next = 12;
-                  break;
-                }
-
-                req.session.loggedIn = true;
-                res.status(200).json({
-                  user: user,
-                  session: req.session
-                });
-                _context5.next = 13;
+                _context5.next = 8;
                 break;
 
-              case 12:
-                return _context5.abrupt("return", res.status(400).json({
-                  msg: 'Contraseña incorrecta'
-                }));
-
-              case 13:
-                _context5.next = 16;
-                break;
-
-              case 15:
-                return _context5.abrupt("return", res.status(404).json({
-                  msg: 'Usuario no registrado'
-                }));
-
-              case 16:
-                _context5.next = 19;
-                break;
-
-              case 18:
-                return _context5.abrupt("return", res.status(400).json({
-                  msg: 'Todos los campos son obligatorios'
-                }));
-
-              case 19:
-                _context5.next = 25;
-                break;
-
-              case 21:
-                _context5.prev = 21;
-                _context5.t0 = _context5["catch"](1);
+              case 4:
+                _context5.prev = 4;
+                _context5.t0 = _context5["catch"](0);
                 console.error('LOGIN CONTROLLER ERROR:', _context5.t0);
                 return _context5.abrupt("return", _context5.t0);
 
-              case 25:
+              case 8:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, null, [[1, 21]]);
+        }, _callee5, null, [[0, 4]]);
       }));
 
       function login(_x8, _x9) {

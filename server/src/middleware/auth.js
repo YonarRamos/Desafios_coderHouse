@@ -1,12 +1,11 @@
 import passport from 'passport';
 import  { UserModel  } from '../models/usuarios';
-const FACEBOOK_APP_ID = '431388045021088';
-const FACEBOOK_APP_SECRET = '59edba20e61d518200b614d3ad28fbf3';
+import config from "../utils/config";
 import { Strategy as FaceBookStrategy } from 'passport-facebook';
 
 const strategyOptions = {
-  clientID: FACEBOOK_APP_ID,
-  clientSecret: FACEBOOK_APP_SECRET,
+  clientID: process.argv[3] || config.FACEBOOK_APP_ID,
+  clientSecret: process.argv[4] || config.FACEBOOK_APP_SECRET,
   callbackURL: 'http://localhost:8080/usuarios/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'photos', 'emails'],
 };

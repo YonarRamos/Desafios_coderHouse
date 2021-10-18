@@ -11,12 +11,13 @@ import MongoStore from 'connect-mongo';
 const mongoUrl = `mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`;
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 import passport from './middleware/auth';
+import config from "./utils/config";
 
 const app = express();
 app.use(cors());
 
 const myServer = http.Server(app);
-const puerto = 8080;
+const puerto = config.PORT;
 const publicPath = path.resolve(__dirname, '../public');
 
 
@@ -49,10 +50,6 @@ app.use(express.static(publicPath));
 const socket = new ws(myServer);
 socket.connection();
 
-myServer.listen(puerto, () => console.log('Server up en puerto', process.env.PORT || puerto));
+myServer.listen(puerto, () => console.log('Server up en puerto', puerto));
 
 app.use('/', router);
-
-
-
-

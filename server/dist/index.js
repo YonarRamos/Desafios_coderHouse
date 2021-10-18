@@ -22,6 +22,8 @@ var _connectMongo = _interopRequireDefault(require("connect-mongo"));
 
 var _auth = _interopRequireDefault(require("./middleware/auth"));
 
+var _config = _interopRequireDefault(require("./utils/config"));
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -36,12 +38,9 @@ var advancedOptions = {
   useUnifiedTopology: true
 };
 var app = (0, _express["default"])();
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}));
+app.use(cors());
 var myServer = http.Server(app);
-var puerto = 8080;
+var puerto = _config["default"].PORT;
 
 var publicPath = _path["default"].resolve(__dirname, '../public');
 
@@ -74,6 +73,6 @@ app.use(_express["default"]["static"](publicPath)); //inicializamos socket
 var socket = new _ws["default"](myServer);
 socket.connection();
 myServer.listen(puerto, function () {
-  return console.log('Server up en puerto', process.env.PORT || puerto);
+  return console.log('Server up en puerto', puerto);
 });
 app.use('/', _index["default"]);

@@ -4,10 +4,9 @@ import os from 'os';
 import { myServer } from './services/server';
 import minimist from "minimist";
 const puerto = config.PORT;
-//Obtenemos los argumentos, los parseamos y eliminamos los 2 primeros que se crean por defecto
-const argv = minimist(process.argv);
-console.log('Argumentos:', process.argv);
-console.log('minimist:', JSON.stringify(argv));
+const mode = config.MODE;
+
+
 //Obtengo el numero de nucleos disponibles en mi PC
 const numCPUs = os.cpus().length;
 
@@ -17,11 +16,13 @@ const numCPUs = os.cpus().length;
  * isMaster vs isPrimary
  * https://stackoverflow.com/questions/68978929/why-is-nodejs-cluster-module-not-working
  */
-switch (argv.mode) {
+switch (mode) {
+
   case 'FORK':
     console.log('CORRIENDO EN MODO FORK');
     myServer.listen(puerto, () => console.log(`Servidor express escuchando en el puerto ${puerto} - PID WORKER ${process.pid}`));
     break;
+
   case 'CLUSTER':
     console.log('CORRIENDO EN MODO CLUSTER');
     if (cluster.isMaster) {
@@ -42,8 +43,5 @@ switch (argv.mode) {
     
     }
   break;
-  default:
-    console.log('CORRIENDO EN MODO DEFAULT FORK');
-    myServer.listen(puerto, () => console.log(`Servidor express escuchando en el puerto ${puerto} - PID WORKER ${process.pid}`));
-    break;
+  
 }

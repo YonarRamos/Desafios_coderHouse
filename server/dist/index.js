@@ -12,11 +12,8 @@ var _server = require("./services/server");
 
 var _minimist = _interopRequireDefault(require("minimist"));
 
-var puerto = _config["default"].PORT; //Obtenemos los argumentos, los parseamos y eliminamos los 2 primeros que se crean por defecto
-
-var argv = (0, _minimist["default"])(process.argv);
-console.log('Argumentos:', process.argv);
-console.log('minimist:', JSON.stringify(argv)); //Obtengo el numero de nucleos disponibles en mi PC
+var puerto = _config["default"].PORT;
+var mode = _config["default"].MODE; //Obtengo el numero de nucleos disponibles en mi PC
 
 var numCPUs = _os["default"].cpus().length;
 /* --------------------------------------------------------------------------- */
@@ -29,7 +26,7 @@ var numCPUs = _os["default"].cpus().length;
  */
 
 
-switch (argv.mode) {
+switch (mode) {
   case 'FORK':
     console.log('CORRIENDO EN MODO FORK');
 
@@ -61,15 +58,6 @@ switch (argv.mode) {
         return console.log("Servidor express escuchando en el puerto ".concat(puerto, " - PID WORKER ").concat(process.pid));
       });
     }
-
-    break;
-
-  default:
-    console.log('CORRIENDO EN MODO DEFAULT FORK');
-
-    _server.myServer.listen(puerto, function () {
-      return console.log("Servidor express escuchando en el puerto ".concat(puerto, " - PID WORKER ").concat(process.pid));
-    });
 
     break;
 }

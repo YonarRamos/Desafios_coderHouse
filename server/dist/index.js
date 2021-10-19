@@ -2,77 +2,74 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _typeof = require("@babel/runtime/helpers/typeof");
-
-var _express = _interopRequireDefault(require("express"));
-
-var _index = _interopRequireDefault(require("./routes/index.js"));
-
-var _expressSession = _interopRequireDefault(require("express-session"));
-
-var _path = _interopRequireDefault(require("path"));
-
-var http = _interopRequireWildcard(require("http"));
-
-var _ws = _interopRequireDefault(require("./services/ws"));
-
-var _db = _interopRequireDefault(require("./services/db"));
-
-var _connectMongo = _interopRequireDefault(require("connect-mongo"));
-
-var _auth = _interopRequireDefault(require("./middleware/auth"));
-
 var _config = _interopRequireDefault(require("./utils/config"));
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+var _cluster = _interopRequireDefault(require("cluster"));
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _os = _interopRequireDefault(require("os"));
 
-var cors = require('cors');
+var _server = require("./services/server");
 
-require('dotenv').config();
+var _minimist = _interopRequireDefault(require("minimist"));
 
-var mongoUrl = "mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority";
-var advancedOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-};
-var app = (0, _express["default"])();
-app.use(cors());
-var myServer = http.Server(app);
-var puerto = _config["default"].PORT;
+var puerto = _config["default"].PORT; //Obtenemos los argumentos, los parseamos y eliminamos los 2 primeros que se crean por defecto
 
-var publicPath = _path["default"].resolve(__dirname, '../public');
+var argv = (0, _minimist["default"])(process.argv);
+console.log('Argumentos:', process.argv);
+console.log('minimist:', JSON.stringify(argv)); //Obtengo el numero de nucleos disponibles en mi PC
 
-_db["default"].init();
+var numCPUs = _os["default"].cpus().length;
+/* --------------------------------------------------------------------------- */
 
-var StoreOptions = {
-  store: _connectMongo["default"].create({
-    mongoUrl: mongoUrl,
-    mongoOptions: advancedOptions
-  }),
-  secret: 'mySecretKey',
-  resave: false,
-  saveUninitialized: false,
-  rolling: true,
-  expires: 60000,
-  cookie: {
-    maxAge: 60000
-  }
-};
-app.use((0, _expressSession["default"])(StoreOptions)); //Inicializamos passport
+/* MASTER */
 
-app.use(_auth["default"].initialize());
-app.use(_auth["default"].session());
-app.use(_express["default"].json());
-app.use(_express["default"].urlencoded({
-  extended: true
-}));
-app.use(_express["default"]["static"](publicPath)); //inicializamos socket
+/**
+ * isMaster vs isPrimary
+ * https://stackoverflow.com/questions/68978929/why-is-nodejs-cluster-module-not-working
+ */
 
-var socket = new _ws["default"](myServer);
-socket.connection();
-myServer.listen(puerto, function () {
-  return console.log('Server up en puerto', puerto);
-});
-app.use('/', _index["default"]);
+
+switch (argv.mode) {
+  case 'FORK':
+    console.log('CORRIENDO EN MODO FORK');
+
+    _server.myServer.listen(puerto, function () {
+      return console.log("Servidor express escuchando en el puerto ".concat(puerto, " - PID WORKER ").concat(process.pid));
+    });
+
+    break;
+
+  case 'CLUSTER':
+    console.log('CORRIENDO EN MODO CLUSTER');
+
+    if (_cluster["default"].isMaster) {
+      console.log("NUMERO DE CPUS ===> ".concat(numCPUs));
+      console.log("PID MASTER ".concat(process.pid));
+
+      for (var i = 0; i < numCPUs; i++) {
+        _cluster["default"].fork();
+      }
+
+      _cluster["default"].on('exit', function (worker) {
+        console.log("Worker ".concat(worker.process.pid, " died at ").concat(Date()));
+
+        _cluster["default"].fork();
+      });
+    } else {
+      /* WORKERS */
+      _server.myServer.listen(puerto, function () {
+        return console.log("Servidor express escuchando en el puerto ".concat(puerto, " - PID WORKER ").concat(process.pid));
+      });
+    }
+
+    break;
+
+  default:
+    console.log('CORRIENDO EN MODO DEFAULT FORK');
+
+    _server.myServer.listen(puerto, function () {
+      return console.log("Servidor express escuchando en el puerto ".concat(puerto, " - PID WORKER ").concat(process.pid));
+    });
+
+    break;
+}

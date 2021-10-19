@@ -19,6 +19,8 @@ var _calculo = require("../utils/calculo");
 
 var _child_process = require("child_process");
 
+var _os = _interopRequireDefault(require("os"));
+
 var _path = _interopRequireDefault(require("path"));
 
 var _validationLogin = require("../services/validationLogin");
@@ -42,7 +44,8 @@ router.get('/info', function (req, res) {
     Titulo_proceso: process.title,
     Sistema_operativo: process.platform,
     Uso_memoria: JSON.stringify(process.memoryUsage()),
-    Arguntentos: JSON.stringify(process.argv)
+    Arguntentos: JSON.stringify(process.argv),
+    Nro_procesadores: _os["default"].cpus().length
   });
 });
 router.get('/visitas', function (req, res) {
@@ -60,6 +63,32 @@ router.get('/randoms', function (req, res) {
       resultado: obj
     });
   });
+});
+router.get('/', function (req, res) {
+  res.json({
+    pid: process.pid,
+    msg: 'HOLA'
+  });
+});
+router.get('/slow', function (req, res) {
+  console.log("PID => ".concat(process.pid, " will work slow"));
+  var sum = 0;
+
+  for (var i = 0; i < 6e9; i++) {
+    sum += i;
+  }
+
+  res.json({
+    pid: process.pid,
+    sum: sum
+  });
+});
+router.get('/muerte', function (req, res) {
+  res.json({
+    msg: 'Proceso detenido'
+  });
+  console.log("PID => ".concat(process.pid, " will die"));
+  process.exit(0);
 });
 var _default = router;
 exports["default"] = _default;

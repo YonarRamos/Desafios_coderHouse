@@ -11,5 +11,5 @@ const venvs = {
     FACEBOOK_APP_ID : JSON.stringify(process.argv[3]) || process.env.FACEBOOK_APP_ID,
     FACEBOOK_APP_SECRET : JSON.stringify(process.argv[4]) || process.env.FACEBOOK_APP_SECRET,
 };
-console.log('argv:', Number(process.argv[2]), JSON.stringify(process.argv[3]));
+
 export default venvs;

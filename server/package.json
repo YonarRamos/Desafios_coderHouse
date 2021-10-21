@@ -6,8 +6,8 @@
   "scripts": {
     "transpile": "babel src --out-dir dist",
     "start": "nodemon ./dist/index.js",
-    "prod": "npm run transpile && pm2 start ./dist/index.js --watch",
-    "prod:cluster": "npm run transpile && pm2 start ./dist/index.js -i 4 --watch",
+    "prod": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8081",
+    "prod:cluster": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8082",
     "dev": "npm run transpile && forever ./dist/index.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

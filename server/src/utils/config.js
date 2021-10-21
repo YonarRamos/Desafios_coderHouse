@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import minimist from "minimist";
 dotenv.config();
 
-const argv = minimist(process.argv);
+const argv = minimist(process.argv.slice(2));
 console.log('Argumentos Config:', process.argv);
 console.log('minimist config:', JSON.stringify(argv));
 const venvs = {

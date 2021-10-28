@@ -17,9 +17,7 @@ app.use(cors());
 
 export const myServer = http.Server(app);
 const publicPath = path.resolve(__dirname, '../public');
-
-
-dbService.init();
+//dbService.init();
 
 const StoreOptions = {
   store: MongoStore.create({

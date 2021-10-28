@@ -31,8 +31,7 @@ var scriptPath = _path["default"].resolve(__dirname, '../utils/calculo');
 var router = _express["default"].Router();
 
 var visitas = 0;
-router.use('/productos', _validationLogin.validateLogIn, _productos["default"]); //router.use('/carrito', validateLogIn ,carritoRouter);
-
+router.use('/productos', _validationLogin.validateLogIn, _productos["default"]);
 router.use('/mensajes', _validationLogin.validateLogIn, _mensajes["default"]);
 router.use('/usuarios', _usuarios["default"]); //Desafio 29
 

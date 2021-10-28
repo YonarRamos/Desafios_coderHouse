@@ -13,7 +13,6 @@ import { validateLogIn } from "../services/validationLogin";
 let visitas = 0;
 
 router.use('/productos', validateLogIn , productosRouter);
-//router.use('/carrito', validateLogIn ,carritoRouter);
 router.use('/mensajes', validateLogIn ,mensajesRouter);
 router.use('/usuarios', usuariosRouter);
 
@@ -30,6 +29,7 @@ router.get('/info', ( req, res ) => {
         Nro_procesadores: os.cpus().length
     })
 });
+
 router.get('/visitas', (req, res)=>{
     visitas += 1;
     res.json({

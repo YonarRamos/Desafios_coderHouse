@@ -45,9 +45,8 @@ app.use(cors());
 var myServer = http.Server(app);
 exports.myServer = myServer;
 
-var publicPath = _path["default"].resolve(__dirname, '../public');
+var publicPath = _path["default"].resolve(__dirname, '../public'); //dbService.init();
 
-_db["default"].init();
 
 var StoreOptions = {
   store: _connectMongo["default"].create({

@@ -1,0 +1,64 @@
+
+[2021-10-28T16:05:52.472] [WARN] warningsLogs - Imprimimos Warn
+[2021-10-28T16:18:01.852] [WARN] default - Imprimimos Warn
+[2021-10-28T16:23:10.336] [WARN] default - Imprimimos Warn
+[2021-10-28T16:23:59.837] [WARN] default - Imprimimos Warn
+[2021-10-28T16:24:33.016] [WARN] default - Imprimimos Warn
+[2021-10-28T16:25:31.128] [WARN] default - Imprimimos Warn
+[2021-10-28T16:26:16.958] [WARN] default - Numero de CPUs: {"rss":60956672,"heapTotal":29167616,"heapUsed":27986136,"external":19984386,"arrayBuffers":18376023}
+[2021-10-28T16:26:54.234] [WARN] default - Numero de CPUs: {"rss":61038592,"heapTotal":29167616,"heapUsed":28082648,"external":19984889,"arrayBuffers":18376526}
+[2021-10-28T16:27:02.233] [WARN] default - Numero de CPUs: {"rss":60456960,"heapTotal":29167616,"heapUsed":27497616,"external":19984889,"arrayBuffers":18288722}
+[2021-10-28T16:49:00.696] [WARN] default - Imprimimos Warn
+[2021-10-28T16:50:52.978] [WARN] default - Numero de CPUs: {"rss":59555840,"heapTotal":28905472,"heapUsed":27316368,"external":19884692,"arrayBuffers":18280530}
+[2021-10-28T16:51:15.797] [WARN] default - Numero de CPUs: {"rss":59740160,"heapTotal":28905472,"heapUsed":27488168,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T16:55:40.439] [WARN] default - Imprimimos Warn
+[2021-10-28T16:55:51.961] [WARN] default - Numero de CPUs: {"rss":97792000,"heapTotal":66129920,"heapUsed":27387416,"external":19884692,"arrayBuffers":18280530}
+[2021-10-28T17:00:07.760] [WARN] default - Numero de CPUs: {"rss":60497920,"heapTotal":29167616,"heapUsed":27035360,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:00:17.307] [WARN] default - Numero de CPUs: {"rss":60678144,"heapTotal":29167616,"heapUsed":27216176,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:12:20.433] [WARN] default - Imprimimos Warn
+[2021-10-28T17:12:30.366] [WARN] default - Numero de CPUs: {"rss":95703040,"heapTotal":66392064,"heapUsed":27393648,"external":19884692,"arrayBuffers":18280530}
+[2021-10-28T17:13:27.815] [WARN] default - Numero de CPUs: {"rss":58544128,"heapTotal":29167616,"heapUsed":27154568,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:18:04.046] [WARN] default - Numero de CPUs: {"rss":58650624,"heapTotal":29167616,"heapUsed":27276456,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:18:07.639] [WARN] default - Numero de CPUs: {"rss":58720256,"heapTotal":29167616,"heapUsed":27350312,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:18:08.814] [WARN] default - Numero de CPUs: {"rss":58798080,"heapTotal":29167616,"heapUsed":27427136,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:18:11.882] [WARN] default - Numero de CPUs: {"rss":58863616,"heapTotal":29167616,"heapUsed":27501968,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:18:13.682] [WARN] default - Numero de CPUs: {"rss":58937344,"heapTotal":29167616,"heapUsed":27574280,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:20:39.622] [WARN] default - Numero de CPUs: {"rss":59031552,"heapTotal":29167616,"heapUsed":27670176,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:20:51.764] [WARN] default - Numero de CPUs: {"rss":59113472,"heapTotal":29167616,"heapUsed":27753168,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:03.479] [WARN] default - Numero de CPUs: {"rss":59191296,"heapTotal":29167616,"heapUsed":27834712,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:07.296] [WARN] default - Numero de CPUs: {"rss":59265024,"heapTotal":29167616,"heapUsed":27905488,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:08.425] [WARN] default - Numero de CPUs: {"rss":59330560,"heapTotal":29167616,"heapUsed":27975824,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:08.471] [WARN] default - Numero de CPUs: {"rss":59400192,"heapTotal":29167616,"heapUsed":28045240,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:09.933] [WARN] default - Numero de CPUs: {"rss":58683392,"heapTotal":29167616,"heapUsed":27362080,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:09.955] [WARN] default - Numero de CPUs: {"rss":58753024,"heapTotal":29167616,"heapUsed":27430576,"external":19892924,"arrayBuffers":18288722}
+[2021-10-28T17:21:11.414] [WARN] default - Numero de CPUs: {"rss":58814464,"heapTotal":29167616,"heapUsed":27497880,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:21:20.501] [WARN] default - Numero de CPUs: {"rss":58888192,"heapTotal":29167616,"heapUsed":27573496,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:25:29.312] [WARN] default - Numero de CPUs: {"rss":58978304,"heapTotal":29167616,"heapUsed":27663224,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:25:32.653] [WARN] default - Numero de CPUs: {"rss":59047936,"heapTotal":29167616,"heapUsed":27732520,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:25:34.353] [WARN] default - Numero de CPUs: {"rss":59109376,"heapTotal":29167616,"heapUsed":27802352,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:25:36.530] [WARN] default - Numero de CPUs: {"rss":59174912,"heapTotal":29167616,"heapUsed":27870104,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:25:53.926] [WARN] default - Numero de CPUs: {"rss":59248640,"heapTotal":29167616,"heapUsed":27945408,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:26:59.184] [WARN] default - Numero de CPUs: {"rss":59334656,"heapTotal":29167616,"heapUsed":28030712,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:27:24.933] [WARN] default - Numero de CPUs: {"rss":58724352,"heapTotal":29429760,"heapUsed":27501784,"external":19901116,"arrayBuffers":18288722}
+[2021-10-28T17:27:28.655] [WARN] default - Numero de CPUs: {"rss":58781696,"heapTotal":29429760,"heapUsed":27568088,"external":19901116,"arrayBuffers":18288722}
+[2021-10-28T17:27:30.458] [WARN] default - Numero de CPUs: {"rss":58847232,"heapTotal":29429760,"heapUsed":27634424,"external":19901116,"arrayBuffers":18288722}
+[2021-10-28T17:27:32.160] [WARN] default - Numero de CPUs: {"rss":58916864,"heapTotal":29429760,"heapUsed":27701392,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:28:59.946] [WARN] default - Numero de CPUs: {"rss":58998784,"heapTotal":29429760,"heapUsed":27785456,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:29:04.618] [WARN] default - Numero de CPUs: {"rss":59060224,"heapTotal":29429760,"heapUsed":27852128,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:29:45.690] [WARN] default - Numero de CPUs: {"rss":59138048,"heapTotal":29429760,"heapUsed":27927000,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:31:18.197] [WARN] default - Numero de CPUs: {"rss":59215872,"heapTotal":29429760,"heapUsed":28012136,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:31:52.366] [WARN] default - Numero de CPUs: {"rss":59289600,"heapTotal":29429760,"heapUsed":28087856,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:31:53.488] [WARN] default - Numero de CPUs: {"rss":59351040,"heapTotal":29429760,"heapUsed":28154640,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:32:12.004] [WARN] default - Numero de CPUs: {"rss":59420672,"heapTotal":29429760,"heapUsed":28229368,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:35:48.926] [WARN] default - Numero de CPUs: {"rss":59506688,"heapTotal":29429760,"heapUsed":28313632,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:35:51.098] [WARN] default - Numero de CPUs: {"rss":58904576,"heapTotal":29691904,"heapUsed":27716032,"external":19901116,"arrayBuffers":18288722}
+[2021-10-28T17:35:52.231] [WARN] default - Numero de CPUs: {"rss":58966016,"heapTotal":29691904,"heapUsed":27783144,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:36:27.140] [WARN] default - Numero de CPUs: {"rss":59043840,"heapTotal":29691904,"heapUsed":27858464,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:36:29.096] [WARN] default - Numero de CPUs: {"rss":59109376,"heapTotal":29691904,"heapUsed":27925064,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:36:30.232] [WARN] default - Numero de CPUs: {"rss":59170816,"heapTotal":29691904,"heapUsed":27991984,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:36:32.370] [WARN] default - Numero de CPUs: {"rss":59236352,"heapTotal":29691904,"heapUsed":28058640,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:36:33.613] [WARN] default - Numero de CPUs: {"rss":59301888,"heapTotal":29691904,"heapUsed":28125096,"external":19901116,"arrayBuffers":18296914}
+[2021-10-28T17:46:16.379] [WARN] default - Imprimimos Warn
+[2021-10-28T17:46:27.327] [WARN] default - Numero de CPUs: {"rss":57823232,"heapTotal":28905472,"heapUsed":26768008,"external":19884692,"arrayBuffers":18280530}
+[2021-10-28T17:46:30.539] [WARN] default - Numero de CPUs: {"rss":58003456,"heapTotal":28905472,"heapUsed":26928120,"external":19884732,"arrayBuffers":18280530}
+[2021-10-28T17:46:32.683] [WARN] default - Numero de CPUs: {"rss":58081280,"heapTotal":28905472,"heapUsed":27005016,"external":19884732,"arrayBuffers":18280530}

@@ -13,9 +13,9 @@ var _minimist = _interopRequireDefault(require("minimist"));
 
 _dotenv["default"].config();
 
-var argv = (0, _minimist["default"])(process.argv.slice(2));
-console.log('Argumentos Config:', process.argv);
-console.log('minimist config:', JSON.stringify(argv));
+var argv = (0, _minimist["default"])(process.argv.slice(2)); //console.log('Argumentos Config:', process.argv);
+//console.log('minimist config:', JSON.stringify(argv));
+
 var venvs = {
   MODE: String(argv.mode) || 'FORK',
   PORT: Number(argv.port) || process.env.PORT,

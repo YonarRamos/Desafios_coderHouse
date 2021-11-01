@@ -9,16 +9,10 @@ exports["default"] = void 0;
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _minimist = _interopRequireDefault(require("minimist"));
-
 _dotenv["default"].config();
 
-var argv = (0, _minimist["default"])(process.argv.slice(2));
-console.log('Argumentos Config:', process.argv);
-console.log('minimist config:', JSON.stringify(argv));
 var venvs = {
-  MODE: String(argv.mode) || 'FORK',
-  PORT: Number(argv.port) || process.env.PORT,
+  PORT: process.env.PORT,
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER,
   MONGO_ATLAS_PASSWORD: process.env.MONGO_ATLAS_PASSWORD,
   MONGO_ATLAS_CLUSTER: process.env.MONGO_ATLAS_CLUSTER,

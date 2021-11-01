@@ -38,14 +38,19 @@ router.get('/visitas', (req, res)=>{
 })
     
 router.get('/randoms', (req, res)=> {
-    const cant = req.query.cant || 1000000;
-    const obj = fork(scriptPath);
-    obj.send(['start', cant]);
-    obj.on('message', (obj) => {
-        res.status(200).json({
-          resultado: obj,
-        });
-      });
+    const cant = req.query.cant || 100000;
+    //const obj = fork(scriptPath);
+    //obj.send(['start', cant]);
+    // obj.on('message', (obj) => {
+    //     res.status(200).json({
+    //       resultado: obj,
+    //     });
+    //   });
+    const result = calculo(cant);
+
+    res.status(200).json({
+        result: result
+    })
 });
 
 router.get('/', (req, res) => {

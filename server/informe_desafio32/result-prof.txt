@@ -1,0 +1,37 @@
+Statistical profiling result from result-prof.log, (76455 ticks, 0 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+  75847   99.2%          C:\Windows\SYSTEM32\ntdll.dll
+    595    0.8%          C:\Program Files\nodejs\node.exe
+      5    0.0%          C:\Windows\System32\KERNELBASE.dll
+      3    0.0%          C:\Windows\System32\KERNEL32.DLL
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+      2    0.0%   40.0%  LazyCompile: *resolve path.js:145:10
+      1    0.0%   20.0%  LazyCompile: *serializeInto C:\Users\syste\Desktop\Curso-backend\Desafio_32\server\node_modules\bson\lib\parser\serializer.js:549:23
+      1    0.0%   20.0%  LazyCompile: *readPackageScope internal/modules/cjs/loader.js:276:26
+      1    0.0%   20.0%  LazyCompile: *createError C:\Users\syste\Desktop\Curso-backend\Desafio_32\server\node_modules\http-errors\index.js:48:22
+
+ [C++]:
+   ticks  total  nonlib   name
+
+ [Summary]:
+   ticks  total  nonlib   name
+      5    0.0%  100.0%  JavaScript
+      0    0.0%    0.0%  C++
+     22    0.0%  440.0%  GC
+  76450  100.0%          Shared libraries
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+  75847   99.2%  C:\Windows\SYSTEM32\ntdll.dll
+

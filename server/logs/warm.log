@@ -62,3 +62,4 @@
 [2021-10-28T17:46:27.327] [WARN] default - Numero de CPUs: {"rss":57823232,"heapTotal":28905472,"heapUsed":26768008,"external":19884692,"arrayBuffers":18280530}
 [2021-10-28T17:46:30.539] [WARN] default - Numero de CPUs: {"rss":58003456,"heapTotal":28905472,"heapUsed":26928120,"external":19884732,"arrayBuffers":18280530}
 [2021-10-28T17:46:32.683] [WARN] default - Numero de CPUs: {"rss":58081280,"heapTotal":28905472,"heapUsed":27005016,"external":19884732,"arrayBuffers":18280530}
+[2021-10-29T18:54:05.775] [WARN] default - Imprimimos Warn

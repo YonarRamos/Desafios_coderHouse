@@ -26,9 +26,9 @@ const logger = log4js.getLogger();
 // Log a message
 // logger.trace('Imprimimos Trace');
 // logger.debug('Imprimimos Debug');
-logger.info('Imprimimos Info');
+/* logger.info('Imprimimos Info');
 logger.warn('Imprimimos Warn');
-logger.error('Imprimimos Error');
+logger.error('Imprimimos Error'); */
 //logger.fatal('Imprimimos Fatal');
 
 const app = express();

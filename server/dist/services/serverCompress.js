@@ -63,10 +63,11 @@ var logger = _log4js["default"].getLogger(); // logger.level = 'info';
 // logger.trace('Imprimimos Trace');
 // logger.debug('Imprimimos Debug');
 
-
-logger.info('Imprimimos Info');
+/* logger.info('Imprimimos Info');
 logger.warn('Imprimimos Warn');
-logger.error('Imprimimos Error'); //logger.fatal('Imprimimos Fatal');
+logger.error('Imprimimos Error'); */
+//logger.fatal('Imprimimos Fatal');
+
 
 var app = (0, _express["default"])();
 app.use((0, _compression["default"])());

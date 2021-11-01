@@ -54,13 +54,17 @@ router.get('/visitas', function (req, res) {
   });
 });
 router.get('/randoms', function (req, res) {
-  var cant = req.query.cant || 1000000;
-  var obj = (0, _child_process.fork)(scriptPath);
-  obj.send(['start', cant]);
-  obj.on('message', function (obj) {
-    res.status(200).json({
-      resultado: obj
-    });
+  var cant = req.query.cant || 100000; //const obj = fork(scriptPath);
+  //obj.send(['start', cant]);
+  // obj.on('message', (obj) => {
+  //     res.status(200).json({
+  //       resultado: obj,
+  //     });
+  //   });
+
+  var result = (0, _calculo.calculo)(cant);
+  res.status(200).json({
+    result: result
   });
 });
 router.get('/', function (req, res) {

@@ -18,8 +18,8 @@ var venvs = {
   MONGO_ATLAS_CLUSTER: process.env.MONGO_ATLAS_CLUSTER,
   MONGO_ATLAS_DBNAME: process.env.MONGO_ATLAS_DBNAME,
   MONGO_LOCAL_DBNAME: process.env.MONGO_LOCAL_DBNAME,
-  FACEBOOK_APP_ID: JSON.stringify(process.argv[3]) || process.env.FACEBOOK_APP_ID,
-  FACEBOOK_APP_SECRET: JSON.stringify(process.argv[4]) || process.env.FACEBOOK_APP_SECRET
+  FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
+  FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET
 };
 var _default = venvs;
 exports["default"] = _default;

@@ -6,7 +6,7 @@
   "scripts": {
     "transpile": "babel src --out-dir dist",
     "build": "npm install @babel/runtime@latest && npm install",
-    "start": "npm run build && node dist/index.js",
+    "start": "npm install && node index.js",
     "prod": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8081",
     "prod:cluster": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8082",
     "dev": "npm run transpile && node ./dist/index.js",

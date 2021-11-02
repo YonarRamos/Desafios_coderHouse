@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "transpile": "babel src --out-dir dist",
-    "start": "node ./dist/index.js",
+    "start": "npm run transpile && node ./dist/index.js",
     "prod": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8081",
     "prod:cluster": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8082",
     "dev": "npm run transpile && node ./dist/index.js",

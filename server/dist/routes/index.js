@@ -15,7 +15,7 @@ var _mensajes = _interopRequireDefault(require("./mensajes"));
 
 var _usuarios = _interopRequireDefault(require("./usuarios"));
 
-var _calculo = require("../utils/calculo");
+var _config = _interopRequireDefault(require("../utils/config"));
 
 var _child_process = require("child_process");
 
@@ -66,8 +66,8 @@ router.get('/randoms', function (req, res) {
 });
 router.get('/', function (req, res) {
   res.json({
-    pid: process.pid,
-    msg: 'HOLA'
+    msg: "Hi from port ".concat(_config["default"].PORT),
+    pid: process.pid
   });
 });
 router.get('/slow', function (req, res) {

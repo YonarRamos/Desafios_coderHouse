@@ -3,7 +3,7 @@ import productosRouter from './productos';
 //import carritoRouter from './carrito';
 import mensajesRouter from './mensajes';
 import usuariosRouter from './usuarios';
-import { calculo } from "../utils/calculo";
+import config from "../utils/config";
 import { fork } from 'child_process';
 import os from 'os';
 import path from 'path';
@@ -50,8 +50,8 @@ router.get('/randoms', (req, res)=> {
 
 router.get('/', (req, res) => {
     res.json({
-      pid: process.pid,
-      msg: 'HOLA',
+        msg: `Hi from port ${config.PORT}`,
+        pid: process.pid,
     });
 });
   

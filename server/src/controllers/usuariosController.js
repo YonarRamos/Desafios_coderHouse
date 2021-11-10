@@ -1,6 +1,10 @@
 import session from "express-session";
 import { Usuario } from '../models/usuarios';
-import passport from '../middleware/auth';
+import { EmailService } from "../services/email";
+import { GmailService } from "../services/gmail";
+import { SmsService } from "../services/twilio";
+import Config from "../utils/config";
+import moment from "moment";
 
 class UsuariosClass {
     async get(req, res ) {
@@ -37,9 +41,9 @@ class UsuariosClass {
     }
     
     async add(req, res){
-        const { email, password, nombre, apellido, edad, alias, avatar } = req.body;
-        if( email && password && nombre && apellido && edad && alias && avatar ){
-            const user = { email, password, nombre, apellido, edad, alias, avatar }
+        let { email, password, nombre, apellido, edad, alias, avatar, telefono } = req.body;
+            telefono = `+549${telefono}`
+            const user = { email, password, nombre, apellido, edad, alias, avatar, telefono }
             const newUser = new Usuario(user);
             newUser.save(function (error) {
                 if (error) {
@@ -50,11 +54,6 @@ class UsuariosClass {
                     usuario: newUser
                 });
             });
-        } else {
-            return res.status(400).json({
-                msg: 'Todos los campos son obligatorios'
-            });
-        }
     }
     
     async update(id, user){
@@ -66,19 +65,42 @@ class UsuariosClass {
     }
 
     async login(req, res) {
-        //console.log('it works', req)
+        console.log('Sesion ==== ', req.session)
+        const user = req.user.nombre;
         try {
             if(req.user){
                 res.json({ 
-                    msg: 'Welcome!', 
-                    user: {
-                        name: req.user.displayName,
-                        email: req.user.emails[0].value,
-                        photo: req.user.photos[0].value
-                    }, 
+                    msg: 'Welcome to our store!!', 
                     session: req.session
                 }
             );
+            //Notificando al Admin
+            console.log('Sending email to Admin...');
+            const destination = 'americo.dicki24@ethereal.email';
+            const subject = `Login - ${user} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`;
+            const content = ` <h1> ${user} acaba de iniciar sesión</h1> `;
+    
+            await EmailService.sendEmail(
+                destination,
+                subject,
+                content
+            );
+
+            console.log('Sending Gmail...');
+            const Gdestination = 'ingyonarramos@gmail.com';
+            const Gsubject = `Login - ${user} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`;
+            const Gcontent = ` <h1> ${user} acaba de iniciar sesión</h1> `;
+    
+            const resGmail = await GmailService.sendEmail(
+                Gdestination,
+                Gsubject,
+                Gcontent
+            );
+            console.log('Gmail status:', resGmail);
+
+            console.log('Sending msg to Admin...');
+            const resTwilio = await SmsService.sendMessage( '+541138796141', `${user} acaba de iniciar sesión`);
+            console.log('Msg status:', resTwilio);
             } else {
                 res.json({
                     msg: 'Algo salió mal'

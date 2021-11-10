@@ -40,6 +40,10 @@ var usuarioSchema = new Mongoose.Schema({
   avatar: {
     type: String,
     required: true
+  },
+  telefono: {
+    type: String,
+    required: true
   }
 });
 usuarioSchema.pre('save', /*#__PURE__*/function () {

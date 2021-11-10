@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 const cors = require('cors');
 require('dotenv').config()
 import session from "express-session";
@@ -14,10 +15,11 @@ import router from '../routes/index';
 
 const app = express();
 app.use(cors());
+app.use(compression());
 
 export const myServer = http.Server(app);
 const publicPath = path.resolve(__dirname, '../public');
-//dbService.init();
+dbService.init();
 
 const StoreOptions = {
   store: MongoStore.create({

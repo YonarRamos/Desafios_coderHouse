@@ -11,6 +11,8 @@ exports.myServer = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
+var _compression = _interopRequireDefault(require("compression"));
+
 var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _path = _interopRequireDefault(require("path"));
@@ -42,11 +44,13 @@ var advancedOptions = {
 };
 var app = (0, _express["default"])();
 app.use(cors());
+app.use((0, _compression["default"])());
 var myServer = http.Server(app);
 exports.myServer = myServer;
 
-var publicPath = _path["default"].resolve(__dirname, '../public'); //dbService.init();
+var publicPath = _path["default"].resolve(__dirname, '../public');
 
+_db["default"].init();
 
 var StoreOptions = {
   store: _connectMongo["default"].create({

@@ -9,7 +9,8 @@ const usuarioSchema = new Mongoose.Schema({
   apellido: { type: String, required: true } ,
   edad: { type: Number, required: true } ,
   alias: { type: String, required: true } ,
-  avatar: { type: String, required: true }
+  avatar: { type: String, required: true },
+  telefono: { type: String, required: true },
 });
 
 usuarioSchema.pre('save', async function (next) {

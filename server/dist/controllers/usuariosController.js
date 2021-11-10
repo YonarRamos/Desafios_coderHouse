@@ -19,7 +19,15 @@ var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _usuarios = require("../models/usuarios");
 
-var _auth = _interopRequireDefault(require("../middleware/auth"));
+var _email = require("../services/email");
+
+var _gmail = require("../services/gmail");
+
+var _twilio = require("../services/twilio");
+
+var _config = _interopRequireDefault(require("../utils/config"));
+
+var _moment = _interopRequireDefault(require("moment"));
 
 var UsuariosClass = /*#__PURE__*/function () {
   function UsuariosClass() {
@@ -111,19 +119,14 @@ var UsuariosClass = /*#__PURE__*/function () {
     key: "add",
     value: function () {
       var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-        var _req$body, email, password, nombre, apellido, edad, alias, avatar, user, newUser;
+        var _req$body, email, password, nombre, apellido, edad, alias, avatar, telefono, user, newUser;
 
         return _regenerator["default"].wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _req$body = req.body, email = _req$body.email, password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar;
-
-                if (!(email && password && nombre && apellido && edad && alias && avatar)) {
-                  _context2.next = 7;
-                  break;
-                }
-
+                _req$body = req.body, email = _req$body.email, password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar, telefono = _req$body.telefono;
+                telefono = "+549".concat(telefono);
                 user = {
                   email: email,
                   password: password,
@@ -131,7 +134,8 @@ var UsuariosClass = /*#__PURE__*/function () {
                   apellido: apellido,
                   edad: edad,
                   alias: alias,
-                  avatar: avatar
+                  avatar: avatar,
+                  telefono: telefono
                 };
                 newUser = new _usuarios.Usuario(user);
                 newUser.save(function (error) {
@@ -144,15 +148,8 @@ var UsuariosClass = /*#__PURE__*/function () {
                     usuario: newUser
                   });
                 });
-                _context2.next = 8;
-                break;
 
-              case 7:
-                return _context2.abrupt("return", res.status(400).json({
-                  msg: 'Todos los campos son obligatorios'
-                }));
-
-              case 8:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -226,43 +223,74 @@ var UsuariosClass = /*#__PURE__*/function () {
     key: "login",
     value: function () {
       var _login = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
+        var user, destination, subject, content, Gdestination, Gsubject, Gcontent, resGmail, resTwilio;
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _context5.prev = 0;
+                console.log('Sesion ==== ', req.session);
+                user = req.user.nombre;
+                _context5.prev = 2;
 
-                if (req.user) {
-                  res.json({
-                    msg: 'Welcome!',
-                    user: {
-                      name: req.user.displayName,
-                      email: req.user.emails[0].value,
-                      photo: req.user.photos[0].value
-                    },
-                    session: req.session
-                  });
-                } else {
-                  res.json({
-                    msg: 'Algo salió mal'
-                  });
+                if (!req.user) {
+                  _context5.next = 26;
+                  break;
                 }
 
-                _context5.next = 8;
+                res.json({
+                  msg: 'Welcome to our store!!',
+                  session: req.session
+                }); //Notificando al Admin
+
+                console.log('Sending email to Admin...');
+                destination = 'americo.dicki24@ethereal.email';
+                subject = "Login - ".concat(user, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
+                content = " <h1> ".concat(user, " acaba de iniciar sesi\xF3n</h1> ");
+                _context5.next = 11;
+                return _email.EmailService.sendEmail(destination, subject, content);
+
+              case 11:
+                console.log('Sending Gmail...');
+                Gdestination = 'ingyonarramos@gmail.com';
+                Gsubject = "Login - ".concat(user, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
+                Gcontent = " <h1> ".concat(user, " acaba de iniciar sesi\xF3n</h1> ");
+                _context5.next = 17;
+                return _gmail.GmailService.sendEmail(Gdestination, Gsubject, Gcontent);
+
+              case 17:
+                resGmail = _context5.sent;
+                console.log('Gmail status:', resGmail);
+                console.log('Sending msg to Admin...');
+                _context5.next = 22;
+                return _twilio.SmsService.sendMessage('+541138796141', "".concat(user, " acaba de iniciar sesi\xF3n"));
+
+              case 22:
+                resTwilio = _context5.sent;
+                console.log('Msg status:', resTwilio);
+                _context5.next = 27;
                 break;
 
-              case 4:
-                _context5.prev = 4;
-                _context5.t0 = _context5["catch"](0);
+              case 26:
+                res.json({
+                  msg: 'Algo salió mal'
+                });
+
+              case 27:
+                _context5.next = 33;
+                break;
+
+              case 29:
+                _context5.prev = 29;
+                _context5.t0 = _context5["catch"](2);
                 console.error('LOGIN CONTROLLER ERROR:', _context5.t0);
                 return _context5.abrupt("return", _context5.t0);
 
-              case 8:
+              case 33:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, null, [[0, 4]]);
+        }, _callee5, null, [[2, 29]]);
       }));
 
       function login(_x8, _x9) {

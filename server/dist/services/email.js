@@ -38,6 +38,9 @@ var Email = /*#__PURE__*/function () {
         rejectUnauthorized: false
       }
     });
+    this.transporter.verify().then(function () {
+      return console.log('READY To Send Etheral email');
+    });
   }
 
   (0, _createClass2["default"])(Email, [{

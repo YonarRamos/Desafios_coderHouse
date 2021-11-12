@@ -11,17 +11,21 @@ const strategyOptions = {
 };
 
 const loginFunc = async (req, email, password, done) => {
-  const user = await Usuario.findOne({ email });
-
-  if (!user) {
-    return done(null, false, { msg: 'User does not exist' });
+  console.log('Validando usuario:', email, '==>', password, '==>', Usuario);
+  try {
+    const user = await Usuario.findOne({ email });
+    if (!user) {
+      return done(null, false, { msg: 'User does not exist' });
+    }
+    if (!user.isValidPassword(password)) {
+      console.log('Password is not valid.')
+      return done(null, false, { msg: 'Password is not valid.' });
+    }
+    console.log('SALIO TODO BIEN');
+    return done(null, user);   
+  } catch (error) {
+    console.log('LoginFuncERROR:', error);
   }
-  if (!user.isValidPassword(password)) {
-    console.log('Password is not valid.')
-    return done(null, false, { msg: 'Password is not valid.' });
-  }
-  console.log('SALIO TODO BIEN');
-  return done(null, user);
 };
 
 const signUpFunc = async (req, email, password, done) => {

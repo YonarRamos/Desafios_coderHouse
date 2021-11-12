@@ -34,7 +34,7 @@ var loginFunc = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            console.log('SALIO TODO BIEN');
+            console.log('SALIO TODO BIEN', _usuarios.UserModel);
             /*   console.log(accessToken);
               console.log(refreshToken); */
 

@@ -17,7 +17,7 @@ const loginFunc = async (
   done
 ) => {
   try {
-    console.log('SALIO TODO BIEN');
+    console.log('SALIO TODO BIEN',UserModel);
     /*   console.log(accessToken);
       console.log(refreshToken); */
       const user = profile;

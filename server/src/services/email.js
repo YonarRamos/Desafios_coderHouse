@@ -21,6 +21,8 @@ class Email {
         rejectUnauthorized: false
     },
     });
+
+    this.transporter.verify().then(() => console.log('READY To Send Etheral email'));
   }
 
   async sendEmail( dest, subject, content ) {

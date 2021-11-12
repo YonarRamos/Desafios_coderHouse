@@ -141,7 +141,6 @@ var UsuariosClass = /*#__PURE__*/function () {
                 newUser.save(function (error) {
                   if (error) {
                     console.error(error);
-                    return handleError(err);
                   }
 
                   return res.status(200).json({

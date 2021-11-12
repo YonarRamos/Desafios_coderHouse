@@ -29,4 +29,4 @@ usuarioSchema.methods.isValidPassword = async function (password) {
 
 const Usuario = Mongoose.model(usuariosCollection, usuarioSchema);
 
-module.exports ={  usuarioSchema, Usuario } ;
+module.exports = { usuarioSchema, Usuario };

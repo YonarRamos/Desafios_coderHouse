@@ -13,9 +13,10 @@ class DbServiceClass {
     }
   }
 
-  init(){
-    Mongoose.connect(`mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`);
-    console.log('MONGO CONNECTED');
+  async init(){
+    await Mongoose.connect(`mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`)
+    .then((res)=> console.log('MONGO CONNECTED ==>', res))
+    .catch((error)=> console.log('MONGOOSE_ERROR:', error));
   }
 } 
 

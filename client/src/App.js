@@ -3,7 +3,7 @@ import React, { Fragment, useState } from "react";
 import { Redirect } from 'react-router'
 import Nav from "./components/Navbar";
 import Chat from "./components/Chat";
-import Login from "./components/Login";
+import Login from "./components/Login.jsx";
 import Registrar from "./components/Registrar";
 import Home from "./components/Home";
 import FormularioProductos from "./components/FormularioProductos";
@@ -29,9 +29,9 @@ function App() {
 
   return (
     <Router>
-      <div className="App">        
+      <div className="App">
         <Switch>
-          <Route exact path='/login' component={Login} getLoggedUser = { getLoggedUser }></Route>
+          <Route exact path='/login' component={Login} getLoggedUser = { getLoggedUser }></Route>   
           <Route exact path='/registrar' component={Registrar}></Route>
           <Fragment>
             <Nav/>

@@ -33,16 +33,18 @@ var loginFunc = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            console.log('Validando usuario:', email, '==>', password, '==>', _usuarios.Usuario);
+            _context.prev = 1;
+            _context.next = 4;
             return _usuarios.Usuario.findOne({
               email: email
             });
 
-          case 2:
+          case 4:
             user = _context.sent;
 
             if (user) {
-              _context.next = 5;
+              _context.next = 7;
               break;
             }
 
@@ -50,9 +52,9 @@ var loginFunc = /*#__PURE__*/function () {
               msg: 'User does not exist'
             }));
 
-          case 5:
+          case 7:
             if (user.isValidPassword(password)) {
-              _context.next = 8;
+              _context.next = 10;
               break;
             }
 
@@ -61,16 +63,21 @@ var loginFunc = /*#__PURE__*/function () {
               msg: 'Password is not valid.'
             }));
 
-          case 8:
+          case 10:
             console.log('SALIO TODO BIEN');
             return _context.abrupt("return", done(null, user));
 
-          case 10:
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](1);
+            console.log('LoginFuncERROR:', _context.t0);
+
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[1, 14]]);
   }));
 
   return function loginFunc(_x, _x2, _x3, _x4) {

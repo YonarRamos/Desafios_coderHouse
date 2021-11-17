@@ -4,6 +4,7 @@ import { EmailService } from "../services/email";
 import { GmailService } from "../services/gmail";
 import { SmsService } from "../services/twilio";
 import Config from "../utils/config";
+import { carritoController } from "./carritoController";
 import moment from "moment";
 
 class UsuariosClass {
@@ -45,13 +46,97 @@ class UsuariosClass {
             telefono = `+549${telefono}`
             const user = { email, password, nombre, apellido, edad, alias, avatar, telefono }
             const newUser = new Usuario(user);
-            newUser.save(function (error) {
+            newUser.save(async function (error) {
                 if (error) {
                     console.error(error)
+                } else{              
+                    res.status(200).json({
+                        usuario: newUser
+                    });
+                    //Creando carrito
+                    carritoController.add(newUser._id);
+                    
+                    //Notificando al Admin
+                    /* ETHERAL */
+                    console.log('Sending email to Admin...');
+                    const destination = 'americo.dicki24@ethereal.email';
+                    const subject = `Nuevo Registro - ${user.nombre} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`;
+                    const content = ` 
+                    <h3> Nuevo registro</h3> 
+                    <ul>
+                        <li>
+                            Nombre: ${user.nombre}
+                        </li>
+                        <li>
+                            Apellido: ${user.apellido}
+                        </li>
+                        <li>
+                            Teléfono: ${user.telefono}
+                        </li>
+                        <li>
+                            Apellido: ${user.apellido}
+                        </li>
+                        <li>
+                            Edad: ${user.edad}
+                        </li>
+                        <li>
+                            Alias: ${user.alias}
+                        </li>
+                        <li>
+                            Email: ${user.email}
+                        </li>
+                    </ul>                   
+                    `;
+
+                    const resEtheral = await EmailService.sendEmail(
+                        destination,
+                        subject,
+                        content
+                    );
+                    console.log('Email enviado!!');
+                    /* GMAIL */
+                    console.log('Sending Gmail...');
+                    const Gdestination = 'ingyonarramos@gmail.com';
+                    const Gsubject = `Nuevo Registro - ${user.nombre} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`;
+                    const Gcontent = `
+                    <h3> Nuevo registro</h3> 
+                    <ul>
+                        <li>
+                            Nombre: ${user.nombre}
+                        </li>
+                        <li>
+                            Apellido: ${user.apellido}
+                        </li>
+                        <li>
+                            Teléfono: ${user.telefono}
+                        </li>
+                        <li>
+                            Apellido: ${user.apellido}
+                        </li>
+                        <li>
+                            Edad: ${user.edad}
+                        </li>
+                        <li>
+                            Alias: ${user.alias}
+                        </li>
+                        <li>
+                            Email: ${user.email}
+                        </li>
+                    </ul>                    
+                    `;
+
+                    const resGmail = await GmailService.sendEmail(
+                        Gdestination,
+                        Gsubject,
+                        Gcontent
+                    );
+                    console.log('Gmail enviado!!');
+
+                    /* TWILIO */
+                    console.log('Sending msg to Admin...');
+                    const resTwilio = await SmsService.sendMessage( '+541138796141', `Nuevo Registro ${user.nombre}`);
+                    console.log('Msg twilio enviado!!');
                 }
-                return res.status(200).json({
-                    usuario: newUser
-                });
             });
     }
     
@@ -64,45 +149,21 @@ class UsuariosClass {
     }
 
     async login(req, res) {
-        console.log('Sesion ==== ', req.session)
+        console.log('Sesion ==== ', req.sessionID)
         const user = req.user.nombre;
         try {
             if(req.user){
-                res.json({ 
-                    msg: 'Welcome to our store!!', 
-                    session: req.session
-                }
-            );
-            //Notificando al Admin
-            console.log('Sending email to Admin...');
-            const destination = 'americo.dicki24@ethereal.email';
-            const subject = `Login - ${user} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`;
-            const content = ` <h1> ${user} acaba de iniciar sesión</h1> `;
-    
-            await EmailService.sendEmail(
-                destination,
-                subject,
-                content
-            );
-
-            console.log('Sending Gmail...');
-            const Gdestination = 'ingyonarramos@gmail.com';
-            const Gsubject = `Login - ${user} - ${moment().format('YYYY-MM-DD HH:mm:ss')}`;
-            const Gcontent = ` <h1> ${user} acaba de iniciar sesión</h1> `;
-    
-            const resGmail = await GmailService.sendEmail(
-                Gdestination,
-                Gsubject,
-                Gcontent
-            );
-            console.log('Gmail status:', resGmail);
-
-            console.log('Sending msg to Admin...');
-            const resTwilio = await SmsService.sendMessage( '+541138796141', `${user} acaba de iniciar sesión`);
-            console.log('Msg status:', resTwilio);
+                    res.json({ 
+                        msg: 'Welcome to our store!!', 
+                        session: {
+                            session : req.session,
+                            user: req.user
+                        }
+                    }
+                );
             } else {
                 res.json({
-                    msg: 'Algo salió mal'
+                    msg: 'Datos incorrectos'
                 })
             }
         } catch (error) {

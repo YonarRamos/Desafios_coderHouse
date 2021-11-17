@@ -3,18 +3,18 @@ import compression from 'compression';
 const cors = require('cors');
 require('dotenv').config()
 import session from "express-session";
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import * as http from 'http';
 import ws from "../services/ws";
 import dbService from "../services/db";
 import MongoStore from 'connect-mongo';
-const mongoUrl = `mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`;
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 import passport from '../middleware/auth';
 import router from '../routes/index';
 
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
 app.use(compression());
 
 export const myServer = http.Server(app);
@@ -23,19 +23,18 @@ dbService.init();
 
 const StoreOptions = {
   store: MongoStore.create({
-    mongoUrl: mongoUrl,
+    mongoUrl: dbService.srv,
     mongoOptions: advancedOptions,
   }),
   secret: 'mySecretKey',
   resave: false,
   saveUninitialized: false ,
-  rolling: true,
-  expires: 60000,
-  cookie: {
-      maxAge: 60000
-  },
+/*   cookie: {
+      maxAge: 600000
+  }, */
 };
 
+app.use(cookieParser());
 app.use(session(StoreOptions));
 
 //Inicializamos passport

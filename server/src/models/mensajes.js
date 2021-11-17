@@ -1,4 +1,4 @@
-const Mongoose = require('mongoose');
+/* const Mongoose = require('mongoose');
 const { usuarioSchema } = require('./usuarios');
 const carritosCollection = 'carritos';
 
@@ -12,4 +12,4 @@ const mensajesSchema = new Mongoose.Schema({
 
 const mensajes = Mongoose.model(carritosCollection, mensajesSchema);
 
-module.exports = mensajes ;
+module.exports = mensajes ; */

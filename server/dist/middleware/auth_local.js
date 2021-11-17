@@ -179,7 +179,7 @@ _passport["default"].deserializeUser(function (userId, done) {
 
 var isLoggedIn = function isLoggedIn(req, res, done) {
   if (!req.user) return res.status(401).json({
-    msg: 'Unathorized'
+    msg: 'No estas autorizado!!'
   });
   done();
 };

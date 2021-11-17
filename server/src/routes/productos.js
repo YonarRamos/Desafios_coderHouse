@@ -7,7 +7,7 @@ const router = Router();
 
 //router.get('/nuevo', productosController.nuevoForm);
 
-// router.get('/listar', productosController.listar);
+ router.get('/listar', productosController.listar);
 
 // router.get('/listar/:id', productosController.listarById);
 

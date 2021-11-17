@@ -1,5 +1,6 @@
 const Mongoose = require('mongoose');
 const db = 'ecommerce';
+import config from "../utils/config";
 require('dotenv').config()
 
 class DbServiceClass {
@@ -8,14 +9,14 @@ class DbServiceClass {
       this.srv = `mongodb://localhost:27017/${db}`;
     }
     else{
-      this.srv = `mongodb://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASSWORD}@${process.env.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${process.env.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`;
-      console.log('MONGO ATLAS', `${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASSWORD}@${process.env.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${process.env.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`);
+      this.srv = `mongodb+srv://${config.MONGO_ATLAS_USER}:${config.MONGO_ATLAS_PASSWORD}@${config.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${config.MONGO_LOCAL_DBNAME}?retryWrites=true&w=majority`;
+      console.log('MONGO ATLAS', this.srv);
     }
   }
 
   async init(){
-    await Mongoose.connect(`mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority`)
-    .then((res)=> console.log('MONGO CONNECTED ==>', res))
+    await Mongoose.connect(this.srv)
+    .then((res)=> console.log('MONGO CONNECTED!!'))
     .catch((error)=> console.log('MONGOOSE_ERROR:', error));
   }
 } 

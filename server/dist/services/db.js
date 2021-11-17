@@ -10,6 +10,8 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
+var _config = _interopRequireDefault(require("../utils/config"));
+
 var Mongoose = require('mongoose');
 
 var db = 'ecommerce';
@@ -23,8 +25,8 @@ var DbServiceClass = /*#__PURE__*/function () {
     if (false) {
       this.srv = "mongodb://localhost:27017/".concat(db);
     } else {
-      this.srv = "mongodb://".concat(process.env.MONGO_ATLAS_USER, ":").concat(process.env.MONGO_ATLAS_PASSWORD, "@").concat(process.env.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(process.env.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority");
-      console.log('MONGO ATLAS', "".concat(process.env.MONGO_ATLAS_USER, ":").concat(process.env.MONGO_ATLAS_PASSWORD, "@").concat(process.env.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(process.env.MONGO_ATLAS_DBNAME, "?retryWrites=true&w=majority"));
+      this.srv = "mongodb+srv://".concat(_config["default"].MONGO_ATLAS_USER, ":").concat(_config["default"].MONGO_ATLAS_PASSWORD, "@").concat(_config["default"].MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(_config["default"].MONGO_LOCAL_DBNAME, "?retryWrites=true&w=majority");
+      console.log('MONGO ATLAS', this.srv);
     }
   }
 
@@ -37,8 +39,8 @@ var DbServiceClass = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Mongoose.connect("mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority").then(function (res) {
-                  return console.log('MONGO CONNECTED ==>', res);
+                return Mongoose.connect(this.srv).then(function (res) {
+                  return console.log('MONGO CONNECTED!!');
                 })["catch"](function (error) {
                   return console.log('MONGOOSE_ERROR:', error);
                 });
@@ -48,7 +50,7 @@ var DbServiceClass = /*#__PURE__*/function () {
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, this);
       }));
 
       function init() {

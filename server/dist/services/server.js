@@ -15,6 +15,8 @@ var _compression = _interopRequireDefault(require("compression"));
 
 var _expressSession = _interopRequireDefault(require("express-session"));
 
+var _cookieParser = _interopRequireDefault(require("cookie-parser"));
+
 var _path = _interopRequireDefault(require("path"));
 
 var http = _interopRequireWildcard(require("http"));
@@ -37,13 +39,15 @@ var cors = require('cors');
 
 require('dotenv').config();
 
-var mongoUrl = "mongodb+srv://root:root@cluster0.9xjxp.mongodb.net/ecommerce?retryWrites=true&w=majority";
 var advancedOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
 var app = (0, _express["default"])();
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: "http://localhost:8080"
+}));
 app.use((0, _compression["default"])());
 var myServer = http.Server(app);
 exports.myServer = myServer;
@@ -54,18 +58,18 @@ _db["default"].init();
 
 var StoreOptions = {
   store: _connectMongo["default"].create({
-    mongoUrl: mongoUrl,
+    mongoUrl: _db["default"].srv,
     mongoOptions: advancedOptions
   }),
   secret: 'mySecretKey',
   resave: false,
-  saveUninitialized: false,
-  rolling: true,
-  expires: 60000,
-  cookie: {
-    maxAge: 60000
-  }
+  saveUninitialized: false
+  /*   cookie: {
+        maxAge: 600000
+    }, */
+
 };
+app.use((0, _cookieParser["default"])());
 app.use((0, _expressSession["default"])(StoreOptions)); //Inicializamos passport
 
 app.use(_auth["default"].initialize());

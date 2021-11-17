@@ -5,9 +5,16 @@ var Mongoose = require('mongoose');
 var _require = require('./productos'),
     productoSchema = _require.productoSchema;
 
-var carritossCollection = 'carritos';
+var carritosCollection = 'carritos';
 var carritoSchema = new Mongoose.Schema({
-  carrito: [productoSchema]
+  usuario_id: {
+    type: String,
+    required: true
+  },
+  productos: [productoSchema]
 });
-var carrito = Mongoose.model(carritossCollection, carritoSchema);
-module.exports = carrito;
+var Carrito = Mongoose.model(carritosCollection, carritoSchema);
+module.exports = {
+  carritoSchema: carritoSchema,
+  Carrito: Carrito
+};

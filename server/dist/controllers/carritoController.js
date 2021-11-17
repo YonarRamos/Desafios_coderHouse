@@ -2,65 +2,216 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _Carrito = _interopRequireDefault(require("../models/Carrito"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.carritoController = void 0;
 
-var carritoController = {};
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-carritoController.listarById = function (req, res) {
-  try {
-    var id = req.params.id;
-    var cart = new _Carrito["default"]();
-    var carrito = cart.showOne(id);
-    res.json(carrito); // res.render('index', {productos})
-  } catch (error) {
-    console.log('Listar Error:', error);
-    return res.status(404).json({
-      msg: "El carrito indicado no existe"
-    });
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _carrito = require("../models/carrito.js");
+
+var CartClass = /*#__PURE__*/function () {
+  function CartClass() {
+    (0, _classCallCheck2["default"])(this, CartClass);
   }
-};
 
-carritoController.agregar = function (req, res) {
-  try {
-    var id_producto = req.params.id_producto;
-    var car = new _Carrito["default"]();
-    car.add(id_producto);
-    res.json({
-      msg: "Producto ".concat(id_producto, " agregado al carrito ")
-    });
-  } catch (error) {
-    console.log('POST Error:', error);
-    return res.status(400).json({
-      msg: "Error al agregar producto al carrito:".concat(error)
-    });
-  }
-};
+  (0, _createClass2["default"])(CartClass, [{
+    key: "get",
+    value: function () {
+      var _get = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
+        var usuario_id, resCarrito;
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                usuario_id = req.params.usuario_id;
+                _context.next = 3;
+                return _carrito.Carrito.findOne({
+                  usuario_id: usuario_id
+                });
 
-carritoController.borrar = function (req, res) {
-  try {
-    var id = req.params.id_producto;
-    var car = new _Carrito["default"]();
-    var carrito = car["delete"](id);
-    res.json({
-      msg: "Producto ".concat(id, " eliminado del carrito."),
-      carrito: carrito
-    });
-  } catch (error) {
-    console.log('Delete:', error);
-    return res.json({
-      msg: "Error al borrar producto del carrito:".concat(error)
-    });
-  }
-};
-/*productosController.nuevoForm = (req, res) => {
-  try {
-    res.render('nuevoForm')
-  } catch (error) {
-    console.log('POST Error:', error)
-  }
-}
+              case 3:
+                resCarrito = _context.sent;
 
-*/
+                if (resCarrito) {
+                  _context.next = 8;
+                  break;
+                }
 
+                return _context.abrupt("return", res.status(404).json({
+                  msg: 'Carrito no existe'
+                }));
 
-module.exports = carritoController;
+              case 8:
+                res.json(resCarrito);
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function get(_x, _x2) {
+        return _get.apply(this, arguments);
+      }
+
+      return get;
+    }()
+  }, {
+    key: "add",
+    value: function () {
+      var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
+        var usuario_id, data, newCart;
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                usuario_id = req.body.usuario_id;
+
+                if (usuario_id) {
+                  _context3.next = 3;
+                  break;
+                }
+
+                return _context3.abrupt("return", res.status(400).json({
+                  msg: 'missing usuario_id'
+                }));
+
+              case 3:
+                ;
+                data = {
+                  usuario_id: usuario_id,
+                  productos: []
+                };
+                newCart = new _carrito.Carrito(data);
+                newCart.save( /*#__PURE__*/function () {
+                  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(error) {
+                    return _regenerator["default"].wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            if (error) {
+                              console.error(error);
+                            } else {
+                              res.json({
+                                msg: "Se ha creado un nuevo carrito para el usuario: ".concat(usuario_id)
+                              });
+                            }
+
+                          case 1:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
+
+                  return function (_x5) {
+                    return _ref.apply(this, arguments);
+                  };
+                }());
+
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function add(_x3, _x4) {
+        return _add.apply(this, arguments);
+      }
+
+      return add;
+    }()
+  }, {
+    key: "apdate",
+    value: function () {
+      var _apdate = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
+        var _req$body, usuario_id, productos, data;
+
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _req$body = req.body, usuario_id = _req$body.usuario_id, productos = _req$body.productos;
+
+                if (!(!usuario_id || !productos)) {
+                  _context4.next = 3;
+                  break;
+                }
+
+                return _context4.abrupt("return", res.status(400).json({
+                  msg: 'missing Body fields'
+                }));
+
+              case 3:
+                data = {
+                  usuario_id: usuario_id,
+                  productos: productos
+                };
+                console.log('update', data);
+                _context4.next = 7;
+                return _carrito.Carrito.findOneAndUpdate({
+                  usuario_id: usuario_id
+                }, data, {
+                  "new": true
+                }).then(function (producto) {
+                  res.json({
+                    msg: 'Carrito Actualizado',
+                    producto: producto
+                  });
+                });
+
+              case 7:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function apdate(_x6, _x7) {
+        return _apdate.apply(this, arguments);
+      }
+
+      return apdate;
+    }()
+    /*   async borrar(req, res) {
+        try {
+          const { id } = req.params;   
+          await productos.remove({_id : id}).then((producto)=>{
+              res.json({ 
+              msg: 'Producto eliminado',
+              data: producto
+            });
+          });
+    
+    
+        } catch (error) {
+          res.json({
+            msg: 'Error al eliminar producto',
+          });      
+        }
+        
+    
+    
+    
+      } */
+
+  }]);
+  return CartClass;
+}();
+
+var carritoController = new CartClass();
+exports.carritoController = carritoController;

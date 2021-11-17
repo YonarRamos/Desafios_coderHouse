@@ -1,11 +1,12 @@
 const Mongoose = require('mongoose');
 const { productoSchema } = require('./productos')
-const carritossCollection = 'carritos';
+const carritosCollection = 'carritos';
 
 const carritoSchema = new Mongoose.Schema({
-  carrito:  [ productoSchema ]
+    usuario_id:{ type: String, required: true },
+    productos:[ productoSchema ]
 });
 
-const carrito = Mongoose.model(carritossCollection, carritoSchema);
+const Carrito = Mongoose.model(carritosCollection, carritoSchema);
 
-module.exports = carrito ;
+module.exports = { carritoSchema, Carrito };

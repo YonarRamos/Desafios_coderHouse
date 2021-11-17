@@ -35,6 +35,10 @@ var productoSchema = new Mongoose.Schema({
   thumbnail: {
     type: String,
     required: true
+  },
+  cantidad: {
+    type: Number,
+    "default": 0
   }
 });
 var Productos = new Mongoose.model(productosCollection, productoSchema);

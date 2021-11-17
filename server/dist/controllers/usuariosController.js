@@ -27,6 +27,8 @@ var _twilio = require("../services/twilio");
 
 var _config = _interopRequireDefault(require("../utils/config"));
 
+var _carritoController = require("./carritoController");
+
 var _moment = _interopRequireDefault(require("moment"));
 
 var UsuariosClass = /*#__PURE__*/function () {
@@ -118,12 +120,12 @@ var UsuariosClass = /*#__PURE__*/function () {
   }, {
     key: "add",
     value: function () {
-      var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
+      var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
         var _req$body, email, password, nombre, apellido, edad, alias, avatar, telefono, user, newUser;
 
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
+        return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 _req$body = req.body, email = _req$body.email, password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar, telefono = _req$body.telefono;
                 telefono = "+549".concat(telefono);
@@ -138,22 +140,83 @@ var UsuariosClass = /*#__PURE__*/function () {
                   telefono: telefono
                 };
                 newUser = new _usuarios.Usuario(user);
-                newUser.save(function (error) {
-                  if (error) {
-                    console.error(error);
-                  }
+                newUser.save( /*#__PURE__*/function () {
+                  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(error) {
+                    var destination, subject, content, resEtheral, Gdestination, Gsubject, Gcontent, resGmail, resTwilio;
+                    return _regenerator["default"].wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            if (!error) {
+                              _context2.next = 4;
+                              break;
+                            }
 
-                  return res.status(200).json({
-                    usuario: newUser
-                  });
-                });
+                            console.error(error);
+                            _context2.next = 27;
+                            break;
+
+                          case 4:
+                            res.status(200).json({
+                              usuario: newUser
+                            }); //Creando carrito
+
+                            _carritoController.carritoController.add(newUser._id); //Notificando al Admin
+
+                            /* ETHERAL */
+
+
+                            console.log('Sending email to Admin...');
+                            destination = 'americo.dicki24@ethereal.email';
+                            subject = "Nuevo Registro - ".concat(user.nombre, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
+                            content = " \n                    <h3> Nuevo registro</h3> \n                    <ul>\n                        <li>\n                            Nombre: ".concat(user.nombre, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Tel\xE9fono: ").concat(user.telefono, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Edad: ").concat(user.edad, "\n                        </li>\n                        <li>\n                            Alias: ").concat(user.alias, "\n                        </li>\n                        <li>\n                            Email: ").concat(user.email, "\n                        </li>\n                    </ul>                   \n                    ");
+                            _context2.next = 12;
+                            return _email.EmailService.sendEmail(destination, subject, content);
+
+                          case 12:
+                            resEtheral = _context2.sent;
+                            console.log('Email enviado!!');
+                            /* GMAIL */
+
+                            console.log('Sending Gmail...');
+                            Gdestination = 'ingyonarramos@gmail.com';
+                            Gsubject = "Nuevo Registro - ".concat(user.nombre, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
+                            Gcontent = "\n                    <h3> Nuevo registro</h3> \n                    <ul>\n                        <li>\n                            Nombre: ".concat(user.nombre, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Tel\xE9fono: ").concat(user.telefono, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Edad: ").concat(user.edad, "\n                        </li>\n                        <li>\n                            Alias: ").concat(user.alias, "\n                        </li>\n                        <li>\n                            Email: ").concat(user.email, "\n                        </li>\n                    </ul>                    \n                    ");
+                            _context2.next = 20;
+                            return _gmail.GmailService.sendEmail(Gdestination, Gsubject, Gcontent);
+
+                          case 20:
+                            resGmail = _context2.sent;
+                            console.log('Gmail enviado!!');
+                            /* TWILIO */
+
+                            console.log('Sending msg to Admin...');
+                            _context2.next = 25;
+                            return _twilio.SmsService.sendMessage('+541138796141', "Nuevo Registro ".concat(user.nombre));
+
+                          case 25:
+                            resTwilio = _context2.sent;
+                            console.log('Msg twilio enviado!!');
+
+                          case 27:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
+
+                  return function (_x5) {
+                    return _ref.apply(this, arguments);
+                  };
+                }());
 
               case 5:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2);
+        }, _callee3);
       }));
 
       function add(_x3, _x4) {
@@ -165,41 +228,13 @@ var UsuariosClass = /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function () {
-      var _update = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(id, user) {
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _context3.next = 2;
-                return _usuarios.Usuario.findByIdAndUpdate(id, user);
-
-              case 2:
-                return _context3.abrupt("return", _context3.sent);
-
-              case 3:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }));
-
-      function update(_x5, _x6) {
-        return _update.apply(this, arguments);
-      }
-
-      return update;
-    }()
-  }, {
-    key: "delete",
-    value: function () {
-      var _delete2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(id) {
+      var _update = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(id, user) {
         return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _usuarios.Usuario.findByIdAndDelete(id);
+                return _usuarios.Usuario.findByIdAndUpdate(id, user);
 
               case 2:
                 return _context4.abrupt("return", _context4.sent);
@@ -212,7 +247,35 @@ var UsuariosClass = /*#__PURE__*/function () {
         }, _callee4);
       }));
 
-      function _delete(_x7) {
+      function update(_x6, _x7) {
+        return _update.apply(this, arguments);
+      }
+
+      return update;
+    }()
+  }, {
+    key: "delete",
+    value: function () {
+      var _delete2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(id) {
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _usuarios.Usuario.findByIdAndDelete(id);
+
+              case 2:
+                return _context5.abrupt("return", _context5.sent);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      function _delete(_x8) {
         return _delete2.apply(this, arguments);
       }
 
@@ -221,78 +284,48 @@ var UsuariosClass = /*#__PURE__*/function () {
   }, {
     key: "login",
     value: function () {
-      var _login = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-        var user, destination, subject, content, Gdestination, Gsubject, Gcontent, resGmail, resTwilio;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
+      var _login = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
+        var user;
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                console.log('Sesion ==== ', req.session);
+                console.log('Sesion ==== ', req.sessionID);
                 user = req.user.nombre;
-                _context5.prev = 2;
+                _context6.prev = 2;
 
-                if (!req.user) {
-                  _context5.next = 26;
-                  break;
+                if (req.user) {
+                  res.json({
+                    msg: 'Welcome to our store!!',
+                    session: {
+                      session: req.session,
+                      user: req.user
+                    }
+                  });
+                } else {
+                  res.json({
+                    msg: 'Datos incorrectos'
+                  });
                 }
 
-                res.json({
-                  msg: 'Welcome to our store!!',
-                  session: req.session
-                }); //Notificando al Admin
-
-                console.log('Sending email to Admin...');
-                destination = 'americo.dicki24@ethereal.email';
-                subject = "Login - ".concat(user, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
-                content = " <h1> ".concat(user, " acaba de iniciar sesi\xF3n</h1> ");
-                _context5.next = 11;
-                return _email.EmailService.sendEmail(destination, subject, content);
-
-              case 11:
-                console.log('Sending Gmail...');
-                Gdestination = 'ingyonarramos@gmail.com';
-                Gsubject = "Login - ".concat(user, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
-                Gcontent = " <h1> ".concat(user, " acaba de iniciar sesi\xF3n</h1> ");
-                _context5.next = 17;
-                return _gmail.GmailService.sendEmail(Gdestination, Gsubject, Gcontent);
-
-              case 17:
-                resGmail = _context5.sent;
-                console.log('Gmail status:', resGmail);
-                console.log('Sending msg to Admin...');
-                _context5.next = 22;
-                return _twilio.SmsService.sendMessage('+541138796141', "".concat(user, " acaba de iniciar sesi\xF3n"));
-
-              case 22:
-                resTwilio = _context5.sent;
-                console.log('Msg status:', resTwilio);
-                _context5.next = 27;
+                _context6.next = 10;
                 break;
 
-              case 26:
-                res.json({
-                  msg: 'Algo salió mal'
-                });
+              case 6:
+                _context6.prev = 6;
+                _context6.t0 = _context6["catch"](2);
+                console.error('LOGIN CONTROLLER ERROR:', _context6.t0);
+                return _context6.abrupt("return", _context6.t0);
 
-              case 27:
-                _context5.next = 33;
-                break;
-
-              case 29:
-                _context5.prev = 29;
-                _context5.t0 = _context5["catch"](2);
-                console.error('LOGIN CONTROLLER ERROR:', _context5.t0);
-                return _context5.abrupt("return", _context5.t0);
-
-              case 33:
+              case 10:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5, null, [[2, 29]]);
+        }, _callee6, null, [[2, 6]]);
       }));
 
-      function login(_x8, _x9) {
+      function login(_x9, _x10) {
         return _login.apply(this, arguments);
       }
 

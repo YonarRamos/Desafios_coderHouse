@@ -7,65 +7,11 @@ import { calculo } from "../utils/calculo";
 import { fork } from 'child_process';
 import os from 'os';
 import path from 'path';
-const scriptPath = path.resolve(__dirname, '../utils/calculo');
-import { EmailService } from '../services/email';
 const router = express.Router();
+import { isLoggedIn } from "../middleware/auth_local";
 
-import { validateLogIn } from "../services/validationLogin";
-let visitas = 0;
-
-router.post('/send-gmail', async (req, res) => {
-    const { body } = req;
-  
-    if (!body || !body.dest || !body.subject || !body.content)
-      return res.status(400).json({
-        msg: "mandame en el body los siguientes datos: 'dest', 'subject' y 'content'",
-        body,
-      });
-  
-    const destination = body.dest;
-    const subject = body.subject;
-    const content = body.content;
-  
-    try {
-      const response = await EmailService.sendEmail(
-        destination,
-        subject,
-        content
-      );
-  
-      res.json(response);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
-
-router.post('/send-email', async (req, res) => {
-    console.log('sending email...')
-    const { body } = req;
-  
-    const destination = 'americo.dicki24@ethereal.email';
-    const subject = 'Hola Americo Dicki!';
-    const content = `
-    <h1>HOLAAAA</h1>
-    <p> Te queriamos dar la bienvenida a este mundo de nodemailer</p>
-    `;
-  
-    try {
-      const response = await EmailService.sendEmail(
-        destination,
-        subject,
-        content
-      );
-        console.log(response);
-      res.json(response);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
-
-router.use('/productos', validateLogIn , productosRouter);
-router.use('/mensajes', validateLogIn ,mensajesRouter);
+router.use('/productos' , productosRouter);
+router.use('/mensajes', isLoggedIn ,mensajesRouter);
 router.use('/usuarios', usuariosRouter);
 
 //Desafio 29

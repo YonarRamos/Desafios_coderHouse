@@ -1,69 +1,87 @@
-import Carrito from "../models/Carrito";
-const carritoController = {};
+import { Carrito } from '../models/carrito.js';
 
-carritoController.listarById = (req, res) => {
-  try {
-    const id = req.params.id
-    const cart = new Carrito()
-    const carrito = cart.showOne(id)
-    res.json(
-      carrito
-    )
-    // res.render('index', {productos})
+class CartClass {
+  async get(req, res) {
+    const { usuario_id } = req.params;
+    const resCarrito = await Carrito.findOne({usuario_id});
 
-  } catch (error) {
-    console.log('Listar Error:', error);
+    if (!resCarrito) {
+      return res.status(404).json({
+        msg: 'Carrito no existe',
+      });      
+    }else{
+      res.json(resCarrito);
+    }
+  }
 
-    return res.status(404).json({
-      msg:`El carrito indicado no existe`
+  async add(req, res) {
+    const { usuario_id } = req.body;
+
+    if ( !usuario_id ){
+      return res.status(400).json({
+        msg: 'missing usuario_id',
+      });
+    };
+
+    const data = {
+      usuario_id,
+      productos:[]
+    };
+    const newCart = new Carrito(data)
+    newCart.save(async function (error) {
+        if (error) {
+            console.error(error)
+        } else{
+          res.json({
+            msg:`Se ha creado un nuevo carrito para el usuario: ${usuario_id}`
+          })
+        }
+    });
+
+  }
+
+  async apdate(req, res) {
+    const { usuario_id, productos } = req.body;
+    
+    if ( !usuario_id ||  !productos ){
+      return res.status(400).json({
+        msg: 'missing Body fields',
+      });     
+    }
+      const data = {
+        usuario_id,
+        productos
+      };
+      console.log('update', data)
+    await Carrito.findOneAndUpdate({usuario_id}, data, { new: true }).then((producto) => {
+      res.json({
+        msg: 'Carrito Actualizado',
+        producto,
+      });      
     })
   }
+
+/*   async borrar(req, res) {
+    try {
+      const { id } = req.params;   
+      await productos.remove({_id : id}).then((producto)=>{
+          res.json({ 
+          msg: 'Producto eliminado',
+          data: producto
+        });
+      });
+
+
+    } catch (error) {
+      res.json({
+        msg: 'Error al eliminar producto',
+      });      
+    }
+    
+
+
+
+  } */
+
 }
-
-carritoController.agregar = (req, res) => {
-  try {
-    const id_producto = req.params.id_producto;
-    const car = new Carrito();
-    car.add(id_producto);
-    res.json({
-      msg:`Producto ${id_producto} agregado al carrito `
-    })
-  } catch (error) {
-    console.log('POST Error:', error);
-
-    return res.status(400).json({
-      msg:`Error al agregar producto al carrito:${error}`
-    })
-  }
-}
-
-
-carritoController.borrar = (req, res)=>{
-  try {
-    const id = req.params.id_producto
-    const car = new Carrito()
-    const carrito = car.delete(id)
-    res.json({
-      msg:`Producto ${id} eliminado del carrito.`,
-      carrito
-    }) 
-
-  } catch (error) {
-    console.log('Delete:', error);
-
-    return res.json({
-      msg:`Error al borrar producto del carrito:${error}`
-    })
-  }
-} 
-
-/*productosController.nuevoForm = (req, res) => {
-  try {
-    res.render('nuevoForm')
-  } catch (error) {
-    console.log('POST Error:', error)
-  }
-}
-
-*/
-module.exports = carritoController;
+export const carritoController = new CartClass();

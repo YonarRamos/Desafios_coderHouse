@@ -15,7 +15,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _productos = _interopRequireDefault(require("../models/productos.js"));
+var _productos = require("../models/productos");
 
 var tableName = 'productos';
 
@@ -33,15 +33,16 @@ var Products = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return _productos["default"].find();
+                console.log('Consultando productos...');
+                _context.prev = 1;
+                _context.next = 4;
+                return _productos.Productos.find();
 
-              case 3:
+              case 4:
                 items = _context.sent;
 
                 if (!(items.length == 0)) {
-                  _context.next = 8;
+                  _context.next = 9;
                   break;
                 }
 
@@ -49,26 +50,26 @@ var Products = /*#__PURE__*/function () {
                   msg: 'No hay productos cargados.'
                 }));
 
-              case 8:
+              case 9:
                 res.json({
                   data: items
                 });
 
-              case 9:
-                _context.next = 14;
+              case 10:
+                _context.next = 15;
                 break;
 
-              case 11:
-                _context.prev = 11;
-                _context.t0 = _context["catch"](0);
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](1);
                 console.error('Listar Error:', _context.t0);
 
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 11]]);
+        }, _callee, null, [[1, 12]]);
       }));
 
       function listar(_x, _x2) {
@@ -88,7 +89,7 @@ var Products = /*#__PURE__*/function () {
               case 0:
                 id = req.params.id;
                 _context2.next = 3;
-                return _productos["default"].find({
+                return productos.find({
                   _id: id
                 });
 
@@ -153,7 +154,7 @@ var Products = /*#__PURE__*/function () {
                   thumbnail: thumbnail
                 };
                 _context3.next = 6;
-                return _productos["default"].insertMany([data]).then(function (producto) {
+                return productos.insertMany([data]).then(function (producto) {
                   res.json({
                     msg: "Producto agregado",
                     data: producto
@@ -206,7 +207,7 @@ var Products = /*#__PURE__*/function () {
                 };
                 console.log('update', data);
                 _context4.next = 8;
-                return _productos["default"].findOneAndUpdate({
+                return productos.findOneAndUpdate({
                   _id: id
                 }, data, {
                   "new": true
@@ -243,7 +244,7 @@ var Products = /*#__PURE__*/function () {
                 _context5.prev = 0;
                 id = req.params.id;
                 _context5.next = 4;
-                return _productos["default"].remove({
+                return productos.remove({
                   _id: id
                 }).then(function (producto) {
                   res.json({

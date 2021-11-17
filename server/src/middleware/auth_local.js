@@ -84,8 +84,7 @@ passport.deserializeUser((userId, done) => {
 });
 
 export const isLoggedIn = (req, res, done) => {
-  if (!req.user) return res.status(401).json({ msg: 'Unathorized' });
-
+  if (!req.user) return res.status(401).json({ msg: 'No estas autorizado!!' });
   done();
 };
 

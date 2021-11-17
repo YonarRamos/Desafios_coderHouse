@@ -1,11 +1,12 @@
-import productos from '../models/productos.js';
+import { Productos } from '../models/productos';
 
 const tableName = 'productos';
 
 class Products {
   async listar(req, res) {
+    console.log('Consultando productos...');
     try {
-      const items = await productos.find();
+      const items = await Productos.find();
       //console.log(items);
       if(items.length == 0){
         return res.status(404).json({

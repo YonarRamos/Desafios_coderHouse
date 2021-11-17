@@ -10,9 +10,10 @@ const productoSchema = new Mongoose.Schema({
     price: {type: Number, required: true},
     stock: {type: Number, required: true},
     description: {type: String, required: true },
-    thumbnail: {type: String, required: true}
+    thumbnail: {type: String, required: true},
+    cantidad:{type: Number, default: 0}
 });
 
 const Productos = new Mongoose.model(productosCollection, productoSchema);
 
-module.exports = {Productos, productoSchema};
+module.exports = { Productos, productoSchema };

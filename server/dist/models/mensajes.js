@@ -1,17 +1,16 @@
-"use strict";
+/* const Mongoose = require('mongoose');
+const { usuarioSchema } = require('./usuarios');
+const carritosCollection = 'carritos';
 
-var Mongoose = require('mongoose');
-
-var _require = require('./usuarios'),
-    usuarioSchema = _require.usuarioSchema;
-
-var carritosCollection = 'carritos';
-var mensajesSchema = new Mongoose.Schema({
+const mensajesSchema = new Mongoose.Schema({
   author: usuarioSchema,
   message: {
     text: String,
-    timestamp: Date
+    timestamp: Date,
   }
 });
-var mensajes = Mongoose.model(carritosCollection, mensajesSchema);
-module.exports = mensajes;
+
+const mensajes = Mongoose.model(carritosCollection, mensajesSchema);
+
+module.exports = mensajes ; */
+"use strict";

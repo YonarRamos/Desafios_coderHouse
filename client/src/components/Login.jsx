@@ -20,21 +20,21 @@ const Login = ( props ) => {
         })
         .then((res)=>{
             console.log('its working', res);
-            Cookies.set('connect.sid', res.data.sessionData.sessionID );
+            Cookies.set('sessionID', JSON.stringify(res.data.session.session) );
+            Cookies.set('user', JSON.stringify(res.data.session.user) );
+            props.setUser(res.data.session.user);
             history.push('/');
         })
         .catch((error)=>{
-            if(error.response){
-                console.error('LOGIN ERRROR', error.response.data.msg, {
-                    expires: moment(Date.now).add('1', "minute")
-                });                
-                setMsgServer(error.response.data.msg);
-                setTimeout(()=>{
-                    setMsgServer('');
-                }, 3000)                                
-            };
+            if(String(error).includes('401')){
+                alert('Datos incorrectos');
+            }
+            else{
+                alert('Algo salió mal!!');
+            }                         
+            console.error( 'LOGIN CATCH ERRROR ELSE', error );    
         });
-    }
+    };
 
     const signInFacebook= ()=>{
         axios.get('usuarios/auth/facebook')
@@ -53,8 +53,6 @@ const Login = ( props ) => {
             alert(error);   
         });
     }
-
-
 
     return (
         <Fragment>

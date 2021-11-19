@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { checkAdmin } from "../middleware/admin";
-import { productosController } from '../controllers/productosController.js';
+//import { productosController } from '../controllers/productosController.js';
 
 const router = Router();
 
 
 //router.get('/nuevo', productosController.nuevoForm);
 
- router.get('/listar', productosController.listar);
+ //router.get('/listar', productosController.listar);
 
 // router.get('/listar/:id', productosController.listarById);
 

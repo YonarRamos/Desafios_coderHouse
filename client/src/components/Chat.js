@@ -33,7 +33,7 @@ const Chat = ({nombre}) => {
         <div>
             <div className="chat">
                 { mensajes.map( (e,i) => <div key={i}><div></div><b>{e.nombre}:</b><div> { e.mensaje } </div></div>  ) }
-                <div ref={divRef}></div>
+                {/* <div ref={divRef}></div> */}
             </div>
             <form onSubmit={submit}>
                 <label htmlFor="">Escriba su mensaje</label>
@@ -41,6 +41,7 @@ const Chat = ({nombre}) => {
                 <button>Enviar</button>
             </form>            
         </div>
+    
     )
 }
 

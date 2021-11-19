@@ -2,39 +2,32 @@ import React, { useState } from 'react';
 import axios from '../utils/axios'
 import './Registrar.css'
 
-function Registrar() {
-
+function Registrar( props ) {
+    console.log( props )
+    const { user, setUser, history } = props;
     const [msgServer, setMsgServer] = useState('');
-    const [user, setUser] = useState({
-        email:'',
-        password:'',
-        nombre:'',
-        apellido:'',
-        edad:'',
-        alias:'',
-        avatar:'',
-        telefono:''
-    });
     const signUp = (e)=>{
         try {
             axios.post('usuarios/registrar', user)
             .then((res)=>{
                 console.log('Usuario registrado', res);
-                alert(`Usuario ${user.nombre} agregado correctamente!!`)
+                alert(`Bienvenido ${user.nombre}`);
                 setUser({
                     email:'',
                     password:'',
+                    confirmPassword:'',
                     nombre:'',
                     apellido:'',
                     edad:'',
                     alias:'',
                     avatar:'',
-                    telefono:''
-                })
+                    telefono:'',
+                });
+                history.push('/login');
             })
             .catch((error)=>{
                 if(error.response){
-                    console.error('REGISTER ERRROR', error.response.data.msg);                
+                    console.error('REGISTER CATCH ERRROR', error.response.data.msg);                
                     setMsgServer(error.response.data.msg);
                     setTimeout(()=>{
                         setMsgServer('');
@@ -42,7 +35,7 @@ function Registrar() {
                 };
             });
         } catch (error) {
-            console.error('LOGIN ERRROR', error);
+            console.error('REGISTER ERRROR', error);
         }
     }
 
@@ -50,6 +43,7 @@ function Registrar() {
         <div className="card tarjeta">
                 <div className="card-body pb-1" style={{height: 'auto'}}>     
                     {/* LOGIN CON CORREO ELECTRONICO */}
+                    <h4 className="btn__register__box">NUEVO USUARIO</h4>
                     <form>
                         <div>
                             <label htmlFor="nombre" className="form-label">Nombre:</label>
@@ -91,6 +85,11 @@ function Registrar() {
                             <input value={ user.password } onChange= { e => setUser({ ...user, password : e.target.value })} type="password" className="form-control" id="password" aria-describedby="password"/>
                             <div id="passwordHelp" className="form-text"></div>
                         </div>   
+                        <div>
+                            <label htmlFor="confirmPaswword" className="form-label">Confirmar password:</label>
+                            <input value={ user.confirmPassword } onChange= { e => setUser({ ...user, confirmPassword : e.target.value })} type="password" className="form-control" id="confirmPassword" aria-describedby="confirmPassword"/>
+                            <div id="passwordHelp" className="form-text"></div>
+                        </div>  
                     </form>
                     <div className="btn__register__box">
                         <button type="button" onClick={signUp} className="btn btn-primary">Registrar</button>

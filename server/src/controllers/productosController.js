@@ -1,4 +1,4 @@
-import { Productos } from '../models/productos';
+/* import { Productos } from '../models/productos';
 
 const tableName = 'productos';
 
@@ -110,4 +110,4 @@ class Products {
   }
 
 }
-export const productosController = new Products();
+export const productosController = new Products(); */

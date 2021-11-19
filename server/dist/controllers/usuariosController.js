@@ -153,7 +153,7 @@ var UsuariosClass = /*#__PURE__*/function () {
                             }
 
                             console.error(error);
-                            _context2.next = 27;
+                            _context2.next = 28;
                             break;
 
                           case 4:
@@ -161,7 +161,9 @@ var UsuariosClass = /*#__PURE__*/function () {
                               usuario: newUser
                             }); //Creando carrito
 
-                            _carritoController.carritoController.add(newUser._id); //Notificando al Admin
+                            console.log('Creando carrito del usuario...');
+
+                            _carritoController.carritoController.add(req, res, newUser._id); //Notificando al Admin
 
                             /* ETHERAL */
 
@@ -170,10 +172,10 @@ var UsuariosClass = /*#__PURE__*/function () {
                             destination = 'americo.dicki24@ethereal.email';
                             subject = "Nuevo Registro - ".concat(user.nombre, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
                             content = " \n                    <h3> Nuevo registro</h3> \n                    <ul>\n                        <li>\n                            Nombre: ".concat(user.nombre, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Tel\xE9fono: ").concat(user.telefono, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Edad: ").concat(user.edad, "\n                        </li>\n                        <li>\n                            Alias: ").concat(user.alias, "\n                        </li>\n                        <li>\n                            Email: ").concat(user.email, "\n                        </li>\n                    </ul>                   \n                    ");
-                            _context2.next = 12;
+                            _context2.next = 13;
                             return _email.EmailService.sendEmail(destination, subject, content);
 
-                          case 12:
+                          case 13:
                             resEtheral = _context2.sent;
                             console.log('Email enviado!!');
                             /* GMAIL */
@@ -182,23 +184,23 @@ var UsuariosClass = /*#__PURE__*/function () {
                             Gdestination = 'ingyonarramos@gmail.com';
                             Gsubject = "Nuevo Registro - ".concat(user.nombre, " - ").concat((0, _moment["default"])().format('YYYY-MM-DD HH:mm:ss'));
                             Gcontent = "\n                    <h3> Nuevo registro</h3> \n                    <ul>\n                        <li>\n                            Nombre: ".concat(user.nombre, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Tel\xE9fono: ").concat(user.telefono, "\n                        </li>\n                        <li>\n                            Apellido: ").concat(user.apellido, "\n                        </li>\n                        <li>\n                            Edad: ").concat(user.edad, "\n                        </li>\n                        <li>\n                            Alias: ").concat(user.alias, "\n                        </li>\n                        <li>\n                            Email: ").concat(user.email, "\n                        </li>\n                    </ul>                    \n                    ");
-                            _context2.next = 20;
+                            _context2.next = 21;
                             return _gmail.GmailService.sendEmail(Gdestination, Gsubject, Gcontent);
 
-                          case 20:
+                          case 21:
                             resGmail = _context2.sent;
                             console.log('Gmail enviado!!');
                             /* TWILIO */
 
                             console.log('Sending msg to Admin...');
-                            _context2.next = 25;
+                            _context2.next = 26;
                             return _twilio.SmsService.sendMessage('+541138796141', "Nuevo Registro ".concat(user.nombre));
 
-                          case 25:
+                          case 26:
                             resTwilio = _context2.sent;
                             console.log('Msg twilio enviado!!');
 
-                          case 27:
+                          case 28:
                           case "end":
                             return _context2.stop();
                         }

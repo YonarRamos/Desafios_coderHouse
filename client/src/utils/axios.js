@@ -7,6 +7,6 @@ export default axios.create({
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         "Access-Control-Allow-Headers":"*",
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
     }
 });

@@ -17,6 +17,8 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _carrito = require("../models/carrito.js");
 
+var _usuarios = require("../models/usuarios");
+
 var CartClass = /*#__PURE__*/function () {
   function CartClass() {
     (0, _classCallCheck2["default"])(this, CartClass);
@@ -69,21 +71,23 @@ var CartClass = /*#__PURE__*/function () {
   }, {
     key: "add",
     value: function () {
-      var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-        var usuario_id, data, newCart;
+      var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, usuario_id) {
+        var user, data, newCart;
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                usuario_id = req.body.usuario_id;
+                user = _usuarios.Usuario.findById({
+                  _id: usuario_id
+                });
 
-                if (usuario_id) {
+                if (user) {
                   _context3.next = 3;
                   break;
                 }
 
                 return _context3.abrupt("return", res.status(400).json({
-                  msg: 'missing usuario_id'
+                  msg: 'El usuario no existe'
                 }));
 
               case 3:
@@ -100,11 +104,9 @@ var CartClass = /*#__PURE__*/function () {
                         switch (_context2.prev = _context2.next) {
                           case 0:
                             if (error) {
-                              console.error(error);
+                              console.error('ERROR_CARRITO_CONTRIOLLER:', error);
                             } else {
-                              res.json({
-                                msg: "Se ha creado un nuevo carrito para el usuario: ".concat(usuario_id)
-                              });
+                              console.log('Se creo un nuevo carrito!!');
                             }
 
                           case 1:
@@ -115,7 +117,7 @@ var CartClass = /*#__PURE__*/function () {
                     }, _callee2);
                   }));
 
-                  return function (_x5) {
+                  return function (_x6) {
                     return _ref.apply(this, arguments);
                   };
                 }());
@@ -128,7 +130,7 @@ var CartClass = /*#__PURE__*/function () {
         }, _callee3);
       }));
 
-      function add(_x3, _x4) {
+      function add(_x3, _x4, _x5) {
         return _add.apply(this, arguments);
       }
 
@@ -181,7 +183,7 @@ var CartClass = /*#__PURE__*/function () {
         }, _callee4);
       }));
 
-      function apdate(_x6, _x7) {
+      function apdate(_x7, _x8) {
         return _apdate.apply(this, arguments);
       }
 

@@ -1,4 +1,5 @@
 import { Carrito } from '../models/carrito.js';
+import { Usuario } from '../models/usuarios';
 
 class CartClass {
   async get(req, res) {
@@ -14,12 +15,12 @@ class CartClass {
     }
   }
 
-  async add(req, res) {
-    const { usuario_id } = req.body;
+  async add(req, res, usuario_id) {
 
-    if ( !usuario_id ){
+    const user = Usuario.findById({ _id : usuario_id } );
+    if ( !user ){
       return res.status(400).json({
-        msg: 'missing usuario_id',
+        msg: 'El usuario no existe',
       });
     };
 
@@ -29,12 +30,10 @@ class CartClass {
     };
     const newCart = new Carrito(data)
     newCart.save(async function (error) {
-        if (error) {
-            console.error(error)
+        if (error) { 
+            console.error('ERROR_CARRITO_CONTRIOLLER:', error);
         } else{
-          res.json({
-            msg:`Se ha creado un nuevo carrito para el usuario: ${usuario_id}`
-          })
+          console.log('Se creo un nuevo carrito!!');
         }
     });
 

@@ -54,7 +54,8 @@ class UsuariosClass {
                         usuario: newUser
                     });
                     //Creando carrito
-                    carritoController.add(newUser._id);
+                    console.log('Creando carrito del usuario...')
+                    carritoController.add(req, res, newUser._id);
                     
                     //Notificando al Admin
                     /* ETHERAL */

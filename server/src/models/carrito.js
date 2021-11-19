@@ -1,5 +1,5 @@
 const Mongoose = require('mongoose');
-const { productoSchema } = require('./productos')
+const { productoSchema } = require('./productosGQL')
 const carritosCollection = 'carritos';
 
 const carritoSchema = new Mongoose.Schema({

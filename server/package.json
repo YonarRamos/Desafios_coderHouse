@@ -13,7 +13,7 @@
     "dev:prof": "npm run transpile && node --prof ./dist/index.js --watch",
     "dev:inspect": "node --inspect dist/index.js",
     "dev:0x": "0x dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
     "compression": "^1.7.4",
     "config": "3.3.1",
     "connect-mongo": "^4.6.0",
@@ -36,10 +37,12 @@
     "graphql-compose": "^9.0.4",
     "graphql-compose-mongoose": "^9.7.0",
     "handlebars": "^4.5.0",
+    "jest": "^27.3.1",
     "joi": "^17.4.2",
     "knex": "^0.95.10",
     "log4js": "^6.3.0",
     "minimist": "^1.2.5",
+    "mocha": "^9.1.3",
     "moment": "^2.29.1",
     "mongoose": "^6.0.5",
     "mysql": "^2.18.1",
@@ -50,6 +53,7 @@
     "passport-local": "^1.0.0",
     "socket.io": "^4.1.3",
     "sqlite3": "^5.0.2",
+    "supertest": "^6.1.6",
     "twilio": "^3.71.1"
   },
   "devDependencies": {

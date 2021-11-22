@@ -1,4 +1,4 @@
-import { productosTC } from '../models/productosGQL';
+/* import { productosTC } from '../models/productosGQL';
 
 export const productoTC = {
   productoById: productosTC.getResolver('findById'),
@@ -19,4 +19,4 @@ export const productoMutation = {
   productoRemoveById: productosTC.getResolver('removeById'),
   productoRemoveOne: productosTC.getResolver('removeOne'),
   productoRemoveMany: productosTC.getResolver('removeMany'),
-};
+}; */

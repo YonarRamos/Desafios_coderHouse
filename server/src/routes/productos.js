@@ -1,22 +1,11 @@
 import { Router } from 'express';
-import { checkAdmin } from "../middleware/admin";
-//import { productosController } from '../controllers/productosController.js';
+import { productosController } from '../controllers/productosController.js';
 
 const router = Router();
 
-
-//router.get('/nuevo', productosController.nuevoForm);
-
- //router.get('/listar', productosController.listar);
-
-// router.get('/listar/:id', productosController.listarById);
-
-// router.get('/vista-test/:cant', productosController.fakerProducts);
-
-// router.post('/agregar', productosController.agregar);
-
-// router.put('/actualizar/:id', productosController.actualizar);
-
-// router.delete('/borrar/:id',checkAdmin , productosController.borrar);
+router.get('/', productosController.get);
+router.post('/', productosController.add);
+router.put('/:id', productosController.update);
+router.delete('/:id', productosController.delete);
 
 export default router

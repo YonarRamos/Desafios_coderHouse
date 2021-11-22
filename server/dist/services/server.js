@@ -7,7 +7,7 @@ var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.myServer = void 0;
+exports["default"] = exports.myServer = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
@@ -53,12 +53,14 @@ app.use(cors({
   origin: "http://localhost:8080"
 }));
 app.use((0, _compression["default"])()); //Graphql GET y POST productos
+// app.use(
+//   '/graphql',
+//   graphqlHTTP({
+//     schema: graphQLMainSchema,
+//     graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
+//   })
+// );
 
-app.use('/graphql', (0, _expressGraphql.graphqlHTTP)({
-  schema: _graphql.graphQLMainSchema,
-  graphiql: true //levanta como una interfaz grafica para trabajar con graphql
-
-}));
 var myServer = http.Server(app);
 exports.myServer = myServer;
 
@@ -93,3 +95,6 @@ app.use('/', _index["default"]); //inicializamos socket
 
 var socket = new _ws["default"](myServer);
 socket.connection();
+var HTTPServer = http.createServer(app);
+var _default = HTTPServer;
+exports["default"] = _default;

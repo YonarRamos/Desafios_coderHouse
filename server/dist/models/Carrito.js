@@ -2,7 +2,7 @@
 
 var Mongoose = require('mongoose');
 
-var _require = require('./productosGQL'),
+var _require = require('./productos'),
     productoSchema = _require.productoSchema;
 
 var carritosCollection = 'carritos';

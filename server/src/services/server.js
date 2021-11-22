@@ -20,13 +20,13 @@ app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
 app.use(compression());
 
 //Graphql GET y POST productos
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema: graphQLMainSchema,
-    graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
-  })
-);
+// app.use(
+//   '/graphql',
+//   graphqlHTTP({
+//     schema: graphQLMainSchema,
+//     graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
+//   })
+// );
 
 export const myServer = http.Server(app);
 const publicPath = path.resolve(__dirname, '../public');
@@ -59,4 +59,7 @@ app.use('/', router);
 //inicializamos socket
 const socket = new ws(myServer);
 socket.connection();
+const HTTPServer = http.createServer(app);
+
+export default HTTPServer;
 

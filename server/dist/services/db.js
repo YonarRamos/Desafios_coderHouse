@@ -59,6 +59,35 @@ var DbServiceClass = /*#__PURE__*/function () {
 
       return init;
     }()
+  }, {
+    key: "disconnect",
+    value: function () {
+      var _disconnect = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
+        return _regenerator["default"].wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return Mongoose.disconnect(this.srv).then(function (res) {
+                  return console.log('MONGO DISCONNECTED!!');
+                })["catch"](function (error) {
+                  return console.log('MONGOOSE_DIS_ERROR:', error);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function disconnect() {
+        return _disconnect.apply(this, arguments);
+      }
+
+      return disconnect;
+    }()
   }]);
   return DbServiceClass;
 }();

@@ -1,5 +1,6 @@
-/* const Mongoose = require('mongoose');
+const Mongoose = require('mongoose');
 const moment = require('moment');
+import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 const productosCollection = 'productos';
 
@@ -11,10 +12,8 @@ const productoSchema = new Mongoose.Schema({
     stock: {type: Number, required: true},
     description: {type: String, required: true },
     thumbnail: {type: String, required: true},
-    cantidad:{type: Number, default: 0}
 });
 
 const Productos = new Mongoose.model(productosCollection, productoSchema);
-
-module.exports = { Productos, productoSchema };
- */
+const productosTC = composeWithMongoose(Productos); //para trabajar con GraphQL
+module.exports = { Productos, productoSchema, productosTC };

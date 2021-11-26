@@ -57,9 +57,9 @@ app.use(express.static(publicPath));
 app.use('/', router);
 
 //inicializamos socket
-const socket = new ws(myServer);
-socket.connection();
+//const socket = new ws(myServer);
+//socket.connection();
 const HTTPServer = http.createServer(app);
-
+dbService.init();
 export default HTTPServer;
 

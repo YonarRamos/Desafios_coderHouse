@@ -92,9 +92,12 @@ app.use(_express["default"].urlencoded({
 }));
 app.use(_express["default"]["static"](publicPath));
 app.use('/', _index["default"]); //inicializamos socket
+//const socket = new ws(myServer);
+//socket.connection();
 
-var socket = new _ws["default"](myServer);
-socket.connection();
 var HTTPServer = http.createServer(app);
+
+_db["default"].init();
+
 var _default = HTTPServer;
 exports["default"] = _default;

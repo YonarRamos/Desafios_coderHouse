@@ -1,22 +1,14 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var dotenv = require('dotenv');
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
+var minimist = require('minimist');
 
-var _dotenv = _interopRequireDefault(require("dotenv"));
-
-var _minimist = _interopRequireDefault(require("minimist"));
-
-_dotenv["default"].config();
-
-var argv = (0, _minimist["default"])(process.argv.slice(2)); //console.log('Argumentos Config:', process.argv);
+dotenv.config();
+var argv = minimist(process.argv.slice(2)); //console.log('Argumentos Config:', process.argv);
 //console.log('minimist config:', JSON.stringify(argv));
 
-var _default = {
+module.exports = {
   MODE: String(argv.mode) || 'FORK',
   PORT: Number(argv.port) || process.env.PORT,
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'root',
@@ -36,4 +28,3 @@ var _default = {
   TWILIO_TOKEN: process.env.TWILIO_TOKEN || '20ef6967324d0be512f3f3120225989a',
   TWILIO_CELLPHONE: process.env.TWILIO_CELLPHONE || '+18035926595'
 };
-exports["default"] = _default;

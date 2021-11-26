@@ -3,9 +3,9 @@ import { productosController } from '../controllers/productosController.js';
 
 const router = Router();
 
-router.get('/', productosController.get);
-router.post('/', productosController.add);
-router.put('/:id', productosController.update);
-router.delete('/:id', productosController.delete);
+router.get('/', productosController.getProducts);
+router.post('/', productosController.addProducts);
+router.put('/:id', productosController.updateProducts);
+router.delete('/:id', productosController.deleteProducts);
 
 export default router

@@ -1,10 +1,12 @@
 const Mongoose = require('mongoose');
-const { productoSchema } = require('./productos')
 const carritosCollection = 'carritos';
 
 const carritoSchema = new Mongoose.Schema({
     usuario_id:{ type: String, required: true },
-    productos:[ productoSchema ]
+    productos:[ {
+        producto_id:{type: String, required: true},
+        cantidad:{type: Number, default: 1 }
+    } ]
 });
 
 const Carrito = Mongoose.model(carritosCollection, carritoSchema);

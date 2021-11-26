@@ -9,7 +9,7 @@
     "artillery": "artillery quick --count 50 -n 20 http://localhost:8080/info",
     "prod": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8081",
     "prod:cluster": "npm run transpile && pm2 start ./dist/index.js -- --watch --port=8082",
-    "dev": "npm run transpile && node ./dist/index.js --watch",
+    "dev": "npm run transpile && node ./dist/index.js --watch --persistencia=MONGO_ATLAS",
     "dev:prof": "npm run transpile && node --prof ./dist/index.js --watch",
     "dev:inspect": "node --inspect dist/index.js",
     "dev:0x": "0x dist/index.js",

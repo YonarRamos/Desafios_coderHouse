@@ -10,9 +10,9 @@ var _express = require("express");
 var _productosController = require("../controllers/productosController.js");
 
 var router = (0, _express.Router)();
-router.get('/', _productosController.productosController.get);
-router.post('/', _productosController.productosController.add);
-router.put('/:id', _productosController.productosController.update);
-router["delete"]('/:id', _productosController.productosController["delete"]);
+router.get('/', _productosController.productosController.getProducts);
+router.post('/', _productosController.productosController.addProducts);
+router.put('/:id', _productosController.productosController.updateProducts);
+router["delete"]('/:id', _productosController.productosController.deleteProducts);
 var _default = router;
 exports["default"] = _default;

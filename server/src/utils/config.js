@@ -1,11 +1,11 @@
-import dotenv from 'dotenv';
-import minimist from "minimist";
+const dotenv = require('dotenv');
+const minimist = require('minimist');
 dotenv.config();
 
 const argv = minimist(process.argv.slice(2));
 //console.log('Argumentos Config:', process.argv);
 //console.log('minimist config:', JSON.stringify(argv));
-export default {
+module.exports = {
     MODE: String(argv.mode) || 'FORK',
     PORT: Number(argv.port) || process.env.PORT,
     MONGO_ATLAS_USER : process.env.MONGO_ATLAS_USER || 'root',

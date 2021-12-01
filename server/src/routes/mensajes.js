@@ -1,15 +1,15 @@
 import { Router } from 'express';
 //import { checkAdmin } from "../middleware/admin";
-import { mensajesController } from '../controllers/mensajesController';
+import { MensajesController } from '../controllers/mensajesController';
 
 const router = Router();
 
 
-//router.get('/nuevo', productosController.nuevoForm);
+router.get('/', MensajesController.get);
 
-//router.get('/', mensajesController.listar);
+router.post('/', MensajesController.add);
 
- //router.get('/listar/:id', mensajesConttroller.listarById);
+//router.get('/listar/:id', mensajesConttroller.listarById);
 
 //router.post('/agregar', mensajesController.agregar);
 

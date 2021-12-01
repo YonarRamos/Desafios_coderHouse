@@ -1,0 +1,32 @@
+.chat__btn{
+    position: fixed;
+    border-radius: 50%;
+    right: 20px;
+}
+.chat_div{
+    height: 20rem;
+    overflow: scroll;
+}
+.send__div{
+    display: flex;
+}
+.input__msg{
+    width: 100%;
+    margin-right: 10px;
+    min-height: 38px;
+}
+.form__send{
+    width: 100%;
+}
+.date__msg{
+    color: rgb(179, 179, 179);
+    font-size: 12px;
+}
+.btn_save{
+    background: rgb(138, 101, 101,0);
+    border: none;
+}
+.icon__save{
+    font-size: 25px;
+    color: grey;
+}

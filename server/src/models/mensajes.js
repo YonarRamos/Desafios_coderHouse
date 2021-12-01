@@ -1,15 +1,17 @@
-/* const Mongoose = require('mongoose');
-const { usuarioSchema } = require('./usuarios');
-const carritosCollection = 'carritos';
+const Mongoose = require('mongoose');
+const moment = require('moment');
+const mensajesCollection = 'mensajes';
 
 const mensajesSchema = new Mongoose.Schema({
-  author: usuarioSchema,
-  message: {
-    text: String,
-    timestamp: Date,
-  }
+  timestamp:{ type:Date, default: moment().format() , required:true },
+  user_id: { type: Mongoose.Schema.Types.ObjectId, required: true },
+  messages: [{
+    nombre: String,
+    mensaje: String,
+    timestamp:{ type:Date, default: moment().format() , required:true },
+  }]
 });
 
-const mensajes = Mongoose.model(carritosCollection, mensajesSchema);
+const Mensajes = Mongoose.model( mensajesCollection, mensajesSchema);
 
-module.exports = mensajes ; */
+module.exports = {Mensajes, mensajesSchema} ;

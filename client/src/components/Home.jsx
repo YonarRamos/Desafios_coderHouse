@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import Chat from "./Chat";
 import Cookies from 'js-cookie';
 import React, { Fragment, useState, useEffect } from "react";
 import axios from '../utils/axios';
@@ -93,6 +94,7 @@ const Home = ( props ) => {
                             </table>          
                         </div>
                     </div>
+                    <Chat user={ props.user }/>
         </>
      )
 };

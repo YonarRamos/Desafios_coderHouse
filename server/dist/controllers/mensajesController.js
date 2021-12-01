@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.mensajesController = void 0;
+exports.MensajesController = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -15,169 +15,162 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _mensajes = _interopRequireDefault(require("../models/mensajes"));
+var _expressSession = _interopRequireDefault(require("express-session"));
 
-var _faker = _interopRequireDefault(require("../services/faker"));
+var _mensajes = require("../models/mensajes");
 
-var _normalizr = require("normalizr");
+var _usuarios = require("../models/usuarios");
 
-var moment = require('moment');
+var _email = require("../services/email");
 
-var tableName = 'mensajes';
-/* const author = new schema.Entity(  'author',   {},   { idAttribute: 'email' });
-const msge = new schema.Entity(  'message',  {    author: author,  },  { idAttribute: 'timestamp' });
-const msgesSchema = new schema.Array(msge); */
+var _gmail = require("../services/gmail");
 
-var author = new _normalizr.schema.Entity('author', {}, {
-  idAttribute: 'email'
-});
-var msgesSchema = new _normalizr.schema.Entity('message', {
-  author: author
-}, {
-  idAttribute: 'timestamp'
-});
+var _twilio = require("../services/twilio");
 
-var Mensajes = /*#__PURE__*/function () {
-  function Mensajes() {
-    (0, _classCallCheck2["default"])(this, Mensajes);
+var _config = _interopRequireDefault(require("../utils/config"));
+
+var _carritoController = require("./carritoController");
+
+var _moment = _interopRequireDefault(require("moment"));
+
+var MensajesClass = /*#__PURE__*/function () {
+  function MensajesClass() {
+    (0, _classCallCheck2["default"])(this, MensajesClass);
   }
 
-  (0, _createClass2["default"])(Mensajes, [{
-    key: "listar",
+  (0, _createClass2["default"])(MensajesClass, [{
+    key: "get",
     value: function () {
-      var _listar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-        var items;
+      var _get = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
+        var _req$body, user_id, timestamp, mensajes;
+
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return _mensajes["default"].get();
+                _req$body = req.body, user_id = _req$body.user_id, timestamp = _req$body.timestamp;
+                _context.prev = 1;
 
-              case 3:
-                items = _context.sent;
-
-                if (!(items.length == 0)) {
-                  _context.next = 8;
+                if (!user_id) {
+                  _context.next = 13;
                   break;
                 }
 
-                return _context.abrupt("return", res.status(404).json({
-                  msg: 'No hay mensajes.'
-                }));
+                if (!timestamp) {
+                  _context.next = 10;
+                  break;
+                }
 
-              case 8:
-                res.json({
-                  data: items
+                _context.next = 6;
+                return _mensajes.Mensajes.find({
+                  user_id: user_id,
+                  timestamp: {
+                    $gte: new Date(timestamp)
+                  }
+                }).exec();
+
+              case 6:
+                mensajes = _context.sent;
+                res.status(200).json(mensajes);
+                _context.next = 11;
+                break;
+
+              case 10:
+                res.status(404).json({
+                  msg: 'Fecha incorrecta!!'
                 });
 
-              case 9:
+              case 11:
                 _context.next = 14;
                 break;
 
-              case 11:
-                _context.prev = 11;
-                _context.t0 = _context["catch"](0);
-                console.error('Listar Error:', _context.t0);
+              case 13:
+                res.status(404).json({
+                  msg: 'El usuario no existe'
+                });
 
               case 14:
+                _context.next = 20;
+                break;
+
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](1);
+                console.log('GET MSG_CONTROLLER ERROR', _context.t0);
+                return _context.abrupt("return", _context.t0);
+
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 11]]);
+        }, _callee, null, [[1, 16]]);
       }));
 
-      function listar(_x, _x2) {
-        return _listar.apply(this, arguments);
+      function get(_x, _x2) {
+        return _get.apply(this, arguments);
       }
 
-      return listar;
+      return get;
     }()
   }, {
-    key: "listarById",
+    key: "add",
     value: function () {
-      var _listarById = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-        var id, item;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                id = req.params.id;
-                _context2.next = 3;
-                return _mensajes["default"].find({
-                  _id: id
-                });
-
-              case 3:
-                item = _context2.sent;
-
-                if (!(item.length == 0)) {
-                  _context2.next = 8;
-                  break;
-                }
-
-                return _context2.abrupt("return", res.status(404).json({
-                  msg: 'mensaje no encontrado'
-                }));
-
-              case 8:
-                res.json({
-                  data: item
-                });
-
-              case 9:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function listarById(_x3, _x4) {
-        return _listarById.apply(this, arguments);
-      }
-
-      return listarById;
-    }()
-  }, {
-    key: "agregar",
-    value: function () {
-      var _agregar = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-        var _req$body, author, message, data, normalizedData;
+      var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
+        var _req$body2, messages, user_id, data, user, newMsg;
 
         return _regenerator["default"].wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _req$body = req.body, author = _req$body.author, message = _req$body.message;
+                _req$body2 = req.body, messages = _req$body2.messages, user_id = _req$body2.user_id;
+                data = {
+                  messages: messages,
+                  user_id: user_id
+                };
+                user = _usuarios.Usuario.findById(user_id);
 
-                if (!(!author || !message)) {
-                  _context3.next = 3;
-                  break;
+                if (user) {
+                  if (messages.length > 0) {
+                    newMsg = new _mensajes.Mensajes(data);
+                    newMsg.save( /*#__PURE__*/function () {
+                      var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(error) {
+                        return _regenerator["default"].wrap(function _callee2$(_context2) {
+                          while (1) {
+                            switch (_context2.prev = _context2.next) {
+                              case 0:
+                                if (error) {
+                                  console.error(error);
+                                } else {
+                                  res.status(200).json({
+                                    mensajes: newMsg
+                                  });
+                                }
+
+                              case 1:
+                              case "end":
+                                return _context2.stop();
+                            }
+                          }
+                        }, _callee2);
+                      }));
+
+                      return function (_x5) {
+                        return _ref.apply(this, arguments);
+                      };
+                    }());
+                  } else {
+                    res.status(400).json({
+                      mensajes: []
+                    });
+                  }
+                } else {
+                  res.status(400).json({
+                    mensaje: 'El usuario no existe'
+                  });
                 }
 
-                return _context3.abrupt("return", res.status(400).json({
-                  msg: 'Missing body fields'
-                }));
-
-              case 3:
-                message.timestamp = moment().format();
-                data = {
-                  author: author,
-                  message: message
-                };
-                console.log(data);
-                normalizedData = (0, _normalizr.normalize)(data, msgesSchema);
-                _context3.next = 9;
-                return _mensajes["default"].add(normalizedData).then(function () {
-                  res.json({
-                    mensajes: normalizedData
-                  });
-                });
-
-              case 9:
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -185,62 +178,44 @@ var Mensajes = /*#__PURE__*/function () {
         }, _callee3);
       }));
 
-      function agregar(_x5, _x6) {
-        return _agregar.apply(this, arguments);
+      function add(_x3, _x4) {
+        return _add.apply(this, arguments);
       }
 
-      return agregar;
-    }()
-    /*   async actualizar(req, res) {
-        const { id } = req.params;
-        const { name, description, stock, price, thumbnail } = req.body;
-        
-        if ( !name ||  !description || !stock || !price || !thumbnail ){
-          return res.status(400).json({
-            msg: 'missing Body fields',
-          });     
-        }
-          const data = {
-            name,
-            description,
-            stock,
-            price,
-            thumbnail,
-          };
-          console.log('update', data)
-        await productos.findOneAndUpdate({_id : id}, data, { new: true }).then((producto) => {
-          res.json({
-            msg: 'Producto Actualizado',
-            producto,
-          });      
-        })
-      }
-    
-      async borrar(req, res) {
-        try {
-          const { id } = req.params;   
-          await productos.remove({_id : id}).then((producto)=>{
-              res.json({ 
-              msg: 'Producto eliminado',
-              data: producto
-            });
-          });
-    
-    
-        } catch (error) {
-          res.json({
-            msg: 'Error al eliminar producto',
-          });      
-        } 
-        
-    
-    
-    
-      }*/
+      return add;
+    }() // async update(id, user){
+    // return await Usuario.findByIdAndUpdate(id, user);
+    // }
+    // async delete(id) {
+    // return await Usuario.findByIdAndDelete(id);
+    // }
+    // async login(req, res) {
+    //     console.log('Sesion ==== ', req.sessionID)
+    //     const user = req.user.nombre;
+    //     try {
+    //         if(req.user){
+    //                 res.json({ 
+    //                     msg: 'Welcome to our store!!', 
+    //                     session: {
+    //                         session : req.session,
+    //                         user: req.user
+    //                     }
+    //                 }
+    //             );
+    //         } else {
+    //             res.json({
+    //                 msg: 'Datos incorrectos'
+    //             })
+    //         }
+    //     } catch (error) {
+    //         console.error('LOGIN CONTROLLER ERROR:', error)
+    //         return error;
+    //     }
+    // }
 
   }]);
-  return Mensajes;
+  return MensajesClass;
 }();
 
-var mensajesController = new Mensajes();
-exports.mensajesController = mensajesController;
+var MensajesController = new MensajesClass();
+exports.MensajesController = MensajesController;

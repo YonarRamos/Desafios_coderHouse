@@ -71,21 +71,18 @@ var ProductosAtlasDAO = /*#__PURE__*/function () {
       this.srv = "mongodb://localhost:27017/".concat(db);
     } else {
       this.srv = "mongodb+srv://".concat(config.MONGO_ATLAS_USER, ":").concat(config.MONGO_ATLAS_PASSWORD, "@").concat(config.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(config.MONGO_LOCAL_DBNAME, "?retryWrites=true&w=majority");
-      console.log('MONGO ATLAS', this.srv);
     }
   }
 
   (0, _createClass2["default"])(ProductosAtlasDAO, [{
     key: "init",
     value: function init() {
-      var _this = this;
-
       if ((0, _classPrivateFieldGet2["default"])(this, _connection)) {
         console.log('MONGO ALREADY CONNECTED!!');
-        return this.connection;
+        return (0, _classPrivateFieldGet2["default"])(this, _connection);
       } else {
         return (0, _classPrivateFieldSet2["default"])(this, _connection, Mongoose.createConnection(this.srv).then(function (res) {
-          return console.log('MONGO CONNECTED!!', (0, _classPrivateFieldGet2["default"])(_this, _connection));
+          return console.log('MONGO CONNECTED!!');
         })["catch"](function (error) {
           return console.log('MONGOOSE_ERROR:', error);
         }));

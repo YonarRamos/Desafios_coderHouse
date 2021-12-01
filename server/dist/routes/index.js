@@ -29,7 +29,7 @@ var _auth_local = require("../middleware/auth_local");
 var router = _express["default"].Router();
 
 router.use('/productos', _productos["default"]);
-router.use('/mensajes', _auth_local.isLoggedIn, _mensajes["default"]);
+router.use('/mensajes', _mensajes["default"]);
 router.use('/usuarios', _usuarios["default"]); //Desafio 29
 
 router.get('/info', function (req, res) {

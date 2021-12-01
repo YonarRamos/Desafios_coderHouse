@@ -21,9 +21,9 @@ const Navbar = ( props )=>{
                 <button className="btn btn-outline-primary btn__logout" type="button" onClick={ Logout }>Logout</button>    
                 <button type="button" className="btn btn-outline-primary position-relative">
                     <i className="fas fa-shopping-cart" style={{fontSize:'20px'}}></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         99+
-                        <span class="visually-hidden">unread messages</span>
+                        <span className="visually-hidden">unread messages</span>
                     </span>                   
                 </button>            
             </div>

@@ -92,10 +92,10 @@ app.use(_express["default"].urlencoded({
 }));
 app.use(_express["default"]["static"](publicPath));
 app.use('/', _index["default"]); //inicializamos socket
-//const socket = new ws(myServer);
-//socket.connection();
 
-var HTTPServer = http.createServer(app);
+var socket = new _ws["default"](myServer);
+socket.connection();
+var HTTPServer = http.createServer(app); //inicializamos bd mongo
 
 _db["default"].init();
 

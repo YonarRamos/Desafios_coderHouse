@@ -1,121 +1,98 @@
-import mensajes from '../models/mensajes';
-import faker from '../services/faker';
-import { normalize, schema } from 'normalizr';
-const moment = require('moment');
-const tableName = 'mensajes';
+import session from "express-session";
+import { Mensajes } from '../models/mensajes';
+import { Usuario } from '../models/usuarios';
+import { EmailService } from "../services/email";
+import { GmailService } from "../services/gmail";
+import { SmsService } from "../services/twilio";
+import Config from "../utils/config";
+import { carritoController } from "./carritoController";
+import moment from "moment";
 
-/* const author = new schema.Entity(  'author',   {},   { idAttribute: 'email' });
-const msge = new schema.Entity(  'message',  {    author: author,  },  { idAttribute: 'timestamp' });
-const msgesSchema = new schema.Array(msge); */
+class MensajesClass {
+    async get(req, res ) {
+      const { user_id, timestamp } = req.body;
+      try {
+        if (user_id) {
+          if (timestamp) {
+            const mensajes = await Mensajes.find({ user_id: user_id, timestamp: { $gte: new Date(timestamp) } }).exec();
+            res.status(200).json( mensajes );
+          }else {
+            res.status(404).json({
+                msg: 'Fecha incorrecta!!'
+            });
+          }
+        } else {
+          res.status(404).json({
+              msg: 'El usuario no existe'
+          });
+        }
+    } catch (error) {
+        console.log('GET MSG_CONTROLLER ERROR', error)
+      return error;
+    }
+  }
+    
+    async add(req, res){
+      let { messages, user_id } = req.body;
 
-const author = new schema.Entity(  'author', {} , { idAttribute: 'email' });
-const msgesSchema = new schema.Entity(  'message',  { author: author },  { idAttribute: 'timestamp' });
+      const data = { messages, user_id  }
+      const user = Usuario.findById(user_id);
 
-
-
-class Mensajes {
-  async listar(req, res) {
-    try {
-      const items = await mensajes.get();
-
-      if(items.length == 0){
-        return res.status(404).json({
-          msg: 'No hay mensajes.'
+      if(user){
+        if(messages.length > 0){
+          const newMsg = new Mensajes(data);
+          newMsg.save(async function (error) {
+            if (error) {
+                console.error(error)
+            } else{              
+              res.status(200).json({
+                  mensajes: newMsg
+              });
+            }
+          });
+        }else {
+          res.status(400).json({
+            mensajes: []
+          });
+        }
+      } else {
+        res.status(400).json({
+          mensaje: 'El usuario no existe'
         });
-      }else{
-        res.json({
-          data: items,
-        });      
       }
-    } catch (error) {
-      console.error('Listar Error:', error)
     }
-  }
-
-  async listarById(req, res) {
-    const { id } = req.params;
-    const item = await mensajes.find({_id : id});
-
-    if (item.length == 0) {
-      return res.status(404).json({
-        msg: 'mensaje no encontrado',
-      });      
-    }else{
-      res.json({
-        data: item,
-      });
-    }
-  }
-
-  async agregar(req, res) {
-    const { author, message } = req.body;
-
-    if ( !author ||  !message )
-      return res.status(400).json({
-        msg: 'Missing body fields',
-      });
-      message.timestamp = moment().format();
-    const data = {
-      author,
-      message,
-    };
-    console.log(data);
-    const normalizedData = normalize(data, msgesSchema);
-
-    await mensajes.add(normalizedData).then(()=>{
-      res.json({
-        mensajes: normalizedData
-      });      
-    })
-
-  }
-
-/*   async actualizar(req, res) {
-    const { id } = req.params;
-    const { name, description, stock, price, thumbnail } = req.body;
     
-    if ( !name ||  !description || !stock || !price || !thumbnail ){
-      return res.status(400).json({
-        msg: 'missing Body fields',
-      });     
-    }
-      const data = {
-        name,
-        description,
-        stock,
-        price,
-        thumbnail,
-      };
-      console.log('update', data)
-    await productos.findOneAndUpdate({_id : id}, data, { new: true }).then((producto) => {
-      res.json({
-        msg: 'Producto Actualizado',
-        producto,
-      });      
-    })
-  }
+    // async update(id, user){
+    // return await Usuario.findByIdAndUpdate(id, user);
+    // }
 
-  async borrar(req, res) {
-    try {
-      const { id } = req.params;   
-      await productos.remove({_id : id}).then((producto)=>{
-          res.json({ 
-          msg: 'Producto eliminado',
-          data: producto
-        });
-      });
+    // async delete(id) {
+    // return await Usuario.findByIdAndDelete(id);
+    // }
 
-
-    } catch (error) {
-      res.json({
-        msg: 'Error al eliminar producto',
-      });      
-    } 
-    
-
-
-
-  }*/
+    // async login(req, res) {
+    //     console.log('Sesion ==== ', req.sessionID)
+    //     const user = req.user.nombre;
+    //     try {
+    //         if(req.user){
+    //                 res.json({ 
+    //                     msg: 'Welcome to our store!!', 
+    //                     session: {
+    //                         session : req.session,
+    //                         user: req.user
+    //                     }
+    //                 }
+    //             );
+    //         } else {
+    //             res.json({
+    //                 msg: 'Datos incorrectos'
+    //             })
+    //         }
+    //     } catch (error) {
+    //         console.error('LOGIN CONTROLLER ERROR:', error)
+    //         return error;
+    //     }
+    // }
 
 }
-export const mensajesController = new Mensajes();
+export const MensajesController = new MensajesClass();

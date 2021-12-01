@@ -11,7 +11,7 @@ const router = express.Router();
 import { isLoggedIn } from "../middleware/auth_local";
 
 router.use('/productos' , productosRouter);
-router.use('/mensajes', isLoggedIn ,mensajesRouter);
+router.use('/mensajes' ,mensajesRouter);
 router.use('/usuarios', usuariosRouter);
 
 //Desafio 29

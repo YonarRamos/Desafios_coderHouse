@@ -34,10 +34,11 @@ var ws = /*#__PURE__*/function () {
             });
             console.log('un usuario se ha conectado');
           });
-          socket.on('mensaje', function (nombre, mensaje) {
-            _this.io.emit("mensajes", {
+          socket.on('mensaje', function (nombre, mensaje, timestamp) {
+            var msg = _this.io.emit("mensajes", {
               nombre: nombre,
-              mensaje: mensaje
+              mensaje: mensaje,
+              timestamp: timestamp
             });
           });
           socket.on('disconnect', function () {

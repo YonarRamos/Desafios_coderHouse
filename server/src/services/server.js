@@ -57,9 +57,11 @@ app.use(express.static(publicPath));
 app.use('/', router);
 
 //inicializamos socket
-//const socket = new ws(myServer);
-//socket.connection();
+const socket = new ws(myServer);
+socket.connection();
 const HTTPServer = http.createServer(app);
+//inicializamos bd mongo
 dbService.init();
+
 export default HTTPServer;
 

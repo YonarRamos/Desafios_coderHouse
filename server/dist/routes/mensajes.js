@@ -10,9 +10,9 @@ var _express = require("express");
 var _mensajesController = require("../controllers/mensajesController");
 
 //import { checkAdmin } from "../middleware/admin";
-var router = (0, _express.Router)(); //router.get('/nuevo', productosController.nuevoForm);
-//router.get('/', mensajesController.listar);
-//router.get('/listar/:id', mensajesConttroller.listarById);
+var router = (0, _express.Router)();
+router.get('/', _mensajesController.MensajesController.get);
+router.post('/', _mensajesController.MensajesController.add); //router.get('/listar/:id', mensajesConttroller.listarById);
 //router.post('/agregar', mensajesController.agregar);
 //router.put('/actualizar/:id', mensajesConttroller.actualizar);
 //router.delete('/borrar/:id',checkAdmin , mensajesConttroller.borrar);

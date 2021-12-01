@@ -19,11 +19,11 @@ const Login = ( props ) => {
             password
         })
         .then((res)=>{
-            console.log('its working', res);
             Cookies.set('sessionID', JSON.stringify(res.data.session.session) );
             Cookies.set('user', JSON.stringify(res.data.session.user) );
             props.setUser(res.data.session.user);
             history.push('/');
+            console.log('its working', res);
         })
         .catch((error)=>{
             if(String(error).includes('401')){

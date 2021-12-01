@@ -8,14 +8,14 @@ class ws {
         this.io.on('connection', socket => {
             try {
               let nombre;
-              socket.on('connected', (nomb) => {
+              socket.on('connected', ( nomb ) => {
                 nombre = nomb;
                 socket.broadcast.emit("mensajes", {nombre, mensaje: `${nombre} se ha unido a la sala`});
                 console.log('un usuario se ha conectado')
               });
 
-              socket.on('mensaje', (nombre, mensaje) => {
-                this.io.emit("mensajes", {nombre, mensaje});
+              socket.on('mensaje', (nombre, mensaje, timestamp ) => {
+                const msg = this.io.emit("mensajes", {nombre, mensaje, timestamp});
               });
 
               socket.on('disconnect', () => {

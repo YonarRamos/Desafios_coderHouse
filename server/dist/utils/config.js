@@ -5,12 +5,12 @@ var dotenv = require('dotenv');
 var minimist = require('minimist');
 
 dotenv.config();
-var argv = minimist(process.argv.slice(2)); //console.log('Argumentos Config:', process.argv);
-//console.log('minimist config:', JSON.stringify(argv));
-
+var argv = minimist(process.argv.slice(2));
+console.log('minimist config:', argv);
 module.exports = {
   MODE: String(argv.mode) || 'FORK',
-  PORT: Number(argv.port) || process.env.PORT,
+  NODE_ENV: argv.environment || process.env.NODE_ENV,
+  PORT: argv.port || process.env.PORT,
   MONGO_ATLAS_USER: process.env.MONGO_ATLAS_USER || 'root',
   MONGO_ATLAS_PASSWORD: process.env.MONGO_ATLAS_PASSWORD || 'root',
   MONGO_ATLAS_CLUSTER: process.env.MONGO_ATLAS_CLUSTER || 'cluster0',

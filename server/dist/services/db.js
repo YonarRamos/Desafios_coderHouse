@@ -39,11 +39,7 @@ var DbServiceClass = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Mongoose.connect(this.srv).then(function (res) {
-                  return console.log('MONGO CONNECTED!!');
-                })["catch"](function (error) {
-                  return console.log('MONGOOSE_ERROR:', error);
-                });
+                return Mongoose.connect(this.srv);
 
               case 2:
               case "end":

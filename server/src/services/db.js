@@ -16,8 +16,8 @@ class DbServiceClass {
 
   async init(){
     await Mongoose.connect(this.srv)
-    .then((res)=> console.log('MONGO CONNECTED!!'))
-    .catch((error)=> console.log('MONGOOSE_ERROR:', error));
+    //.then((res)=> console.log('MONGO CONNECTED!!'))
+    //.catch((error)=> console.log('MONGOOSE_ERROR:', error));
   }
   async disconnect(){
     await Mongoose.disconnect(this.srv)

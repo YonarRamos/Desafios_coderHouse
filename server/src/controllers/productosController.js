@@ -12,7 +12,7 @@ class Products {
   }
   async updateProducts(req , res) {
     const updatedItem = await productsAPI.updateProduct(req , res);
-    return res.json(updatedItem);   
+    return res.json(updatedItem);
   }
   async deleteProducts(req, res) {
     const deletedItem = await productsAPI.deleteProduct(req , res);

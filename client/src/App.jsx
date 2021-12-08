@@ -5,6 +5,7 @@ import Nav from "./components/Navbar.jsx";
 import Login from "./components/Login.jsx";
 import Registrar from "./components/Registrar";
 import Home from "./components/Home.jsx";
+import Shop from "./components/Shop.jsx";
 import Chat from "./components/Chat.jsx";
 import FormularioProductos from "./components/FormularioProductos";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -30,15 +31,18 @@ function App() {
           <Switch>
             <Route exact path='/login' render={(props) => <Login setUser={ setUser } {...props} />} ></Route>   
             <Route exact path='/registrar'  render={(props) => <Registrar setUser={ setUser } user={ user } {...props} />}></Route>
-            <ProtectedRoute exact path='/' component={ props => {
-              return(
-                <>
-                  <Nav setUser={ setUser } user={ user }  />,
-                  <Home user={ user } />                                  
-                </>
-              )
+            <ProtectedRoute component={ props => {
+                return(
+                    <>
+                      <Route path='/' render={(props) => <Nav setUser={ setUser } {...props} />} ></Route>
+                      <Route exact path='/' render={(props) => <Home setUser={ setUser } {...props} />} ></Route>
+                      <Route exact path='/shop' render={(props) => <Shop setUser={ setUser } {...props} />} ></Route>
+                      <Route path='/' render={(props) => <Chat setUser={ setUser } {...props} />} ></Route>                         
+                    </>
+                  )
+                }
               }
-            }
+
             />
           </Switch>
         </div>  

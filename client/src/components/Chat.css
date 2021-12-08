@@ -2,6 +2,7 @@
     position: fixed;
     border-radius: 50%;
     right: 20px;
+    bottom: 10px;
 }
 .chat_div{
     height: 20rem;

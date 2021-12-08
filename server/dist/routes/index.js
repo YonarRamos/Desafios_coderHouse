@@ -11,6 +11,8 @@ var _express = _interopRequireDefault(require("express"));
 
 var _productos = _interopRequireDefault(require("./productos"));
 
+var _carrito = _interopRequireDefault(require("./carrito"));
+
 var _mensajes = _interopRequireDefault(require("./mensajes"));
 
 var _usuarios = _interopRequireDefault(require("./usuarios"));
@@ -25,12 +27,12 @@ var _path = _interopRequireDefault(require("path"));
 
 var _auth_local = require("../middleware/auth_local");
 
-//import carritoRouter from './carrito';
 var router = _express["default"].Router();
 
 router.use('/productos', _productos["default"]);
 router.use('/mensajes', _mensajes["default"]);
-router.use('/usuarios', _usuarios["default"]); //Desafio 29
+router.use('/usuarios', _usuarios["default"]);
+router.use('/carrito', _carrito["default"]); //Desafio 29
 
 router.get('/info', function (req, res) {
   res.json({

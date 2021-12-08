@@ -53,13 +53,16 @@ app.use(cors({
   origin: "http://localhost:8080"
 }));
 app.use((0, _compression["default"])()); //Graphql GET y POST productos
-// app.use(
-//   '/graphql',
-//   graphqlHTTP({
-//     schema: graphQLMainSchema,
-//     graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
-//   })
-// );
+
+/* app.use(
+  '/carrito',
+  graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: graphqlRoot,
+    graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
+
+  })
+); */
 
 var myServer = http.Server(app);
 exports.myServer = myServer;

@@ -1,14 +1,39 @@
-const { SchemaComposer } = require('graphql-compose');
-const { productoTC, productoMutation } = require('../controllers/productosControllerGQL');
+import { buildSchema } from 'graphql';
+const { carritoController } = require('../controllers/carritoController');
+const getCarrito = carritoController.get;
+const addItem = carritoController.add;
 
-const schemaComposer = new SchemaComposer();
+// GraphQL schema
+//https://graphql.org/graphql-js/basic-types/
+export const graphqlSchema = buildSchema(`
+    type Producto {
+      producto_id: String
+      cantidad: Int
+      _id: ID
+    },
 
-schemaComposer.Query.addFields({
-  ...productoTC,
-});
+    type Carrito {
+        _id: ID,
+        usuario: String
+        productos: [Producto]
+    },
 
-schemaComposer.Mutation.addFields({
-  ...productoMutation,
-});
+    type Query {
+      get(usuario_id: String): Carrito
+    },
 
-export const graphQLMainSchema = schemaComposer.buildSchema();
+    input Nuevo_producto {
+      producto_id: String
+      cantidad: Int
+    },
+
+    type Mutation {
+      add(usuario_id: String, producto: Nuevo_producto) : Carrito
+    }
+`);
+
+// Root resolver
+export const graphqlRoot = {
+  get : getCarrito,
+  add : addItem
+};

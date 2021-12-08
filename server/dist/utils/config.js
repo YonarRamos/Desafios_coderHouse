@@ -5,8 +5,8 @@ var dotenv = require('dotenv');
 var minimist = require('minimist');
 
 dotenv.config();
-var argv = minimist(process.argv.slice(2));
-console.log('minimist config:', argv);
+var argv = minimist(process.argv.slice(2)); //console.log('minimist config:', argv);
+
 module.exports = {
   MODE: String(argv.mode) || 'FORK',
   NODE_ENV: argv.environment || process.env.NODE_ENV,

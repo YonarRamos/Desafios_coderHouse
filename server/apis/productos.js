@@ -6,12 +6,14 @@ const Config = require('../src/utils/config');
 //const argv = minimist(process.argv.slice(2));
 //console.log('minimist config:', argv.persistencia);
 
-let tipo = null;
-if( Config.NODE_ENV == 'development' ){
-  tipo = TipoPersistencia['MEMORIA'];
-} else {
-  tipo = TipoPersistencia['MONGO_ATLAS'];
-}
+// let tipo = null;
+// if( Config.NODE_ENV == 'development' ){
+//   tipo = TipoPersistencia['MEMORIA'];
+// } else {
+//   tipo = TipoPersistencia['MONGO_ATLAS'];
+// }
+
+const tipo = TipoPersistencia['MONGO_ATLAS'];
 
 class prodAPI {
 

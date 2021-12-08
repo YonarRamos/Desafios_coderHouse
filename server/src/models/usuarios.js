@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 const usuariosCollection = 'usuarios'
 
 const usuarioSchema = new Mongoose.Schema({
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: false },
   password: { type: String, required: true },
   nombre: { type: String, required: true } ,
   apellido: { type: String, required: true } ,

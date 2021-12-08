@@ -1,6 +1,6 @@
 import express from 'express';
 import productosRouter from './productos';
-//import carritoRouter from './carrito';
+import carritoRouter from './carrito';
 import mensajesRouter from './mensajes';
 import usuariosRouter from './usuarios';
 import { calculo } from "../utils/calculo";
@@ -13,6 +13,7 @@ import { isLoggedIn } from "../middleware/auth_local";
 router.use('/productos' , productosRouter);
 router.use('/mensajes' ,mensajesRouter);
 router.use('/usuarios', usuariosRouter);
+router.use('/carrito', carritoRouter);
 
 //Desafio 29
 router.get('/info', ( req, res ) => {

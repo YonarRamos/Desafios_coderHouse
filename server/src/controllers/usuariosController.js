@@ -46,17 +46,12 @@ class UsuariosClass {
             telefono = `+549${telefono}`
             const user = { email, password, nombre, apellido, edad, alias, avatar, telefono }
             const newUser = new Usuario(user);
-            newUser.save(async function (error) {
-                if (error) {
-                    console.error(error)
-                } else{              
-                    res.status(200).json({
-                        usuario: newUser
-                    });
-                    //Creando carrito
-                    console.log('Creando carrito del usuario...')
-                    carritoController.add(req, res, newUser._id);
-                    
+            await newUser.save().then( async ( user )=> {
+                //Creando carrito
+                if(user){
+                    const usuario = user._id;
+                    console.log('Creando carrito del usuario...',user._id,':',user.nombre);
+                   await carritoController.create(usuario).then( async ()=>{
                     //Notificando al Admin
                     /* ETHERAL */
                     console.log('Sending email to Admin...');
@@ -137,8 +132,12 @@ class UsuariosClass {
                     console.log('Sending msg to Admin...');
                     const resTwilio = await SmsService.sendMessage( '+541138796141', `Nuevo Registro ${user.nombre}`);
                     console.log('Msg twilio enviado!!');
+                    })
+                    res.status(200).json({
+                        usuario: user
+                    });
                 }
-            });
+            })
     }
     
     async update(id, user){

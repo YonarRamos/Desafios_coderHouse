@@ -1,86 +1,62 @@
 import { Carrito } from '../models/carrito.js';
-import { Usuario } from '../models/usuarios';
+const Mongoose = require('mongoose');
 
 class CartClass {
-  async get(req, res) {
-    const { usuario_id } = req.params;
-    const resCarrito = await Carrito.findOne({usuario_id});
+  async get(usuario_id) {
+    console.log('usuario_id', usuario_id.usuario_id);
+    const resCarrito = await Carrito.findOne({usuario:Mongoose.Types.ObjectId(usuario_id.usuario_id)});
+    console.log('USUARIOOO', resCarrito);
+    if (!resCarrito) {
+      return {
+        msg: 'Carrito no existe',
+      };      
+    }else{
+      return resCarrito
+    }
+  }
+
+  async create(usuario) {
+      if ( !usuario ){
+        console.log('El usurio no existe');
+         throw new Error('El usurio no existe');
+      };    
+    
+      await Carrito.create({
+        usuario: usuario,
+        productos:[]
+      }).then(()=>{
+        console.log('Se creo un nuevo carrito!!');
+      }).catch((error)=>{
+        throw new Error('ERROR_CREANDO_CARRITO',error);
+      })
+
+  }
+
+/*   async add( usuario_id, producto) {
+    //const { usuario, productos } = req.body;
+    const resCarrito = await Carrito.findOne({usuario_id:usuario_id});
 
     if (!resCarrito) {
-      return res.status(404).json({
+      return {
         msg: 'Carrito no existe',
-      });      
+      };      
     }else{
-      res.json(resCarrito);
-    }
-  }
-
-  async add(req, res, usuario_id) {
-
-    const user = Usuario.findById({ _id : usuario_id } );
-    if ( !user ){
-      return res.status(400).json({
-        msg: 'El usuario no existe',
-      });
-    };
-
-    const data = {
-      usuario_id,
-      productos:[]
-    };
-    const newCart = new Carrito(data)
-    newCart.save(async function (error) {
-        if (error) { 
-            console.error('ERROR_CARRITO_CONTRIOLLER:', error);
-        } else{
-          console.log('Se creo un nuevo carrito!!');
-        }
-    });
-
-  }
-
-  async apdate(req, res) {
-    const { usuario_id, productos } = req.body;
-    
-    if ( !usuario_id ||  !productos ){
-      return res.status(400).json({
-        msg: 'missing Body fields',
-      });     
-    }
-      const data = {
-        usuario_id,
-        productos
-      };
-      console.log('update', data)
-    await Carrito.findOneAndUpdate({usuario_id}, data, { new: true }).then((producto) => {
-      res.json({
-        msg: 'Carrito Actualizado',
-        producto,
-      });      
-    })
-  }
-
-/*   async borrar(req, res) {
-    try {
-      const { id } = req.params;   
-      await productos.remove({_id : id}).then((producto)=>{
-          res.json({ 
-          msg: 'Producto eliminado',
-          data: producto
+      let index = resCarrito.productos.findIndex((element) => element.producto_id > producto.producto_id)
+      if(index == -1){
+        resCarrito.productos.push(producto);
+        await resCarrito.save().then((res)=>{
+          return res;
         });
-      });
-
-
-    } catch (error) {
-      res.json({
-        msg: 'Error al eliminar producto',
-      });      
+      } else{
+        resCarrito[index].cantidad = producto.cantidad;
+        await resCarrito.save().then((res)=>{
+          return res;
+        });
+      }
     }
-    
-
-
 
   } */
 
 }
-export const carritoController = new CartClass();
+const carritoController = new CartClass();
+module.exports = { carritoController };

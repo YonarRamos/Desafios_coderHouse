@@ -1,13 +1,13 @@
-/* import express from 'express';
-import { checkAdmin } from "../middleware/admin";
-import carritoController from '../controllers/carritoController';
+import express from 'express';
+import { graphqlHTTP } from 'express-graphql';
+import { graphqlSchema, graphqlRoot } from '../services/graphql';
 
 const router = express.Router();
 
-router.get('/listar/:id', carritoController.listarById);
+router.use('/', graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: graphqlRoot,
+    graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
+  }));
 
- router.post('/agregar/:id_producto',checkAdmin , carritoController.agregar);
-
-router.delete('/borrar/:id_producto',checkAdmin , carritoController.borrar);
-
-export default router */
+export default router

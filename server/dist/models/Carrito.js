@@ -2,11 +2,13 @@
 
 var Mongoose = require('mongoose');
 
+var Usuario = require('../models/usuarios');
+
 var carritosCollection = 'carritos';
 var carritoSchema = new Mongoose.Schema({
-  usuario_id: {
-    type: String,
-    required: true
+  usuario: {
+    type: Mongoose.ObjectId,
+    ref: 'Usuario'
   },
   productos: [{
     producto_id: {

@@ -15,7 +15,7 @@ var usuarioSchema = new Mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: false
   },
   password: {
     type: String,

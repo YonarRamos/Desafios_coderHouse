@@ -2,13 +2,6 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _typeof = require("@babel/runtime/helpers/typeof");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GmailService = void 0;
-
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
@@ -17,30 +10,26 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _config = _interopRequireDefault(require("../utils/config"));
+var Config = require('../utils/config');
 
-var _nodemailer = _interopRequireDefault(require("nodemailer"));
+var nodemailer = require('nodemailer');
 
-var _path = _interopRequireWildcard(require("path"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var path = require('path');
 
 var Email = /*#__PURE__*/function () {
   function Email() {
     (0, _classCallCheck2["default"])(this, Email);
     this.owner = {
-      name: _config["default"].GMAIL_NAME,
-      address: _config["default"].GMAIL_EMAIL
+      name: Config.GMAIL_NAME,
+      address: Config.GMAIL_EMAIL
     };
-    this.transporter = _nodemailer["default"].createTransport({
+    this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
       auth: {
-        user: _config["default"].GMAIL_EMAIL,
-        pass: _config["default"].GMAIL_PASSWORD
+        user: Config.GMAIL_EMAIL,
+        pass: Config.GMAIL_PASSWORD
       }
     });
     this.transporter.verify().then(function () {
@@ -64,7 +53,7 @@ var Email = /*#__PURE__*/function () {
                   html: content,
                   attachments: [{
                     // filename and content type is derived from path
-                    path: _path["default"].join(__dirname, '../../public/nodemailer.png')
+                    path: path.join(__dirname, '../../public/nodemailer.png')
                   }]
                 };
                 _context.next = 3;
@@ -93,4 +82,4 @@ var Email = /*#__PURE__*/function () {
 }();
 
 var GmailService = new Email();
-exports.GmailService = GmailService;
+module.exports = GmailService;

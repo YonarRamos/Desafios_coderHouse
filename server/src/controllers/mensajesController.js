@@ -1,12 +1,13 @@
 import session from "express-session";
+const Mongoose = require('mongoose');
 import { Mensajes } from '../models/mensajes';
-import { Usuario } from '../models/usuarios';
-import { EmailService } from "../services/email";
-import { GmailService } from "../services/gmail";
-import { SmsService } from "../services/twilio";
-import Config from "../utils/config";
-import { carritoController } from "./carritoController";
-import moment from "moment";
+import   UsuarioModel  from '../models/usuarios/Usuario';
+// import { EmailService } from "../services/email";
+// import { GmailService } from "../services/gmail";
+// import { SmsService } from "../services/twilio";
+// import Config from "../utils/config";
+// import { carritoController } from "./carritoController";
+// import moment from "moment";
 
 class MensajesClass {
     async get(req, res ) {
@@ -36,7 +37,7 @@ class MensajesClass {
       let { messages, user_id } = req.body;
 
       const data = { messages, user_id  }
-      const user = Usuario.findById(user_id);
+      const user = UsuarioModel.findById(user_id);
 
       if(user){
         if(messages.length > 0){
@@ -63,11 +64,11 @@ class MensajesClass {
     }
     
     // async update(id, user){
-    // return await Usuario.findByIdAndUpdate(id, user);
+    // return await UsuarioModel.findByIdAndUpdate(id, user);
     // }
 
     // async delete(id) {
-    // return await Usuario.findByIdAndDelete(id);
+    // return await UsuarioModel.findByIdAndDelete(id);
     // }
 
     // async login(req, res) {

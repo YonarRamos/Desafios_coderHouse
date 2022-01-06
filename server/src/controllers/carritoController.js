@@ -1,10 +1,10 @@
-import { Carrito } from '../models/carrito.js';
+const CarritoModel  = require('../models/carrito');
 const Mongoose = require('mongoose');
 
 class CartClass {
   async get(usuario_id) {
     console.log('usuario_id', usuario_id.usuario_id);
-    const resCarrito = await Carrito.findOne({usuario:Mongoose.Types.ObjectId(usuario_id.usuario_id)});
+    const resCarrito = await CarritoModel.findOne({usuario:Mongoose.Types.ObjectId(usuario_id.usuario_id)});
     console.log('USUARIOOO', resCarrito);
     if (!resCarrito) {
       return {
@@ -21,7 +21,7 @@ class CartClass {
          throw new Error('El usurio no existe');
       };    
     
-      await Carrito.create({
+      await CarritoModel.create({
         usuario: usuario,
         productos:[]
       }).then(()=>{

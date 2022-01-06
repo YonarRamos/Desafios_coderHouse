@@ -10,7 +10,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _carrito = require("../models/carrito.js");
+var CarritoModel = require('../models/carrito');
 
 var Mongoose = require('mongoose');
 
@@ -30,7 +30,7 @@ var CartClass = /*#__PURE__*/function () {
               case 0:
                 console.log('usuario_id', usuario_id.usuario_id);
                 _context.next = 3;
-                return _carrito.Carrito.findOne({
+                return CarritoModel.findOne({
                   usuario: Mongoose.Types.ObjectId(usuario_id.usuario_id)
                 });
 
@@ -83,7 +83,7 @@ var CartClass = /*#__PURE__*/function () {
               case 3:
                 ;
                 _context2.next = 6;
-                return _carrito.Carrito.create({
+                return CarritoModel.create({
                   usuario: usuario,
                   productos: []
                 }).then(function () {

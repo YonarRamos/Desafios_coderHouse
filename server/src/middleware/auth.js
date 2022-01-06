@@ -1,5 +1,4 @@
 import passport from 'passport';
-import  { UserModel  } from '../models/usuarios';
 import config from "../utils/config";
 import { Strategy as FaceBookStrategy } from 'passport-facebook';
 
@@ -17,7 +16,6 @@ const loginFunc = async (
   done
 ) => {
   try {
-    console.log('SALIO TODO BIEN',UserModel);
     /*   console.log(accessToken);
       console.log(refreshToken); */
       const user = profile;
@@ -40,7 +38,7 @@ passport.deserializeUser(function (obj, cb) {
 
 export const isLoggedIn = (req, res, done) => {
   if (!req.isAuthenticated())
-    return res.status(401).json({ msg: 'Unathorized' });
+    return res.status(401).json({ msg: 'Unauthorized' });
 
   done();
 };

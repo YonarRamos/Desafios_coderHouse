@@ -2,11 +2,6 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SmsService = void 0;
-
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
@@ -15,14 +10,14 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _config = _interopRequireDefault(require("../utils/config"));
+var Config = require('../utils/config');
 
-var _twilio = _interopRequireDefault(require("twilio"));
+var twilio = require('twilio');
 
 var Twilio = /*#__PURE__*/function () {
   function Twilio() {
     (0, _classCallCheck2["default"])(this, Twilio);
-    this.twilio = (0, _twilio["default"])(_config["default"].TWILIO_ACCOUNT_ID, _config["default"].TWILIO_TOKEN);
+    this.twilio = twilio(Config.TWILIO_ACCOUNT_ID, Config.TWILIO_TOKEN);
   }
 
   (0, _createClass2["default"])(Twilio, [{
@@ -36,7 +31,7 @@ var Twilio = /*#__PURE__*/function () {
               case 0:
                 params = {
                   body: message,
-                  from: _config["default"].TWILIO_CELLPHONE,
+                  from: Config.TWILIO_CELLPHONE,
                   to: cellphoneNumber
                 };
                 _context.next = 3;
@@ -65,4 +60,4 @@ var Twilio = /*#__PURE__*/function () {
 }();
 
 var SmsService = new Twilio();
-exports.SmsService = SmsService;
+module.exports = SmsService;

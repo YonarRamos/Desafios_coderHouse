@@ -19,5 +19,6 @@ class Products {
     res.json(deletedItem);
   }
 }
+
 const productosController = new Products();
 module.exports = { productosController }

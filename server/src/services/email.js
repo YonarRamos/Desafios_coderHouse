@@ -1,5 +1,5 @@
-import Config from '../utils/config';
-import nodemailer from 'nodemailer';
+const Config = require ('../utils/config');
+const nodemailer = require ('nodemailer');
 
 class Email {
 
@@ -38,4 +38,5 @@ class Email {
   }
 }
 
-export const EmailService = new Email();
+const EmailService = new Email();
+module.exports = EmailService;

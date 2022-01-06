@@ -1,5 +1,4 @@
 const Mongoose = require('mongoose');
-const Usuario = require('../models/usuarios');
 const carritosCollection = 'carritos';
 
 const carritoSchema = new Mongoose.Schema({
@@ -10,6 +9,4 @@ const carritoSchema = new Mongoose.Schema({
     } ]
 });
 
-const Carrito = Mongoose.model(carritosCollection, carritoSchema);
-
-module.exports = { carritoSchema, Carrito };
+module.exports = Mongoose.models.carritos ||  Mongoose.model(carritosCollection, carritoSchema);

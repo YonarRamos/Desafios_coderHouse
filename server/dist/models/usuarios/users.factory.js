@@ -6,15 +6,14 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _require = require('../productos/DAOs/memory'),
-    ProductosMemDAO = _require.ProductosMemDAO;
+var _require = require('../Usuarios/DAOs/memory'),
+    UsuariosMemDAO = _require.UsuariosMemDAO;
 
-var _require2 = require('./DAOs/mongo'),
-    ProductosAtlasDAO = _require2.ProductosAtlasDAO;
+var UsuariosMongoDAO = require('./DAOs/mongo');
 
-var ProductosMysqlDAO = require('../productos/DAOs/mySql');
+var UsuariosMysqlDAO = require('../Usuarios/DAOs/mySql');
 
-var ProductosSqlitelDAO = require('../productos/DAOs/sqlite3');
+var UsuariosSqliteDAO = require('../Usuarios/DAOs/sqlite3');
 
 var TipoPersistencia = {
   MEMORIA: 'MEM',
@@ -34,24 +33,24 @@ var FactoryDAO = /*#__PURE__*/function () {
     value: function get(tipo) {
       switch (tipo) {
         case TipoPersistencia.MONGO_ATLAS:
-          console.log('RETORNANDO INSTANCIA PRODUCT MONGO ATLAS');
-          return new ProductosAtlasDAO();
+          console.log('RETORNANDO INSTANCIA USER MONGO ATLAS');
+          return new UsuariosMongoDAO(true);
 
         case TipoPersistencia.MONGO_LOCAL:
           console.log('RETORNANDO INSTANCIA MONGO LOCAL');
-          return new ProductosAtlasDAO(true);
+          return new UsuariosMongoDAO(true);
 
         case TipoPersistencia.SQLITE3:
           console.log('RETORNANDO INSTANCIA SQLITE3');
-          return new ProductosSqlitelDAO('productos');
+          return new UsuariosSqliteDAO('usuarios');
 
         case TipoPersistencia.MYSQL:
           console.log('RETORNANDO INSTANCIA MYSQL');
-          return new ProductosMysqlDAO('productos');
+          return new UsuariosMysqlDAO('usuarios');
 
         default:
           console.log('RETORNANDO INSTANCIA MEMORIA');
-          return ProductosMemDAO;
+          return UsuariosMemDAO;
       }
     }
   }]);

@@ -1,5 +1,5 @@
-import Config from '../utils/config';
-import twilio from 'twilio';
+const Config = require('../utils/config');
+const twilio = require('twilio');
 
 class Twilio {
   constructor() {
@@ -18,4 +18,5 @@ class Twilio {
   }
 }
 
-export const SmsService = new Twilio();
+const SmsService = new Twilio();
+module.exports = SmsService;

@@ -6,9 +6,10 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _bcrypt = _interopRequireDefault(require("bcrypt"));
-
+//import session from "express-session";
 var Mongoose = require('mongoose');
+
+var bcrypt = require('bcrypt');
 
 var usuariosCollection = 'usuarios';
 var usuarioSchema = new Mongoose.Schema({
@@ -55,7 +56,7 @@ usuarioSchema.pre('save', /*#__PURE__*/function () {
           case 0:
             user = this;
             _context.next = 3;
-            return _bcrypt["default"].hash(user.password, 10);
+            return bcrypt.hash(user.password, 10);
 
           case 3:
             hash = _context.sent;
@@ -84,7 +85,7 @@ usuarioSchema.methods.isValidPassword = /*#__PURE__*/function () {
           case 0:
             user = this;
             _context2.next = 3;
-            return _bcrypt["default"].compare(password, user.password);
+            return bcrypt.compare(password, user.password);
 
           case 3:
             compare = _context2.sent;
@@ -103,8 +104,4 @@ usuarioSchema.methods.isValidPassword = /*#__PURE__*/function () {
   };
 }();
 
-var Usuario = Mongoose.model(usuariosCollection, usuarioSchema);
-module.exports = {
-  usuarioSchema: usuarioSchema,
-  Usuario: Usuario
-};
+module.exports = Mongoose.models.usuarios || Mongoose.model(usuariosCollection, usuarioSchema);

@@ -19,14 +19,13 @@ var db = 'ecommerce';
 require('dotenv').config();
 
 var DbServiceClass = /*#__PURE__*/function () {
-  function DbServiceClass() {
+  function DbServiceClass(tipo) {
     (0, _classCallCheck2["default"])(this, DbServiceClass);
 
-    if (false) {
-      this.srv = "mongodb://localhost:27017/".concat(db);
-    } else {
+    if (tipo) {
       this.srv = "mongodb+srv://".concat(_config["default"].MONGO_ATLAS_USER, ":").concat(_config["default"].MONGO_ATLAS_PASSWORD, "@").concat(_config["default"].MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(_config["default"].MONGO_LOCAL_DBNAME, "?retryWrites=true&w=majority");
-      console.log('MONGO ATLAS', this.srv);
+    } else {
+      this.srv = "mongodb://localhost:27017/".concat(db);
     }
   }
 
@@ -39,7 +38,11 @@ var DbServiceClass = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return Mongoose.connect(this.srv);
+                return Mongoose.connect(this.srv).then(function (res) {
+                  return console.log('MONGO CONNECTED!!');
+                })["catch"](function (error) {
+                  return console.log('MONGOOSE_ERROR:', error);
+                });
 
               case 2:
               case "end":
@@ -88,4 +91,4 @@ var DbServiceClass = /*#__PURE__*/function () {
   return DbServiceClass;
 }();
 
-module.exports = new DbServiceClass();
+module.exports = new DbServiceClass(true);

@@ -1,6 +1,6 @@
-import Config from '../utils/config';
-import nodemailer from 'nodemailer';
-import path, { dirname } from 'path';
+const Config = require ('../utils/config');
+const nodemailer = require ('nodemailer');
+const path = require ('path');
 
 class Email {
   constructor() {
@@ -40,4 +40,5 @@ class Email {
   }
 }
 
-export const GmailService = new Email();
+const GmailService = new Email();
+module.exports = GmailService;

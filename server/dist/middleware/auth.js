@@ -13,8 +13,6 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _passport = _interopRequireDefault(require("passport"));
 
-var _usuarios = require("../models/usuarios");
-
 var _config = _interopRequireDefault(require("../utils/config"));
 
 var _passportFacebook = require("passport-facebook");
@@ -34,25 +32,24 @@ var loginFunc = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            console.log('SALIO TODO BIEN', _usuarios.UserModel);
+
             /*   console.log(accessToken);
               console.log(refreshToken); */
-
             user = profile; //console.log(user);
 
             return _context.abrupt("return", done(null, user));
 
-          case 6:
-            _context.prev = 6;
+          case 5:
+            _context.prev = 5;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
 
-          case 9:
+          case 8:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 6]]);
+    }, _callee, null, [[0, 5]]);
   }));
 
   return function loginFunc(_x, _x2, _x3, _x4) {
@@ -72,7 +69,7 @@ _passport["default"].deserializeUser(function (obj, cb) {
 
 var isLoggedIn = function isLoggedIn(req, res, done) {
   if (!req.isAuthenticated()) return res.status(401).json({
-    msg: 'Unathorized'
+    msg: 'Unauthorized'
   });
   done();
 };

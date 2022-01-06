@@ -2,11 +2,6 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.EmailService = void 0;
-
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
@@ -15,23 +10,23 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _config = _interopRequireDefault(require("../utils/config"));
+var Config = require('../utils/config');
 
-var _nodemailer = _interopRequireDefault(require("nodemailer"));
+var nodemailer = require('nodemailer');
 
 var Email = /*#__PURE__*/function () {
   function Email() {
     (0, _classCallCheck2["default"])(this, Email);
     this.owner = {
-      name: _config["default"].ETHEREAL_NAME,
-      address: _config["default"].ETHEREAL_EMAIL
+      name: Config.ETHEREAL_NAME,
+      address: Config.ETHEREAL_EMAIL
     };
-    this.transporter = _nodemailer["default"].createTransport({
+    this.transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,
       auth: {
-        user: _config["default"].ETHEREAL_EMAIL,
-        pass: _config["default"].ETHEREAL_PASSWORD
+        user: Config.ETHEREAL_EMAIL,
+        pass: Config.ETHEREAL_PASSWORD
       },
       tls: {
         // do not fail on invalid certs
@@ -84,4 +79,4 @@ var Email = /*#__PURE__*/function () {
 }();
 
 var EmailService = new Email();
-exports.EmailService = EmailService;
+module.exports = EmailService;

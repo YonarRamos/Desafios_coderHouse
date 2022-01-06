@@ -19,20 +19,16 @@ var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _mensajes = require("../models/mensajes");
 
-var _usuarios = require("../models/usuarios");
+var _Usuario = _interopRequireDefault(require("../models/usuarios/Usuario"));
 
-var _email = require("../services/email");
+var Mongoose = require('mongoose');
 
-var _gmail = require("../services/gmail");
-
-var _twilio = require("../services/twilio");
-
-var _config = _interopRequireDefault(require("../utils/config"));
-
-var _carritoController = require("./carritoController");
-
-var _moment = _interopRequireDefault(require("moment"));
-
+// import { EmailService } from "../services/email";
+// import { GmailService } from "../services/gmail";
+// import { SmsService } from "../services/twilio";
+// import Config from "../utils/config";
+// import { carritoController } from "./carritoController";
+// import moment from "moment";
 var MensajesClass = /*#__PURE__*/function () {
   function MensajesClass() {
     (0, _classCallCheck2["default"])(this, MensajesClass);
@@ -128,7 +124,7 @@ var MensajesClass = /*#__PURE__*/function () {
                   messages: messages,
                   user_id: user_id
                 };
-                user = _usuarios.Usuario.findById(user_id);
+                user = _Usuario["default"].findById(user_id);
 
                 if (user) {
                   if (messages.length > 0) {
@@ -184,10 +180,10 @@ var MensajesClass = /*#__PURE__*/function () {
 
       return add;
     }() // async update(id, user){
-    // return await Usuario.findByIdAndUpdate(id, user);
+    // return await UsuarioModel.findByIdAndUpdate(id, user);
     // }
     // async delete(id) {
-    // return await Usuario.findByIdAndDelete(id);
+    // return await UsuarioModel.findByIdAndDelete(id);
     // }
     // async login(req, res) {
     //     console.log('Sesion ==== ', req.sessionID)

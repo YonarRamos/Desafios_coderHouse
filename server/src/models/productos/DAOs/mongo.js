@@ -1,10 +1,7 @@
 const Mongoose = require('mongoose');
 const moment = require('moment');
-const config = require('../../../utils/config');
 
 const productosCollection = 'productos';
-const db = 'ecommerce';
-
 const productoSchema = new Mongoose.Schema({
     timestamp:{type:Date, default: moment().format() , required:true},
     codigo: {type: String, default: Date.now() ,required: true},
@@ -18,26 +15,6 @@ const productoSchema = new Mongoose.Schema({
 const Productos = new Mongoose.model(productosCollection, productoSchema);
 
 class ProductosAtlasDAO {
-    #connection
-    constructor(tipo) {
-      if (tipo){
-        this.srv = `mongodb://localhost:27017/${db}`;
-      }
-      else{
-        this.srv = `mongodb+srv://${config.MONGO_ATLAS_USER}:${config.MONGO_ATLAS_PASSWORD}@${config.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${config.MONGO_LOCAL_DBNAME}?retryWrites=true&w=majority`;
-      }
-    }
-     init(){
-      if(this.#connection){
-        console.log('MONGO ALREADY CONNECTED!!')
-        return this.#connection
-      } else {
-        return this.#connection =  Mongoose.createConnection(this.srv)
-        .then((res)=> console.log('MONGO CONNECTED!!'))
-        .catch((error)=> console.log('MONGOOSE_ERROR:', error));        
-      }
-    }
-
   async get(req, res) {
     let items = null;
     const { id } = req.query;
@@ -61,19 +38,22 @@ class ProductosAtlasDAO {
   }
 
    async add(req, res) {
-    const { name, description, stock, price, thumbnail } = req.body;
-
-    if ( !name ||  !description || !stock || !price || !thumbnail )
+    const { name, description, stock, price } = req.body;
+    console.log('body:', req.body)
+    if (req.file === undefined) return res.send("you must select a file.");
+    const imgUrl = `http://localhost:8080/file/${req.file.filename}`;
+    if ( !name ||  !description || !stock || !price ) {
       return res.status(400).json({
         msg: 'missing Body fields',
-      });
+      });      
+    }
+
 
     const data = {
       name,
       description,
       stock,
-      price,
-      thumbnail,
+      price
     };
 
    await Productos.insertMany([data]).then((producto)=>{
@@ -102,27 +82,42 @@ class ProductosAtlasDAO {
         thumbnail,
       };
     await Productos.findOneAndUpdate({_id : id}, data, { new: true }).then((producto) => {
-      res.json({
+      if(!producto){
+        res.status(404).json({
+          msg: 'El producto indicado no existe'
+        });        
+      }
+      res.status(200).json({
         msg: 'Producto Actualizado',
         producto,
       });      
     })
+    .catch(()=>{
+      res.status(500).json({
+        msg: 'Error al Actualizar el producto indicado'
+      });  
+    });
   }
 
   async delete(req, res) {
-    try {
-      const { id } = req.params;   
+    const { id } = req.params;   
       await Productos.deleteOne({_id : id}).then((producto)=>{
-          res.json({ 
+        if(!producto){
+          res.status(404).json({ 
+            msg: 'El producto inidicado no existe',
+          });          
+        }
+
+        res.status(200).json({ 
           msg: 'Producto eliminado',
           data: producto
         });
+      })
+      .catch(()=>{
+        res.status(500).json({
+          msg: 'Error al Actualizar el producto indicado'
+        });  
       });
-    } catch (error) {
-      res.json({
-        msg: 'Error al eliminar producto',
-      });      
-    }
   }
 } 
 

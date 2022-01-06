@@ -17,8 +17,11 @@ var _passport = _interopRequireDefault(require("passport"));
 
 var _passportLocal = _interopRequireDefault(require("passport-local"));
 
-var _usuarios = require("../models/usuarios");
+var _mongo = require("../models/usuarios/DAOs/mongo");
 
+var Mongoose = require('mongoose');
+
+var UsuarioModel = Mongoose.model('usuarios', _mongo.usuarioSchema);
 var LocalStrategy = _passportLocal["default"].Strategy;
 var strategyOptions = {
   usernameField: 'email',
@@ -33,18 +36,19 @@ var loginFunc = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log('Validando usuario:', email, '==>', password, '==>', _usuarios.Usuario);
+            console.log('Validando usuario:', email, '==>', password, '==>', UsuarioModel);
             _context.prev = 1;
             _context.next = 4;
-            return _usuarios.Usuario.findOne({
+            return UsuarioModel.findOne({
               email: email
             });
 
           case 4:
             user = _context.sent;
+            console.log(user);
 
             if (user) {
-              _context.next = 7;
+              _context.next = 8;
               break;
             }
 
@@ -52,9 +56,9 @@ var loginFunc = /*#__PURE__*/function () {
               msg: 'User does not exist'
             }));
 
-          case 7:
+          case 8:
             if (user.isValidPassword(password)) {
-              _context.next = 10;
+              _context.next = 11;
               break;
             }
 
@@ -63,21 +67,21 @@ var loginFunc = /*#__PURE__*/function () {
               msg: 'Password is not valid.'
             }));
 
-          case 10:
+          case 11:
             console.log('SALIO TODO BIEN');
             return _context.abrupt("return", done(null, user));
 
-          case 14:
-            _context.prev = 14;
+          case 15:
+            _context.prev = 15;
             _context.t0 = _context["catch"](1);
             console.log('LoginFuncERROR:', _context.t0);
 
-          case 17:
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 14]]);
+    }, _callee, null, [[1, 15]]);
   }));
 
   return function loginFunc(_x, _x2, _x3, _x4) {
@@ -115,7 +119,7 @@ var signUpFunc = /*#__PURE__*/function () {
             };
             console.log(query);
             _context2.next = 10;
-            return _usuarios.Usuario.findOne(query);
+            return UsuarioModel.findOne(query);
 
           case 10:
             user = _context2.sent;
@@ -134,7 +138,7 @@ var signUpFunc = /*#__PURE__*/function () {
               email: _email,
               password: _password
             }, (0, _defineProperty2["default"])(_userData, "email", _email), (0, _defineProperty2["default"])(_userData, "firstName", firstName), (0, _defineProperty2["default"])(_userData, "lastName", lastName), _userData);
-            newUser = new _usuarios.Usuario(userData);
+            newUser = new UsuarioModel(userData);
             _context2.next = 21;
             return newUser.save();
 
@@ -172,7 +176,7 @@ _passport["default"].serializeUser(function (user, done) {
 });
 
 _passport["default"].deserializeUser(function (userId, done) {
-  _usuarios.Usuario.findById(userId, function (err, user) {
+  Usuario.findById(userId, function (err, user) {
     done(err, user);
   });
 });

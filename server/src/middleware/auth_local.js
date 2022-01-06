@@ -1,7 +1,8 @@
+const Mongoose = require('mongoose');
 import passport from 'passport';
 import passportLocal from 'passport-local';
-import  { Usuario } from '../models/usuarios';
-
+import  { usuarioSchema } from '../models/usuarios/DAOs/mongo';
+const UsuarioModel = Mongoose.model('usuarios', usuarioSchema);
 const LocalStrategy = passportLocal.Strategy;
 
 const strategyOptions = {
@@ -11,9 +12,10 @@ const strategyOptions = {
 };
 
 const loginFunc = async (req, email, password, done) => {
-  console.log('Validando usuario:', email, '==>', password, '==>', Usuario);
+  console.log('Validando usuario:', email, '==>', password, '==>', UsuarioModel);
   try {
-    const user = await Usuario.findOne({ email });
+    const user = await UsuarioModel.findOne({ email });
+    console.log(user)
     if (!user) {
       return done(null, false, { msg: 'User does not exist' });
     }
@@ -44,7 +46,7 @@ const signUpFunc = async (req, email, password, done) => {
     };
 
     console.log(query);
-    const user = await Usuario.findOne(query);
+    const user = await UsuarioModel.findOne(query);
 
     if (user) {
       console.log('User already exists');
@@ -59,7 +61,7 @@ const signUpFunc = async (req, email, password, done) => {
         lastName,
       };
 
-      const newUser = new Usuario(userData);
+      const newUser = new UsuarioModel(userData);
 
       await newUser.save();
 

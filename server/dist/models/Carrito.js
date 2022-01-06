@@ -2,8 +2,6 @@
 
 var Mongoose = require('mongoose');
 
-var Usuario = require('../models/usuarios');
-
 var carritosCollection = 'carritos';
 var carritoSchema = new Mongoose.Schema({
   usuario: {
@@ -21,8 +19,4 @@ var carritoSchema = new Mongoose.Schema({
     }
   }]
 });
-var Carrito = Mongoose.model(carritosCollection, carritoSchema);
-module.exports = {
-  carritoSchema: carritoSchema,
-  Carrito: Carrito
-};
+module.exports = Mongoose.models.carritos || Mongoose.model(carritosCollection, carritoSchema);

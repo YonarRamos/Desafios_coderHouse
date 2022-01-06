@@ -11,28 +11,48 @@ import dbService from "../services/db";
 import MongoStore from 'connect-mongo';
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 import passport from '../middleware/auth';
-import router from '../routes/index';
-import { graphqlHTTP } from 'express-graphql';
-import { graphqlSchema, graphqlRoot } from './graphql';
+import mainRouter  from '../routes/index';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 const app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
 app.use(compression());
 
-//Graphql GET y POST productos
-/* app.use(
-  '/carrito',
-  graphqlHTTP({
-    schema: graphqlSchema,
-    rootValue: graphqlRoot,
-    graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Entrega Proyecto Final Yonar Ramos',
+      version: '1.0.0',
+      description:
+        'This is a required app to get development certification from CoderHouse',
+      license: {
+        name: 'MIT',
+        url: 'https://spdx.org/licenses/MIT.html',
+      },
+      contact: {
+        name: 'Yonar Ramos',
+        url: 'www.yonarramos.info',
+        email: 'yonar1687@gmail.com',
+      },
+    },
+    servers: [
+      {
+        url: 'http://localhost:8080',
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: ['src/routes/*'],
+};
 
-  })
-); */
+const specs = swaggerJsdoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 export const myServer = http.Server(app);
 const publicPath = path.resolve(__dirname, '../public');
-dbService.init();
 
 const StoreOptions = {
   store: MongoStore.create({
@@ -56,7 +76,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(publicPath));
-app.use('/', router);
+app.use('/', mainRouter );
 
 //inicializamos socket
 const socket = new ws(myServer);

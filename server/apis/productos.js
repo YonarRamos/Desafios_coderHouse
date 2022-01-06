@@ -2,10 +2,10 @@ const { FactoryDAO } = require('../src/models/productos/products.factory');
 const { TipoPersistencia } = require('../src/models/productos/products.factory');
 const minimist = require('minimist');
 const Config = require('../src/utils/config');
-
 //const argv = minimist(process.argv.slice(2));
 //console.log('minimist config:', argv.persistencia);
 
+/* PERMITE SELECCIONAR EL TIPO DE PERSISTENCIA DESDE LA CONSOLA */
 // let tipo = null;
 // if( Config.NODE_ENV == 'development' ){
 //   tipo = TipoPersistencia['MEMORIA'];

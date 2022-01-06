@@ -31,9 +31,9 @@ var _auth = _interopRequireDefault(require("../middleware/auth"));
 
 var _index = _interopRequireDefault(require("../routes/index"));
 
-var _expressGraphql = require("express-graphql");
+var _swaggerJsdoc = _interopRequireDefault(require("swagger-jsdoc"));
 
-var _graphql = require("./graphql");
+var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -52,24 +52,37 @@ app.use(cors({
   credentials: true,
   origin: "http://localhost:8080"
 }));
-app.use((0, _compression["default"])()); //Graphql GET y POST productos
-
-/* app.use(
-  '/carrito',
-  graphqlHTTP({
-    schema: graphqlSchema,
-    rootValue: graphqlRoot,
-    graphiql: true,//levanta como una interfaz grafica para trabajar con graphql
-
-  })
-); */
-
+app.use((0, _compression["default"])());
+var options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Entrega Proyecto Final Yonar Ramos',
+      version: '1.0.0',
+      description: 'This is a required app to get development certification from CoderHouse',
+      license: {
+        name: 'MIT',
+        url: 'https://spdx.org/licenses/MIT.html'
+      },
+      contact: {
+        name: 'Yonar Ramos',
+        url: 'www.yonarramos.info',
+        email: 'yonar1687@gmail.com'
+      }
+    },
+    servers: [{
+      url: 'http://localhost:8080',
+      description: 'Development server'
+    }]
+  },
+  apis: ['src/routes/*']
+};
+var specs = (0, _swaggerJsdoc["default"])(options);
+app.use('/api-docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(specs));
 var myServer = http.Server(app);
 exports.myServer = myServer;
 
 var publicPath = _path["default"].resolve(__dirname, '../public');
-
-_db["default"].init();
 
 var StoreOptions = {
   store: _connectMongo["default"].create({

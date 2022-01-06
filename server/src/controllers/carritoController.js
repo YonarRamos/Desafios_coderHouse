@@ -2,16 +2,19 @@ const CarritoModel  = require('../models/carrito');
 const Mongoose = require('mongoose');
 
 class CartClass {
-  async get(usuario_id) {
-    console.log('usuario_id', usuario_id.usuario_id);
-    const resCarrito = await CarritoModel.findOne({usuario:Mongoose.Types.ObjectId(usuario_id.usuario_id)});
+  async get(req, res) {
+    const {usuario_id} = req.params;
+    console.log('usuario_id', usuario_id);
+    const resCarrito = await CarritoModel.findOne({usuario:Mongoose.Types.ObjectId(usuario_id)});
     console.log('USUARIOOO', resCarrito);
     if (!resCarrito) {
-      return {
-        msg: 'Carrito no existe',
-      };      
+      res.status(404).json({
+        msg: 'El carrito no existe'
+      });    
     }else{
-      return resCarrito
+      res.status(200).json({
+        data: resCarrito
+      });
     }
   }
 
@@ -59,4 +62,4 @@ class CartClass {
 
 }
 const carritoController = new CartClass();
-module.exports = { carritoController };
+module.exports = carritoController ;

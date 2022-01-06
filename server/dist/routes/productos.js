@@ -24,7 +24,7 @@ var router = (0, _express.Router)();
  *         _id:
  *           type: String
  *           description: ID del producto
- *           example: 1
+ *           example: 61d43077bd9a8c81fd2bac57
  *         codigo:
  *           type: String
  *           description: SKU
@@ -72,29 +72,26 @@ var router = (0, _express.Router)();
  *           type: String
  *           description: Imagen del producto
  *           example: https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/pencil-256.png
+ *     productFilter:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: String
+ *           description: id del producto
+ *           example: 61d43077bd9a8c81fd2bac57
  */
 
 /**
  * @swagger
- * /:
+ * /productos/:
  *   get:
- *     summary: Devuelve todos los productos
- *     responses:
- *       200:
- *         description: get array of all products
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items :
- *                  $ref: '#/components/schemas/Product'
- */
-
-/**
- * @swagger
- * /productos?id:
- *   get:
- *     summary: Devuelve un producto por id
+ *     summary: Devuelve todos los producto ó uno específico al indicar un id válido
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/productFilter'
  *     responses:
  *       200:
  *         description: get product data
@@ -120,7 +117,7 @@ var router = (0, _express.Router)();
 router.get('/', _productosController.productosController.getProducts);
 /**
  * @swagger
- * /:
+ * /productos/:
  *   post:
  *     summary: Crea un nuevo producto
  *     requestBody:
@@ -160,7 +157,7 @@ router.post('/'
 , _productosController.productosController.addProducts);
 /**
  * @swagger
- * /:id:
+ * /productos/:id:
  *   put:
  *     summary: Actualiza un producto existente
  *     requestBody:
@@ -217,7 +214,7 @@ router.post('/'
 router.put('/:id', _productosController.productosController.updateProducts);
 /**
  * @swagger
- * /:id:
+ * /productos/:id:
  *   delete:
  *     summary: Borra un producto existente
  *     responses:

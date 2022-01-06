@@ -21,8 +21,7 @@ var GmailService = require("../../../services/gmail");
 
 var SmsService = require("../../../services/twilio");
 
-var _require = require("../../../controllers/carritoController"),
-    carritoController = _require.carritoController;
+var carritoController = require("../../../controllers/carritoController");
 
 var UsuarioModel = require('../Usuario');
 

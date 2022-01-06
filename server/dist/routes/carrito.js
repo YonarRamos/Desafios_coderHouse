@@ -13,13 +13,10 @@ var _expressGraphql = require("express-graphql");
 
 var _graphql = require("../services/graphql");
 
+var _carritoController = _interopRequireDefault(require("../controllers/carritoController"));
+
 var router = _express["default"].Router();
 
-router.use('/', (0, _expressGraphql.graphqlHTTP)({
-  schema: _graphql.graphqlSchema,
-  rootValue: _graphql.graphqlRoot,
-  graphiql: true //levanta como una interfaz grafica para trabajar con graphql
-
-}));
+router.get('/:usuario_id', _carritoController["default"].get);
 var _default = router;
 exports["default"] = _default;

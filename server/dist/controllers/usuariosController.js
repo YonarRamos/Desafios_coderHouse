@@ -88,7 +88,7 @@ var Users = /*#__PURE__*/function () {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return UsersAPI.updateUser(req, res);
+                return UsersAPI.updateUsers(req, res);
 
               case 2:
                 updatedItem = _context3.sent;
@@ -118,7 +118,7 @@ var Users = /*#__PURE__*/function () {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return UsersAPI.deleteUser(req, res);
+                return UsersAPI.deleteUsers(req, res);
 
               case 2:
                 deletedItem = _context4.sent;

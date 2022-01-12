@@ -10,11 +10,6 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-//import session from "express-session";
-var Mongoose = require('mongoose');
-
-var bcrypt = require('bcrypt');
-
 var EmailService = require("../../../services/email");
 
 var GmailService = require("../../../services/gmail");
@@ -26,8 +21,6 @@ var carritoController = require("../../../controllers/carritoController");
 var UsuarioModel = require('../Usuario');
 
 var moment = require("moment");
-
-var CombinedStream = require('combined-stream');
 
 var UsuariosMongoDAO = /*#__PURE__*/function () {
   function UsuariosMongoDAO() {
@@ -119,13 +112,13 @@ var UsuariosMongoDAO = /*#__PURE__*/function () {
     key: "add",
     value: function () {
       var _add = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-        var _req$body, email, password, nombre, apellido, edad, alias, avatar, telefono, user, newUser;
+        var _req$body, email, password, nombre, apellido, edad, alias, avatar, telefono, direccionEntrega, user, newUser;
 
         return _regenerator["default"].wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _req$body = req.body, email = _req$body.email, password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar, telefono = _req$body.telefono;
+                _req$body = req.body, email = _req$body.email, password = _req$body.password, nombre = _req$body.nombre, apellido = _req$body.apellido, edad = _req$body.edad, alias = _req$body.alias, avatar = _req$body.avatar, telefono = _req$body.telefono, direccionEntrega = _req$body.direccionEntrega;
                 telefono = "+549".concat(telefono);
                 user = {
                   email: email,
@@ -154,7 +147,7 @@ var UsuariosMongoDAO = /*#__PURE__*/function () {
                             usuario = user._id;
                             console.log('Creando carrito del usuario...', user._id, ':', user.nombre);
                             _context3.next = 5;
-                            return carritoController.create(usuario).then( /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
+                            return carritoController.create(usuario, direccionEntrega).then( /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
                               var destination, subject, content, resEtheral, Gdestination, Gsubject, Gcontent, resGmail, resTwilio;
                               return _regenerator["default"].wrap(function _callee2$(_context2) {
                                 while (1) {
@@ -240,18 +233,34 @@ var UsuariosMongoDAO = /*#__PURE__*/function () {
   }, {
     key: "update",
     value: function () {
-      var _update = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(id, user) {
+      var _update = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
+        var user, usuario_id, userUpdated;
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _context5.next = 2;
-                return UsuarioModel.findByIdAndUpdate(id, user);
+                user = req.body;
+                usuario_id = req.params.usuario_id;
+                console.log('user', user);
+                _context5.next = 5;
+                return UsuarioModel.findByIdAndUpdate(usuario_id);
 
-              case 2:
-                return _context5.abrupt("return", _context5.sent);
+              case 5:
+                userUpdated = _context5.sent;
+                console.log('userUpdated', userUpdated);
 
-              case 3:
+                if (userUpdated) {
+                  res.status(200).json({
+                    msg: 'Usuario actualizado',
+                    data: userUpdated
+                  });
+                } else {
+                  res.status(404).json({
+                    msg: "El usuario no existe"
+                  });
+                }
+
+              case 8:
               case "end":
                 return _context5.stop();
             }
@@ -268,18 +277,33 @@ var UsuariosMongoDAO = /*#__PURE__*/function () {
   }, {
     key: "delete",
     value: function () {
-      var _delete2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(id) {
+      var _delete2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
+        var usuario_id, userResponse;
         return _regenerator["default"].wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                _context6.next = 2;
-                return UsuarioModel.findByIdAndDelete(id);
-
-              case 2:
-                return _context6.abrupt("return", _context6.sent);
+                usuario_id = req.params.usuario_id;
+                _context6.next = 3;
+                return UsuarioModel.findByIdAndDelete(usuario_id);
 
               case 3:
+                userResponse = _context6.sent;
+                console.log('userResponse', userResponse);
+
+                if (userResponse) {
+                  res.status(200).json({
+                    msg: 'Usuario eliminado',
+                    data: userResponse
+                  });
+                  carritoController.destroy(usuario_id);
+                } else {
+                  res.status(400).json({
+                    msg: 'Usuario no existe'
+                  });
+                }
+
+              case 6:
               case "end":
                 return _context6.stop();
             }
@@ -287,7 +311,7 @@ var UsuariosMongoDAO = /*#__PURE__*/function () {
         }, _callee6);
       }));
 
-      function _delete(_x8) {
+      function _delete(_x8, _x9) {
         return _delete2.apply(this, arguments);
       }
 
@@ -337,7 +361,7 @@ var UsuariosMongoDAO = /*#__PURE__*/function () {
         }, _callee7, null, [[2, 6]]);
       }));
 
-      function login(_x9, _x10) {
+      function login(_x10, _x11) {
         return _login.apply(this, arguments);
       }
 

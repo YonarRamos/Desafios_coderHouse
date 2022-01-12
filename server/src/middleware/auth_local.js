@@ -20,8 +20,7 @@ const loginFunc = async (req, email, password, done) => {
       return done(null, false, { msg: 'User does not exist' });
     }
     if (!user.isValidPassword(password)) {
-      console.log('Password is not valid.')
-      return done(null, false, { msg: 'Password is not valid.' });
+      return done(null, false, { msg: 'Datos incorrectos' });
     }
     console.log('SALIO TODO BIEN');
     return done(null, user);   

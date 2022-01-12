@@ -190,6 +190,4 @@ var ProductsMemDAO = /*#__PURE__*/function () {
 }();
 
 var ProductosMemDAO = new ProductsMemDAO();
-module.exports = {
-  ProductosMemDAO: ProductosMemDAO
-};
+module.exports = ProductosMemDAO;

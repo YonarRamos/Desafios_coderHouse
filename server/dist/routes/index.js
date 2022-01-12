@@ -17,7 +17,7 @@ var _mensajes = _interopRequireDefault(require("./mensajes"));
 
 var _usuarios = _interopRequireDefault(require("./usuarios"));
 
-var _path = _interopRequireDefault(require("path"));
+var _ordenes = _interopRequireDefault(require("./ordenes"));
 
 var _auth_local = require("../middleware/auth_local");
 
@@ -27,5 +27,6 @@ router.use('/productos', _auth_local.isLoggedIn, _productos["default"]);
 router.use('/mensajes', _mensajes["default"]);
 router.use('/usuarios', _usuarios["default"]);
 router.use('/carrito', _carrito["default"]);
+router.use('/ordenes', _ordenes["default"]);
 var _default = router;
 exports["default"] = _default;

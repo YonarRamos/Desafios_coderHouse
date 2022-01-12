@@ -6,11 +6,9 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _require = require('../productos/DAOs/memory'),
-    ProductosMemDAO = _require.ProductosMemDAO;
+var ProductosMemDAO = require('../productos/DAOs/memory');
 
-var _require2 = require('./DAOs/mongo'),
-    ProductosAtlasDAO = _require2.ProductosAtlasDAO;
+var ProductosAtlasDAO = require('./DAOs/mongo');
 
 var ProductosMysqlDAO = require('../productos/DAOs/mySql');
 

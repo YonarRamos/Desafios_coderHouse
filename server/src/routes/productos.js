@@ -206,7 +206,7 @@ router.put('/:id', productosController.updateProducts);
  *     summary: Borra un producto existente
  *     responses:
  *       200:
- *         description: succes response
+ *         description: success response
  *         content:
  *           application/json:
  *             schema:

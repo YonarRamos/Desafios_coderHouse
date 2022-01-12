@@ -1,4 +1,3 @@
-//import session from "express-session";
 const Mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const usuariosCollection = 'usuarios'

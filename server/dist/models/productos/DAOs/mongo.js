@@ -10,44 +10,7 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var Mongoose = require('mongoose');
-
-var moment = require('moment');
-
-var productosCollection = 'productos';
-var productoSchema = new Mongoose.Schema({
-  timestamp: {
-    type: Date,
-    "default": moment().format(),
-    required: true
-  },
-  codigo: {
-    type: String,
-    "default": Date.now(),
-    required: true
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true
-  },
-  stock: {
-    type: Number,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  thumbnail: {
-    type: String,
-    required: true
-  }
-});
-var Productos = new Mongoose.model(productosCollection, productoSchema);
+var Productos = require('../productos');
 
 var ProductosAtlasDAO = /*#__PURE__*/function () {
   function ProductosAtlasDAO() {
@@ -293,7 +256,4 @@ var ProductosAtlasDAO = /*#__PURE__*/function () {
   return ProductosAtlasDAO;
 }();
 
-module.exports = {
-  ProductosAtlasDAO: ProductosAtlasDAO,
-  productoSchema: productoSchema
-};
+module.exports = ProductosAtlasDAO;

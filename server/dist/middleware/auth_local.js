@@ -58,30 +58,29 @@ var loginFunc = /*#__PURE__*/function () {
 
           case 8:
             if (user.isValidPassword(password)) {
-              _context.next = 11;
+              _context.next = 10;
               break;
             }
 
-            console.log('Password is not valid.');
             return _context.abrupt("return", done(null, false, {
-              msg: 'Password is not valid.'
+              msg: 'Datos incorrectos'
             }));
 
-          case 11:
+          case 10:
             console.log('SALIO TODO BIEN');
             return _context.abrupt("return", done(null, user));
 
-          case 15:
-            _context.prev = 15;
+          case 14:
+            _context.prev = 14;
             _context.t0 = _context["catch"](1);
             console.log('LoginFuncERROR:', _context.t0);
 
-          case 18:
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 15]]);
+    }, _callee, null, [[1, 14]]);
   }));
 
   return function loginFunc(_x, _x2, _x3, _x4) {

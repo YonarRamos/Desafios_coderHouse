@@ -11,11 +11,11 @@ class Users {
     return res.json(newItem);   
   }
   async updateUsers(req , res) {
-    const updatedItem = await UsersAPI.updateUser(req , res);
+    const updatedItem = await UsersAPI.updateUsers(req , res);
     return res.json(updatedItem);
   }
   async deleteUsers(req, res) {
-    const deletedItem = await UsersAPI.deleteUser(req , res);
+    const deletedItem = await UsersAPI.deleteUsers(req , res);
     res.json(deletedItem);
   }
   async loginUsers(req, res) {

@@ -45,10 +45,6 @@ var router = (0, _express.Router)();
  *           type: String
  *           description: apodo del usuario
  *           example: Jhonny
- *         description:
- *           type: String
- *           description: Breve descripción del producto
- *           example: Lapiz de grafito #2
  *         avatar:
  *           type: String
  *           description: Imagen del usuario
@@ -84,10 +80,6 @@ var router = (0, _express.Router)();
  *           type: String
  *           description: apodo del usuario
  *           example: Jhonny
- *         description:
- *           type: String
- *           description: Breve descripción del producto
- *           example: Lapiz de grafito #2
  *         avatar:
  *           type: String
  *           description: Imagen del usuario
@@ -95,7 +87,7 @@ var router = (0, _express.Router)();
  *         telefono:
  *           type: number
  *           description: numero telefonico del usuario
- *           example: 11387923645
+ *           example: 1138792364
  *         email:
  *           type: String
  *           description: email del usuario
@@ -115,9 +107,103 @@ var router = (0, _express.Router)();
  *           type: String
  *           description: email del usuario
  *           example: user@correo.com
+ *     userLogin:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: String
+ *           description: email del usuario
+ *           example: user@correo.com
+ *         password:
+ *           type: String
+ *           description: clave de acceso
+ *           example: 1234
+ */
+
+/**
+ * @swagger
+ * /usuarios/registrar:
+ *   post:
+ *     summary: Crea un nuevo usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewUsertInput'
+ *     responses:
+ *       200:
+ *         description: Usuario agregado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: String
+ *                   example: Usuario Agregado
+ *                 data:
+ *                    $ref: '#/components/schemas/NewUsertInput'
+ *       400:
+ *         description: Invalid Body Parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: Missig body fields
  */
 
 router.post('/registrar', _validator.userValidator, _usuariosController.usuariosController.addUsers);
+/**
+ * @swagger
+ * /usuarios/:usuario_id:
+ *   put:
+ *     summary: Actualiza un usuario existente
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewUsertInput'
+ *     responses:
+ *       200:
+ *         description: retrieve updated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: String
+ *                   example: Usuario Actualizado
+ *                 data:
+ *                    $ref: '#/components/schemas/NewUsertInput'
+ *       400:
+ *         description: Invalid Body Parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: Missig body fields
+ *       404:
+ *         description: User not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: El usuario indicado no existe
+ */
+
+router.put('/:usuario_id', _validator.userValidator, _usuariosController.usuariosController.updateUsers);
 /**
  * @swagger
  * /usuarios/:
@@ -152,10 +238,111 @@ router.post('/registrar', _validator.userValidator, _usuariosController.usuarios
  */
 
 router.get('/', _auth.isLoggedIn, _usuariosController.usuariosController.getUsers);
+/**
+ * @swagger
+ * /usuarios/login:
+ *   post:
+ *     summary: Permite al usuario abrir una sesión
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/userLogin'
+ *     responses:
+ *       200:
+ *         description: Usuario logueado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *               msg: Welcome to our store!!
+ *               passport :
+ *                  $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Datos incorrectos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: Datos incorrectos
+ *
+ */
+
 router.post('/login', _auth_local["default"].authenticate('login'), _usuariosController.usuariosController.loginUsers);
+/**
+ * @swagger
+ * /usuarios/logout:
+ *   get:
+ *     summary: Permite al usuario cerrar su sesión
+ *     responses:
+ *       200:
+ *         description: Usuario deslogueado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *               msg: Adios!!
+ *       400:
+ *         description: No hay sesiones
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: No hay ninguna sesión activa
+ *
+ */
+
 router.get('/logout', function (req, res) {
-  req.logout();
-  res.redirect('/api/login');
+  if (req.user) {
+    req.session.destroy();
+    res.clearCookie('connect.sid'); // clean up!
+
+    return res.status(200).json({
+      msg: 'Adios'
+    });
+  } else {
+    return res.status(400).json({
+      msg: 'No hay usuarios logueados'
+    });
+  }
 });
+/**
+ * @swagger
+ * /usuarios/:usuario_id:
+ *   delete:
+ *     summary: Elimina un usuario por id y su carrito de compras respectivamente
+ *     responses:
+ *       200:
+ *         description: Eliminar un usuario segun su id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: oject
+ *               msg: Usuario Eliminar
+ *               data :
+ *                  $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: Usuario no existe
+ *
+ */
+
+router["delete"]('/:usuario_id', _usuariosController.usuariosController.deleteUsers);
 var _default = router;
 exports["default"] = _default;

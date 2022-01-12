@@ -52,4 +52,4 @@ class UsersMemDAO {
   }
 }
 const ProductosMemDAO = new UsersMemDAO()
-module.exports = { ProductosMemDAO };
+module.exports =  ProductosMemDAO;

@@ -6,14 +6,13 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _require = require('../Usuarios/DAOs/memory'),
-    UsuariosMemDAO = _require.UsuariosMemDAO;
+var UsuariosMemDAO = require('./DAOs/memory');
 
 var UsuariosMongoDAO = require('./DAOs/mongo');
 
-var UsuariosMysqlDAO = require('../Usuarios/DAOs/mySql');
+var UsuariosMysqlDAO = require('./DAOs/mySql');
 
-var UsuariosSqliteDAO = require('../Usuarios/DAOs/sqlite3');
+var UsuariosSqliteDAO = require('./DAOs/sqlite3');
 
 var TipoPersistencia = {
   MEMORIA: 'MEM',
@@ -38,7 +37,7 @@ var FactoryDAO = /*#__PURE__*/function () {
 
         case TipoPersistencia.MONGO_LOCAL:
           console.log('RETORNANDO INSTANCIA MONGO LOCAL');
-          return new UsuariosMongoDAO(true);
+          return new UsuariosMongoDAO(false);
 
         case TipoPersistencia.SQLITE3:
           console.log('RETORNANDO INSTANCIA SQLITE3');

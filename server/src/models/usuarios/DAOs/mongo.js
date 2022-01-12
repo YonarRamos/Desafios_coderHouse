@@ -1,14 +1,9 @@
-//import session from "express-session";
-const Mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const  EmailService  = require("../../../services/email");
 const  GmailService  = require("../../../services/gmail");
 const  SmsService  = require("../../../services/twilio");
 const  carritoController  = require("../../../controllers/carritoController");
 const  UsuarioModel  = require('../Usuario');
-
 const moment = require("moment");
-const CombinedStream = require('combined-stream');
 
 class UsuariosMongoDAO {
     async get(req, res ) {
@@ -45,7 +40,7 @@ class UsuariosMongoDAO {
     }
     
     async add(req, res){
-        let { email, password, nombre, apellido, edad, alias, avatar, telefono } = req.body;
+        let { email, password, nombre, apellido, edad, alias, avatar, telefono, direccionEntrega} = req.body;
             telefono = `+549${telefono}`
             const user = { email, password, nombre, apellido, edad, alias, avatar, telefono }
             const newUser = new UsuarioModel(user);
@@ -54,7 +49,7 @@ class UsuariosMongoDAO {
                 if(user){
                     const usuario = user._id;
                     console.log('Creando carrito del usuario...',user._id,':',user.nombre);
-                   await carritoController.create(usuario).then( async ()=>{
+                   await carritoController.create(usuario, direccionEntrega).then( async ()=>{
                     //Notificando al Admin
                     /* ETHERAL */
                     console.log('Sending email to Admin...');
@@ -143,12 +138,39 @@ class UsuariosMongoDAO {
             })
     }
     
-    async update(id, user){
-    return await UsuarioModel.findByIdAndUpdate(id, user);
+    async update(req, res){
+        const user = req.body;
+        const usuario_id = req.params.usuario_id;
+        console.log('user',user);
+        const userUpdated = await UsuarioModel.findByIdAndUpdate(usuario_id);
+        console.log('userUpdated',userUpdated);
+        if(userUpdated){
+            res.status(200).json({
+                msg: 'Usuario actualizado',
+                data: userUpdated
+            });
+        } else {
+            res.status(404).json({
+                msg: "El usuario no existe"
+            });
+        }
     }
 
-    async delete(id) {
-    return await UsuarioModel.findByIdAndDelete(id);
+    async delete(req, res) {
+        const usuario_id = req.params.usuario_id;
+        const userResponse = await UsuarioModel.findByIdAndDelete(usuario_id);
+        console.log('userResponse',userResponse);
+        if(userResponse){
+            res.status(200).json({
+                msg:'Usuario eliminado',
+                data:userResponse
+            });
+            carritoController.destroy(usuario_id);  
+        } else {
+            res.status(400).json({
+                msg:'Usuario no existe'
+            })
+        }
     }
 
     async login(req, res) {

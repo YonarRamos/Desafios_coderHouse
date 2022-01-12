@@ -177,6 +177,4 @@ var UsersMemDAO = /*#__PURE__*/function () {
 }();
 
 var ProductosMemDAO = new UsersMemDAO();
-module.exports = {
-  ProductosMemDAO: ProductosMemDAO
-};
+module.exports = ProductosMemDAO;

@@ -35,12 +35,11 @@ class userAPIClass {
   }
 
   async updateUsers(req, res) {
-    await this.users.update(req, res);
-    return productData;
+    return this.users.update(req, res);
   }
 
   async deleteUsers(req, res) {
-    await this.users.delete(req, res);
+    return await this.users.delete(req, res);
   }
 }
 

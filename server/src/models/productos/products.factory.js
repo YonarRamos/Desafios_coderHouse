@@ -1,7 +1,7 @@
-const { ProductosMemDAO } = require('../productos/DAOs/memory');
-const { ProductosAtlasDAO } = require('./DAOs/mongo');
-const  ProductosMysqlDAO  = require('../productos/DAOs/mySql');
-const  ProductosSqlitelDAO  = require('../productos/DAOs/sqlite3');
+const ProductosMemDAO = require('../productos/DAOs/memory');
+const ProductosAtlasDAO  = require('./DAOs/mongo');
+const ProductosMysqlDAO  = require('../productos/DAOs/mySql');
+const ProductosSqlitelDAO  = require('../productos/DAOs/sqlite3');
 
 const TipoPersistencia = {
   MEMORIA : 'MEM',

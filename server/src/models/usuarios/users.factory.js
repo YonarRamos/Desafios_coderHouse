@@ -1,7 +1,7 @@
-const { UsuariosMemDAO } = require('../Usuarios/DAOs/memory');
+const  UsuariosMemDAO = require('./DAOs/memory');
 const  UsuariosMongoDAO = require('./DAOs/mongo');
-const  UsuariosMysqlDAO  = require('../Usuarios/DAOs/mySql');
-const  UsuariosSqliteDAO  = require('../Usuarios/DAOs/sqlite3');
+const  UsuariosMysqlDAO  = require('./DAOs/mySql');
+const  UsuariosSqliteDAO  = require('./DAOs/sqlite3');
 
 const TipoPersistencia = {
   MEMORIA : 'MEM',
@@ -15,20 +15,17 @@ class FactoryDAO {
   static get(tipo) {
     switch (tipo) {
       case TipoPersistencia.MONGO_ATLAS:
-          console.log('RETORNANDO INSTANCIA USER MONGO ATLAS');
-          return new UsuariosMongoDAO(true);
+        console.log('RETORNANDO INSTANCIA USER MONGO ATLAS');
+        return new UsuariosMongoDAO(true);
       case TipoPersistencia.MONGO_LOCAL:
         console.log('RETORNANDO INSTANCIA MONGO LOCAL');
-        return new UsuariosMongoDAO(true);
- 
+        return new UsuariosMongoDAO(false);
       case TipoPersistencia.SQLITE3:
         console.log('RETORNANDO INSTANCIA SQLITE3');
         return new UsuariosSqliteDAO('usuarios');
-
       case TipoPersistencia.MYSQL:
           console.log('RETORNANDO INSTANCIA MYSQL');
           return new UsuariosMysqlDAO('usuarios');
-
       default:
         console.log('RETORNANDO INSTANCIA MEMORIA');
         return UsuariosMemDAO;

@@ -6,7 +6,6 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-//import session from "express-session";
 var Mongoose = require('mongoose');
 
 var bcrypt = require('bcrypt');

@@ -26,3 +26,4 @@ class DbServiceClass {
 } 
 
 module.exports = new DbServiceClass(true) ;
+module.MongoConnection = Mongoose.connection;

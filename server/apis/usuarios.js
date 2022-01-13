@@ -13,7 +13,7 @@ const Config = require('../src/utils/config');
 //   tipo = TipoPersistencia['MONGO_ATLAS'];
 // }
 
-const tipo = TipoPersistencia['MONGO_ATLAS'];
+const tipo = TipoPersistencia['MONGO_LOCAL'];
 
 class userAPIClass {
 

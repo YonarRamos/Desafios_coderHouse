@@ -3,14 +3,13 @@ const Mongoose = require('mongoose');
 const GridFsStorage = require("multer-gridfs-storage");
 const config = require("../utils/config");
 const mongoURI = `mongodb+srv://${config.MONGO_ATLAS_USER}:${config.MONGO_ATLAS_PASSWORD}@${config.MONGO_ATLAS_CLUSTER}.9xjxp.mongodb.net/${config.MONGO_LOCAL_DBNAME}?retryWrites=true&w=majority`;
-const promise = Mongoose.connect(mongoURI);
 
 const conn = Mongoose.connection;
 let storage;
 
 conn.once('open',() => {
     storage = new GridFsStorage({
-        url:promise,
+        url:mongoURI,
         options: { useNewUrlParser: true, useUnifiedTopology: true },
         file: (req, file) => {
             const match = ["image/png", "image/jpeg"];

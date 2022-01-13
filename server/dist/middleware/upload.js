@@ -9,12 +9,11 @@ var GridFsStorage = require("multer-gridfs-storage");
 var config = require("../utils/config");
 
 var mongoURI = "mongodb+srv://".concat(config.MONGO_ATLAS_USER, ":").concat(config.MONGO_ATLAS_PASSWORD, "@").concat(config.MONGO_ATLAS_CLUSTER, ".9xjxp.mongodb.net/").concat(config.MONGO_LOCAL_DBNAME, "?retryWrites=true&w=majority");
-var promise = Mongoose.connect(mongoURI);
 var conn = Mongoose.connection;
 var storage;
 conn.once('open', function () {
   storage = new GridFsStorage({
-    url: promise,
+    url: mongoURI,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true

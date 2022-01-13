@@ -92,3 +92,4 @@ var DbServiceClass = /*#__PURE__*/function () {
 }();
 
 module.exports = new DbServiceClass(true);
+module.MongoConnection = Mongoose.connection;

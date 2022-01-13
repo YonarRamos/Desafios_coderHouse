@@ -10,7 +10,8 @@ export const orderValidator = ( req, res, next ) => {
             codigoPostal: Joi.number().min(1000).required(),
             piso: Joi.number().min(0).required(),
             departamento: Joi.string(),
-        })
+        }),
+        estado: Joi.string()
     });
 
     // schema options

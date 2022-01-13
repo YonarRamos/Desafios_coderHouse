@@ -118,9 +118,82 @@ const router = express.Router();
  *                   type: String
  *                   example: Usuario invalido
  */
+ router.post('/', orderValidator, ordenesController.generate);
 
-router.post('/', orderValidator, ordenesController.generate);
-
+/**
+ * @swagger
+ * /ordenes/:id:
+ *   get:
+ *     summary: Devuelve una orden según su id
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                    $ref: '#/components/schemas/OrderInput'
+ *       404:
+ *         description: La orden no existe
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: La orden no existe
+ *
+ */
+router.get('/:id', ordenesController.get);
+/**
+ * @swagger
+ * /ordenrs/:id:
+ *   put:
+ *     summary: Actualiza los datos de entrega y estado de una orden de manera opcional
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/OrderInput'
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: String
+ *                   example: Orden actualizada
+ *                 data:
+ *                    $ref: '#/components/schemas/OrderInput'
+ *       400:
+ *         description: Error al validar la dirección de entrega
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   example: Joi response
+ *       404:
+ *         description: La orden no existe
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: String
+ *                   example: La orden no existe
+ */
+router.put('/:id', ordenesController.update);
 /**
  * @swagger
  * /ordenes/:id:
@@ -146,7 +219,7 @@ router.post('/', orderValidator, ordenesController.generate);
  *             schema:
  *               type: object
  *               properties:
- *                 data:
+ *                 msg:
  *                   type: String
  *                   example: La orden no existe
  *
